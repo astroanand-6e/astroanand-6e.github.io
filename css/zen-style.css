@@ -1,0 +1,1674 @@
+/* Variables - Japanese-inspired Color Palette */
+:root {
+  /* Traditional Japanese colors */
+  --indigo: #223a70;       /* Kon (濃紺) - Dark indigo */
+  --deep-red: #9b2335;     /* Enji (臙脂) - Dark red */
+  --light-red: #bd5164;    /* Softer version of Enji */
+  --black: #1a1a1a;        /* Sumi (墨) - Japanese ink */
+  --off-white: #f6f5f0;    /* Gofun (胡粉) - Traditional white */
+  --sand: #dcd3b2;         /* Kinariiro (生成り色) - Natural fabric */
+  --gold: #b8a256;         /* Kin (金) - Japanese gold */
+  --bamboo: #7a8c51;       /* Take (竹) - Bamboo green */
+  
+  /* Utility colors */
+  --text-dark: #1a1a1a;
+  --text-light: #4a4a4a;
+  --transition: all 0.3s ease;
+
+  /* Dark mode colors */
+  --dark-bg: #16192e;          /* Rich dark indigo background */
+  --dark-surface: #262a42;     /* Slightly lighter surface color */
+  --dark-accent: #724a4a;      /* Dark burgundy accent */
+  --dark-text: #e0e0d8;        /* Off-white text for better eye comfort */
+  --dark-text-muted: #a9a9a6;  /* Muted text color */
+  --dark-gold: #d4af37;        /* Richer gold for dark mode */
+  --dark-red: #c75e67;         /* Softer red for dark mode */
+  --dark-bamboo: #94aa66;      /* Lighter bamboo for visibility */
+  --dark-sand: #5e5546;        /* Dark sand color */
+  --dark-header: rgba(22, 25, 46, 0.95); /* Header background for dark mode */
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: var(--text-dark);
+  background-color: var(--off-white);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Cherry Blossom Background - Updated with Japanese paper texture */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/washi.png'), url('https://i.imgur.com/pFCctI1.png') right bottom no-repeat;
+  background-size: 50% auto;
+  opacity: 0.08;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Canvas Styles */
+#cherry-blossom-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 1.5rem;
+  color: var(--indigo);
+}
+
+h1 {
+  font-size: 2.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+h1::after {
+  content: '';
+  display: block;
+  width: 30%;
+  height: 3px;
+  background-color: var(--deep-red);
+  margin-top: 0.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+p {
+  margin-bottom: 1.5rem;
+  color: var(--text-light);
+}
+
+a {
+  color: var(--indigo);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--deep-red);
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+section {
+  padding: 6rem 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Header with Contact Integration */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(246, 245, 240, 0.95); /* off-white with transparency */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: relative;
+}
+
+/* Social Buttons in Header */
+.header-social-buttons {
+  display: none; /* Hide the old social buttons */
+}
+
+.social-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.social-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.github {
+  background: var(--black);
+}
+
+.twitter {
+  background: var(--indigo);
+}
+
+.linkedin {
+  background: var(--indigo);
+}
+
+.email {
+  background: var(--bamboo);
+}
+
+.cv {
+  background: var(--deep-red);
+}
+
+.email-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background: linear-gradient(45deg, var(--indigo), var(--deep-red));
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.email-button i {
+  margin-right: 8px;
+}
+
+.email-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Navigation */
+nav ul {
+  display: flex;
+  list-style: none;
+}
+
+nav li {
+  margin-left: 2rem;
+}
+
+nav a {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--deep-red);
+  transition: var(--transition);
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+.burger {
+  display: none;
+  cursor: pointer;
+}
+
+.burger div {
+  width: 25px;
+  height: 3px;
+  background-color: var(--text-dark);
+  margin: 5px;
+  transition: var(--transition);
+}
+
+/* Hero/About Section */
+#about {
+  padding-top: 10rem;
+  background: linear-gradient(to bottom, var(--off-white), var(--sand));
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.profile-image {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid var(--off-white);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 auto;
+}
+
+.profile-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Research Section */
+#research {
+  background-color: var(--sand);
+}
+
+.research-item {
+  background-color: var(--off-white);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+  border-left: 4px solid var(--bamboo);
+}
+
+.research-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid var(--deep-red);
+}
+
+.research-title {
+  font-weight: 700;
+  color: var(--indigo);
+  margin-bottom: 0.5rem;
+}
+
+.research-status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+  background-color: var(--light-red);
+  color: var(--white);
+  display: flex; /* Use flexbox to align items */
+  align-items: center; /* Vertically align items */
+  gap: 0.5rem; /* Add some space between text and icon */
+}
+
+.research-status span i {
+  color: var(--white); /* Adjust the color as needed */
+}
+
+/* Projects Section */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  background-color: var(--off-white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: var(--transition);
+  border-bottom: 3px solid var(--sand);
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid var(--gold);
+}
+
+.project-image {
+  width: 100%;
+  height: 200px;
+  background-color: var(--indigo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+.project-content {
+  padding: 1.5rem;
+}
+
+.project-title {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.project-links {
+  margin-top: 1rem;
+}
+
+.project-links a {
+  display: inline-block;
+  margin-right: 1rem;
+  color: var(--green-dark);
+}
+
+.project-links a:hover {
+  color: var(--pink-dark);
+}
+
+/* Research Interests Section */
+#research-interests {
+  background-color: var(--sand);
+}
+
+.interests-container {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr; /* Modified: Changed from 1fr 1.5fr to give more space to the left column */
+  gap: 2rem;
+}
+
+.interests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.interest-item-card {
+  background-color: var(--off-white);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+  cursor: pointer;
+  border-left: 4px solid var(--bamboo);
+  display: flex;
+  align-items: center;
+}
+
+.interest-item-card:hover, .interest-item-card.active {
+  transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid var(--deep-red);
+  background-color: rgba(34, 58, 112, 0.05);
+}
+
+.interest-icon {
+  font-size: 1.8rem;
+  margin-right: 1rem;
+  color: var(--indigo);
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+.interest-title {
+  font-weight: 600;
+  margin: 0;
+}
+
+.interests-sidebar {
+  background-color: var(--off-white);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  border-top: 4px solid var(--indigo);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.interests-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.interests-sidebar::-webkit-scrollbar-track {
+  background: var(--gray-light);
+  border-radius: 10px;
+}
+
+.interests-sidebar::-webkit-scrollbar-thumb {
+  background: var(--bamboo);
+  border-radius: 10px;
+}
+
+.interest-description {
+  display: none;
+  animation: fadeInRight 0.5s ease forwards;
+}
+
+.interest-description.active {
+  display: block;
+}
+
+.interest-description h3 {
+  color: var(--indigo);
+  position: relative;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.interest-description h3:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 3px;
+  background-color: var(--deep-red);
+}
+
+/* Footer */
+footer {
+  background-color: var(--black);
+  color: var(--white);
+  text-align: center;
+  padding: 2rem 0;
+  position: relative;
+}
+
+.footer-text {
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+/* Animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Add Japanese-inspired decorative elements */
+.section-title-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.japanese-symbol {
+  font-family: 'Noto Sans JP', sans-serif;
+  position: absolute;
+  top: -25px;
+  right: -30px;
+  font-size: 5rem;
+  opacity: 0.1;
+  color: var(--gold);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Stylize research-item to resemble a scroll */
+.research-item {
+  position: relative;
+  padding: 2rem 2rem 2rem 2.5rem;
+  overflow: hidden;
+}
+
+.research-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, transparent 50%, var(--sand) 50%);
+}
+
+.project-card {
+  position: relative;
+  transition: var(--transition), transform 0.4s ease;
+}
+
+/* Add stylized Japanese decoration to interest items */
+.interest-item-card::before {
+  content: '極';
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 2rem;
+  opacity: 0.05;
+  color: var(--deep-red);
+  pointer-events: none;
+}
+
+/* Logo styling (simplified) */
+.logo h3 {
+  margin-bottom: 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  color: var(--indigo);
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 30px;
+  margin-right: 20px;
+}
+
+.dark-mode-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.dark-mode-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--text-dark);
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.dark-mode-label i {
+  position: relative;
+  color: var(--gold);
+  transition: transform 0.3s ease;
+}
+
+.dark-mode-label .fa-sun {
+  display: none;
+}
+
+.dark-mode-checkbox:checked + .dark-mode-label {
+  background-color: var(--off-white);
+}
+
+.dark-mode-checkbox:checked + .dark-mode-label .fa-moon {
+  transform: translateX(-20px);
+}
+
+.dark-mode-checkbox:checked + .dark-mode-label .fa-sun {
+  display: block;
+  transform: translateX(20px);
+}
+
+/* Dark Mode Styles - Completely Revamped */
+body.dark-mode {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+/* Typography in Dark Mode */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+  color: var(--dark-gold);
+}
+
+body.dark-mode h1::after {
+  background-color: var(--dark-red);
+}
+
+body.dark-mode p {
+  color: var(--dark-text-muted);
+}
+
+body.dark-mode a {
+  color: var(--dark-gold);
+}
+
+body.dark-mode a:hover {
+  color: var(--dark-red);
+}
+
+/* Header in Dark Mode */
+body.dark-mode header {
+  background-color: var(--dark-header);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .logo h3 {
+  color: var(--dark-gold);
+}
+
+body.dark-mode nav a::after {
+  background-color: var(--dark-red);
+}
+
+body.dark-mode .burger div {
+  background-color: var(--dark-text);
+}
+
+/* Sections in Dark Mode */
+body.dark-mode #about {
+  background: linear-gradient(to bottom, var(--dark-bg), var(--dark-sand));
+}
+
+body.dark-mode #research,
+body.dark-mode #research-interests {
+  background-color: var(--dark-sand);
+}
+
+/* Cards and Items in Dark Mode */
+body.dark-mode .research-item,
+body.dark-mode .project-card,
+body.dark-mode .interest-item-card {
+  background-color: var(--dark-surface);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-color: var(--dark-accent);
+}
+
+body.dark-mode .research-item:hover,
+body.dark-mode .interest-item-card:hover,
+body.dark-mode .interest-item-card.active {
+  border-left-color: var(--dark-red);
+  background-color: rgba(114, 74, 74, 0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .project-card:hover {
+  border-bottom-color: var(--dark-gold);
+}
+
+body.dark-mode .research-title {
+  color: var(--dark-gold);
+}
+
+body.dark-mode .research-item::before {
+  background: linear-gradient(135deg, transparent 50%, var(--dark-sand) 50%);
+}
+
+body.dark-mode .research-status {
+  background-color: var(--dark-accent);
+}
+
+body.dark-mode .project-image {
+  background-color: var(--dark-accent);
+  opacity: 0.9;
+}
+
+/* Sidebar and Interest Icons */
+body.dark-mode .interests-sidebar {
+  background-color: var(--dark-surface);
+  border-top-color: var(--dark-gold);
+}
+
+body.dark-mode .interest-icon {
+  color: var(--dark-gold);
+}
+
+body.dark-mode .interest-description h3:after {
+  background-color: var(--dark-red);
+}
+
+/* Japanese Symbol and Decorative Elements */
+body.dark-mode .japanese-symbol {
+  color: var(--dark-gold);
+  opacity: 0.15;
+}
+
+body.dark-mode .interest-item-card::before {
+  color: var(--dark-red);
+  opacity: 0.1;
+}
+
+/* Footer in Dark Mode */
+body.dark-mode footer {
+  background-color: #121525;
+}
+
+/* Dark Mode Toggle Custom Styling */
+body.dark-mode .dark-mode-checkbox:checked + .dark-mode-label {
+  background-color: var(--dark-surface);
+  border: 1px solid var(--dark-gold);
+}
+
+body.dark-mode .dark-mode-label i {
+  color: var(--dark-gold);
+}
+
+/* Background Effects */
+body.dark-mode::before {
+  opacity: 0.05;
+  filter: invert(0.9);
+}
+
+/* Canvas Background (adjust petals in dark mode) */
+body.dark-mode #cherry-blossom-canvas {
+  filter: brightness(0.8) saturate(0.8);
+}
+
+body.dark-mode .social-button.email {
+  background: var(--dark-bamboo);
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .header-social-buttons {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-top: 20px;
+    justify-content: center;
+  }
+  
+  .header-container {
+    flex-direction: column;
+    padding-bottom: 20px;
+  }
+  
+  nav ul {
+    position: absolute;
+    right: 0;
+    top: 80px;
+    height: calc(100vh - 80px);
+    background-color: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 50%;
+    transform: translateX(100%);
+    transition: transform 0.5s ease;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 0;
+  }
+  
+  nav ul.nav-active {
+    transform: translateX(0);
+  }
+  
+  .burger {
+    display: block;
+  }
+  
+  .burger.toggle .line1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+  
+  .burger.toggle .line2 {
+    opacity: 0;
+  }
+  
+  .burger.toggle .line3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+  
+  .about-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .interests-container {
+    grid-template-columns: 1fr; /* Revert to single column on mobile */
+  }
+  
+  .interests-sidebar {
+    max-height: none;
+  }
+}
+
+/* Polish - Enhanced Dark Mode */
+body.dark-mode {
+  background-color: #0f1118; /* Deeper dark background for better contrast */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23212435' fill-opacity='0.15'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Polish - Enhanced Cards */
+body.dark-mode .research-item,
+body.dark-mode .project-card,
+body.dark-mode .interest-item-card,
+body.dark-mode .interests-sidebar {
+  background-color: rgba(30, 32, 46, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .research-item:hover,
+body.dark-mode .project-card:hover,
+body.dark-mode .interest-item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(111, 76, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Polish - Accent Colors */
+body.dark-mode .section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  margin-top: 10px;
+  background: linear-gradient(90deg, #bb86fc, #6200ea);
+  border-radius: 2px;
+}
+
+body.dark-mode .japanese-symbol {
+  color: #bb86fc;
+  text-shadow: 0 0 15px rgba(187, 134, 252, 0.3);
+}
+
+/* Polish - Scroll Bar */
+body.dark-mode::-webkit-scrollbar {
+  width: 10px;
+}
+
+body.dark-mode::-webkit-scrollbar-track {
+  background: #121212;
+}
+
+body.dark-mode::-webkit-scrollbar-thumb {
+  background: #bb86fc;
+  border-radius: 5px;
+}
+
+body.dark-mode::-webkit-scrollbar-thumb:hover {
+  background: #6200ea;
+}
+
+/* Polish - Link Hover Effects */
+body.dark-mode a {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+body.dark-mode a:not(.social-button):after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: linear-gradient(90deg, #bb86fc, #6200ea);
+  transition: width 0.3s ease;
+}
+
+body.dark-mode a:not(.social-button):hover:after {
+  width: 100%;
+}
+
+/* Preloader */
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0f1118;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(187, 134, 252, 0.3);
+  border-radius: 50%;
+  border-top-color: #bb86fc;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Bonsai Animation Styling */
+.bonsai-container {
+  margin: 2.5rem 0;
+  background-color: var(--off-white);
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: none;
+  border-top: 4px solid var(--bamboo);
+  width: 100%; /* Expand to fill available space */
+  box-sizing: border-box;
+  /* Added margin to push content to fill the space */
+  margin-right: -1rem;
+  margin-left: -1rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+body.dark-mode .bonsai-container {
+  background-color: rgba(30, 32, 46, 0.7);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 4px solid var(--dark-bamboo);
+}
+
+/* New wrapper for images */
+.bonsai-images-wrapper {
+  display: flex;
+  justify-content: space-around; /* Distribute space evenly */
+  align-items: flex-start; /* Align items to the start */
+  width: 100%;
+  gap: 2rem; /* Increased gap between the image and GIF */
+}
+
+.kf-panda-image-container {
+  width: 60%; /* Increased: Give more space to the Kung Fu Panda image */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kf-panda-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.5s ease;
+  object-fit: cover; /* Ensure the image covers the area */
+}
+
+.bonsai-gif-container {
+  width: 40%; /* Reduced to give more space to the Kung Fu Panda image */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bonsai-gif {
+  width: 100%;
+  border-radius: 8px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  transition: transform 0.5s ease;
+}
+
+.bonsai-container:hover .kf-panda-image,
+.bonsai-container:hover .bonsai-gif {
+  transform: scale(1.02);
+}
+
+.bonsai-caption {
+  margin-top: 1rem;
+  font-style: italic;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  max-width: 600px;
+}
+
+body.dark-mode .bonsai-caption {
+  color: var(--dark-text-muted);
+}
+
+/* Add special styling for mobile view */
+@media screen and (max-width: 768px) {
+  .bonsai-container {
+    padding: 1.5rem;
+    margin: 2rem 0;
+    gap: 1.5rem;
+  }
+  
+  /* Stack images vertically on smaller screens */
+  .bonsai-images-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .kf-panda-image-container,
+  .bonsai-gif-container {
+    width: 100%; /* Full width on smaller screens */
+  }
+  
+  .kf-panda-image {
+    max-width: 100%;
+  }
+  
+  .bonsai-gif {
+    max-width: 100%;
+  }
+  
+  .bonsai-caption {
+    font-size: 0.85rem;
+  }
+}
+
+/* Enhanced Bonsai Container */
+.bonsai-container {
+  margin: 2.5rem 0;
+  background-color: var(--off-white);
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  border-left: none;
+  border-top: 4px solid var(--bamboo);
+  width: 100%; /* Expand to fill available space */
+}
+
+body.dark-mode .bonsai-container {
+  background-color: rgba(30, 32, 46, 0.7);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 4px solid var(--dark-bamboo);
+}
+
+/* New wrapper for images */
+.bonsai-images-wrapper {
+  display: flex;
+  justify-content: space-around; /* Distribute space evenly */
+  align-items: flex-start; /* Align items to the start */
+  width: 100%;
+  gap: 1rem; /* Space between the image and GIF */
+}
+
+.kf-panda-image-container {
+  width: 50%; /* Take up half the container width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kf-panda-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.5s ease;
+  object-fit: cover; /* Ensure the image covers the area */
+}
+
+.bonsai-gif-container {
+  width: 50%; /* Take up half the container width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bonsai-gif {
+  width: 100%;
+  border-radius: 8px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  transition: transform 0.5s ease;
+}
+
+.bonsai-container:hover .kf-panda-image,
+.bonsai-container:hover .bonsai-gif {
+  transform: scale(1.02);
+}
+
+.bonsai-caption {
+  margin-top: 1rem;
+  font-style: italic;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  max-width: 600px;
+}
+
+body.dark-mode .bonsai-caption {
+  color: var(--dark-text-muted);
+}
+
+/* Add special styling for mobile view */
+@media screen and (max-width: 768px) {
+  .bonsai-container {
+    padding: 1.5rem;
+    margin: 2rem 0;
+    gap: 1.5rem;
+  }
+  
+  /* Stack images vertically on smaller screens */
+  .bonsai-images-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .kf-panda-image-container,
+  .bonsai-gif-container {
+    width: 100%; /* Full width on smaller screens */
+  }
+  
+  .kf-panda-image {
+    max-width: 100%;
+  }
+  
+  .bonsai-gif {
+    max-width: 100%;
+  }
+  
+  .bonsai-caption {
+    font-size: 0.85rem;
+  }
+}
+
+/* Bonsai Animation Styling - Full Width Version */
+.bonsai-container {
+  margin: 3rem -2rem; /* Negative margin to break out of parent container */
+  width: calc(100% + 4rem); /* Full width plus the negative margins */
+  max-width: 100vw; /* Ensure it doesn't overflow the viewport */
+  background-color: var(--off-white);
+  border-radius: 10px;
+  padding: 2.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: none;
+  border-top: 4px solid var(--bamboo);
+  position: relative;
+  box-sizing: border-box;
+}
+
+body.dark-mode .bonsai-container {
+  background-color: rgba(30, 32, 46, 0.7);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 4px solid var(--dark-bamboo);
+}
+
+/* New wrapper for images - Enhanced for better visibility */
+.bonsai-images-wrapper {
+  display: flex;
+  justify-content: space-between; /* Space items evenly */
+  align-items: center; /* Center items vertically */
+  width: 100%;
+  gap: 2rem; /* Increased space between images */
+  max-width: 1200px; /* Max width for larger screens */
+  margin: 0 auto; /* Center the wrapper */
+}
+
+.kf-panda-image-container {
+  width: 65%; /* Give more space to the Kung Fu Panda image */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kf-panda-image {
+  width: 100%;
+  height: auto;
+  max-height: 400px; /* Set a max height but allow scaling */
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.5s ease;
+  object-fit: contain; /* Changed to contain to show the full image */
+}
+
+.bonsai-gif-container {
+  width: 35%; /* Reduced to give more space to the Kung Fu Panda image */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bonsai-gif {
+  width: 100%;
+  max-height: 300px; /* Set a max height */
+  border-radius: 8px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  transition: transform 0.5s ease;
+  object-fit: contain; /* Changed to contain to show the full gif */
+}
+
+.bonsai-container:hover .kf-panda-image,
+.bonsai-container:hover .bonsai-gif {
+  transform: scale(1.03); /* Slightly enhanced hover effect */
+}
+
+.bonsai-caption {
+  margin-top: 1rem;
+  font-style: italic;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  max-width: 100%; /* Allow captions to use more width */
+  padding: 0 1rem;
+}
+
+/* Style adjustments for the Research Interests section to accommodate the full-width bonsai */
+#research-interests .container {
+  overflow: visible; /* Allow content to overflow for the bonsai container */
+}
+
+.interests-list {
+  position: relative; /* For the bonsai container positioning */
+  overflow: visible; /* Allow bonsai to overflow */
+}
+
+/* Add special styling for mobile view */
+@media screen and (max-width: 768px) {
+  .bonsai-container {
+    margin: 2rem -1rem; /* Smaller negative margin on mobile */
+    width: calc(100% + 2rem);
+    padding: 1.5rem;
+  }
+  
+  /* Stack images vertically on smaller screens */
+  .bonsai-images-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .kf-panda-image-container,
+  .bonsai-gif-container {
+    width: 100%; /* Full width on smaller screens */
+    margin-bottom: 1.5rem;
+  }
+  
+  .kf-panda-image,
+  .bonsai-gif {
+    max-height: none; /* Remove max height on mobile */
+  }
+}
+
+/* About header with social buttons */
+.about-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.about-header h1 {
+  margin-bottom: 0;
+  margin-right: 1rem;
+}
+
+.about-social-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Social Buttons in About section */
+.about-social-buttons .social-button {
+  width: 36px;
+  height: 36px;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+}
+
+/* Responsive adjustments for social buttons */
+@media screen and (max-width: 768px) {
+  .about-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .about-header h1 {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+  
+  .about-header h1::after {
+    margin: 0.5rem auto 0;
+  }
+}
+
+/* Enhanced Inspiration Section */
+.inspiration-section {
+  padding: 4rem 0;
+  margin-top: 2rem;
+  width: 100%;
+  overflow: visible;
+  position: relative;
+}
+
+.inspiration-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.inspiration-images {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  gap: 30px;
+  width: 100%;
+}
+
+.inspiration-item {
+  flex: 0 0 48%;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s ease;
+  transform-origin: center;
+  background-color: var(--dark-surface);
+}
+
+body.dark-mode .inspiration-item {
+  background-color: rgba(30, 32, 46, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.inspiration-item:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(111, 76, 255, 0.25);
+}
+
+.inspiration-image {
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  transition: transform 0.5s ease;
+}
+
+.bonsai-gif, .kf-panda-image {
+  height: 300px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.inspiration-caption {
+  padding: 1.5rem;
+  text-align: center;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--dark-text-muted);
+  background: linear-gradient(to bottom, rgba(30, 32, 46, 0.7), rgba(22, 25, 46, 0.9));
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Scroll Progress Indicator */
+.scroll-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  z-index: 1001;
+  background: transparent;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #bb86fc, #6200ea);
+  box-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+  transition: width 0.1s ease;
+}
+
+/* Enhanced Footer */
+footer {
+  background-color: rgba(15, 17, 24, 0.95);
+  color: var(--dark-text);
+  padding: 3rem 0 1.5rem;
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.footer-left {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-left h3 {
+  color: var(--dark-gold);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.footer-tagline {
+  font-style: italic;
+  opacity: 0.8;
+  max-width: 300px;
+  font-size: 0.95rem;
+}
+
+.footer-right {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.footer-contact {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+.footer-contact p {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--dark-text-muted);
+}
+
+.footer-contact i {
+  margin-right: 0.5rem;
+  color: var(--dark-gold);
+}
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-social a {
+  color: var(--dark-text);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: var(--dark-gold);
+  transform: translateY(-3px);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-text, .footer-credits {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* Enhanced Preloader */
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0f1118;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 3px solid rgba(187, 134, 252, 0.2);
+  border-radius: 50%;
+  border-top-color: #bb86fc;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+.preloader-text {
+  color: var(--dark-text);
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Better transitions for all interactive elements */
+a, button, .project-card, .research-item, .interest-item-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Enhanced Fade-In Effect */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+  }
+  
+  .footer-right {
+    align-items: flex-start;
+    margin-top: 2rem;
+  }
+  
+  .footer-contact {
+    text-align: left;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .inspiration-images {
+    flex-direction: column;
+  }
+  
+  .inspiration-item {
+    flex: 0 0 100%;
+    margin-bottom: 2rem;
+  }
+}
