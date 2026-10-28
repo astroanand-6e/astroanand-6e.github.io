@@ -3,190 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anand Thakkar - Zen Portfolio</title>
+  <title>Anand Thakkar - Portfolio</title>
   
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
   
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="css/zen-style.css">
   
-  <!-- Force dark mode -->
-  <style>
-    body {
-      /* Force dark mode by default */
-      color: var(--text-color-dark);
-      background-color: var(--bg-color-dark);
-    }
-    
-    /* Add dark mode styles to ensure everything looks correct */
-    body {
-      --bg-color-dark: #121212;
-      --text-color-dark: #e0e0e0;
-      --accent-color-dark: #bb86fc;
-      --card-bg-dark: #1e1e1e;
-    }
-    
-    /* Force dark mode styling for all elements that might need it */
-    a {
-      color: var(--accent-color-dark);
-    }
-    
-    .project-card, .interest-item-card, .research-item {
-      background-color: var(--card-bg-dark);
-      color: var(--text-color-dark);
-    }
-    
-    /* Expanded bonsai container styles */
-    .bonsai-container {
-      width: 100%;
-      margin-top: 2rem;
-      padding: 0;
-    }
-    
-    .bonsai-images-wrapper {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-    }
-    
-    .bonsai-gif-container, .kf-panda-image-container {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    
-    .bonsai-gif {
-      width: 100%;
-      max-height: 300px;
-      object-fit: contain;
-    }
-    
-    .kf-panda-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      margin-top: 1.5rem;
-    }
-    
-    .interests-list {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      padding-right: 0;
-    }
-    
-    /* Media queries for better responsiveness */
-    @media (max-width: 768px) {
-      .interests-container {
-        flex-direction: column;
-      }
-      
-      .interests-list, .interests-sidebar {
-        width: 100%;
-      }
-    }
-    
-    /* New styles for the inspiration section */
-    .inspiration-section {
-      padding: 3rem 0;
-      margin-top: 2rem;
-      width: 100%;
-      overflow: visible;
-      position: relative;
-    }
-    
-    .inspiration-container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .inspiration-title {
-      text-align: center;
-      margin-bottom: 2rem;
-      position: relative;
-    }
-    
-    .inspiration-title h2 {
-      font-size: 2rem;
-      color: var(--text-color-dark);
-      display: inline-block;
-    }
-    
-    .inspiration-images {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      width: 100%;
-    }
-    
-    .inspiration-item {
-      flex: 0 0 48%;
-      position: relative;
-    }
-    
-    .inspiration-image {
-      width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s ease;
-    }
-    
-    .bonsai-gif {
-      max-height: 350px;
-      object-fit: cover;
-    }
-    
-    .kf-panda-image {
-      max-height: 350px;
-      object-fit: cover;
-    }
-    
-    .inspiration-caption {
-      margin-top: 1rem;
-      text-align: center;
-      font-style: italic;
-      font-size: 0.95rem;
-      color: var(--text-color-dark);
-      padding: 0 10px;
-    }
-    
-    /* Media query for mobile devices */
-    @media (max-width: 768px) {
-      .inspiration-images {
-        flex-direction: column;
-      }
-      
-      .inspiration-item {
-        flex: 0 0 100%;
-        margin-bottom: 2rem;
-      }
-    }
-  </style>
-  
-  <!-- Add meta tags for better SEO -->
   <meta name="description" content="Anand Thakkar - Portfolio showcasing research and projects in AI, deep learning, and neuroscience">
   <meta name="keywords" content="AI research, deep learning, machine learning, neural networks, brain-inspired AI">
   <meta name="author" content="Anand Thakkar">
   
-  <!-- Add favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
 </head>
-<body class="dark-mode">
-  <!-- Add preloader -->
-  <div class="preloader">
+<body class="dark-mode"> <div class="preloader">
     <div class="spinner"></div>
+    <div class="preloader-text">LOADING</div> 
   </div>
 
-  <!-- Header with Integrated Contact -->
   <header>
     <div class="header-container">
       <div class="logo">
@@ -210,139 +45,125 @@
     </div>
   </header>
 
-  <!-- About Section with social buttons moved next to heading -->
   <section id="about">
     <div class="container">
       <div class="about-content fade-in">
         <div>
-          <img src="new_images/pfp.jpg" alt="Anand Thakkar" class="profile-image" />
+          <img src="new_images/pfp.jpg" alt="Anand Thakkar" class="profile-image" 
+               onerror="this.onerror=null; this.src='https://placehold.co/250x250/282828/D1D7DE?text=Anand+Thakkar';" />
         </div>
         <div>
           <div class="about-header">
             <h1>About Me</h1>
-            <!-- Add social buttons here -->
             <div class="about-social-buttons">
-              <a href="https://github.com/astroanand-6e" target="_blank" class="social-button github" title="GitHub">
-                <i class="fab fa-github"></i>
-              </a>
-              <a href="https://x.com/NeuralSharingan" target="_blank" class="social-button twitter" title="Twitter">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="https://www.linkedin.com/in/anandthakkar-8a54s/" target="_blank" class="social-button linkedin" title="LinkedIn">
-                <i class="fab fa-linkedin-in"></i>
-              </a>
-              <a href="mailto:anandthakkar2208@gmail.com" class="social-button email" title="Email">
-                <i class="fas fa-envelope"></i>
-              </a>
-              <a href="./Anand_Resume.pdf" target="_blank" class="social-button cv" title="CV">
-                <i class="fas fa-file-pdf"></i>
-              </a>
+              <a href="https://github.com/astroanand-6e" target="_blank" class="social-button github" title="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://x.com/NeuralSharingan" target="_blank" class="social-button twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.linkedin.com/in/anand-thakkar" target="_blank" class="social-button linkedin" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+              <a href="https://huggingface.co/astroanand" target="_blank" class="social-button" title="Hugging Face">🤗</a>
+              <a href="mailto:anandthakkar041@gmail.com" class="social-button email" title="Email"><i class="fas fa-envelope"></i></a>
+              <a href="./Anand_Resume.pdf" target="_blank" class="social-button cv" title="CV"><i class="fas fa-file-pdf"></i></a>
             </div>
           </div>
           <p>
-            I am a final year student pursuing a Bachelor's degree in Computer Science Engineering at SRM Institute of Science and Technology in Chennai, India.
+            I'm pursuing an <strong>MS in Artificial Intelligence</strong> at Northeastern University's Khoury College of Computer Sciences in Boston (Jan 2026 – present), after a B.Tech in Computer Science &amp; Engineering from SRM Institute of Science and Technology.
           </p>
           <p>
-            My research interests revolve around deep learning architectures, generative models and their architectural complexity, human brain & connectomics, and mechanistic interpretability for AI safety. I'm particularly interested in applying computational approaches to understanding neural systems and contributing to brain-inspired AI development.
+            I build on-device ML for Apple Silicon and do research across multimodal audio-language modeling, self-supervised vision, and failure-aware clinical AI. I'm currently studying reinforcement learning and sequential decision making.
           </p>
           <p>
-            I am currently working as an <strong>R&D Intern</strong> at <a href="https://spansystems.in/" target="_blank">SPAN Inspection Systems'</a> R&D department on Advancing Coronary artery segmentation and Blockage detection using Computer Vision.
+            Previously I was an <strong>R&amp;D Intern → Junior R&amp;D Engineer</strong> in Computer Vision at <a href="https://spansystems.in/" target="_blank">SPAN Inspection Systems</a> (Dec 2024 – Oct 2025), working on coronary artery segmentation and stenosis detection.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Research Section -->
   <section id="research">
     <div class="container">
       <div class="section-title-container">
-        <h2 class="section-title fade-in">Publications & Ongoing Research 🔬</h2>
+        <h2 class="section-title fade-in">Publications & Research 🔬</h2>
         <span class="japanese-symbol">研究</span>
       </div>
-      
+
       <div class="research-item fade-in">
-        <div class="research-title">ResformerAF: Integrating Deep Learning Models for Atrial Fibrillation Detection Using ECG</div>
-        <div class="research-status" style="color: white;">Under Review</div>
+        <div class="research-title">CALM: Conformer Audio-Language Model</div>
+        <div class="research-status">In Progress <span><i class="fas fa-spinner fa-spin"></i></span></div>
         <p>
-          Spearheaded a comparative analysis of ResNet, ResNet with attention, Bi-LSTM, and Bi-LSTM with attention for ECG classification. Proposed a novel ResNet + encoder-based architecture to enhance feature extraction and classification accuracy.
+          Graduate research at Northeastern. Fuses Gemma 4's frozen audio Conformer (305M) with its frozen text encoder (4.6B) via bidirectional cross-modal attention, training only ~4M parameters. Reaches 83.9% test accuracy on 16-genre FMA-Medium, +9.1 pp over the best audio-only baseline, with ~25× fewer trainable parameters than full fine-tuning. Six pre-trained audio encoders were benchmarked on Northeastern's Explorer HPC cluster.
         </p>
       </div>
-      
+
       <div class="research-item fade-in">
-        <div class="research-title">Coronary Artery Segmentation, Blockage Detection and Measurement</div>
-        <div class="research-status" style="color: white;">
-          In Progress
-          <span><i class="fas fa-spinner fa-spin"></i></span>
-        </div>
+        <div class="research-title">ResFormer: Integrating Deep Learning Models for Atrial Fibrillation Detection using ECG</div>
+        <div class="research-status">Published · ICIOT'25 (First author)</div>
         <p>
-          Leading the development of a deep learning system for coronary artery segmentation and stenosis detection in medical images. Leveraging state-of-the-art models to improve diagnostic accuracy for Coronary Artery Disease (CAD).
+          Comparative analysis of ResNet, Bi-LSTM, and their attention variants for ECG classification, and a proposed ResNet + Transformer-encoder architecture for better feature extraction and classification.
         </p>
       </div>
-      
+
       <div class="research-item fade-in">
-        <div class="research-title">Cross-lingual Semantic Equivalence in Large Language Models</div>
-        <div class="research-status" style="color: white;">
-          In Progress
-          <span><i class="fas fa-spinner fa-spin"></i></span>
-        </div>
+        <div class="research-title">Self-Supervised Coronary Stenosis Detection (SPAN Inspection Systems)</div>
+        <div class="research-status">Industry R&amp;D</div>
         <p>
-          Investigating how Large Language Models (LLMs) process semantically equivalent prompts in multilingual and code-switched contexts (e.g., Hinglish). Examining semantic preservation across languages to better understand LLM reasoning and improve cross-lingual capabilities.
+          Implemented ViT and Masked Autoencoders from scratch in PyTorch for pre-training, fine-tuning, and linear probing on the CADICA dataset, learning from unlabeled angiograms. Benchmarked U-Net, SAM2, TransUNet, and Swin-UNet for X-ray coronary segmentation across accuracy, generalizability, and compute cost, and shipped models to production via ONNX.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Projects Section -->
   <section id="projects">
     <div class="container">
       <div class="section-title-container">
         <h2 class="section-title fade-in">Projects</h2>
         <span class="japanese-symbol">作品</span>
       </div>
-      
+
       <div class="project-grid">
         <div class="project-card fade-in">
-          <div class="project-image">
-            <i class="fas fa-project-diagram"></i>
-          </div>
+          <div class="project-image"><i class="fas fa-heartbeat"></i></div>
           <div class="project-content">
-            <h3 class="project-title">AI Startups & Investors Network Visualization</h3>
+            <h3 class="project-title">CoronarySAM2: Interactive Coronary Artery Segmentation</h3>
             <p>
-              Developed an interactive network graph visualizing complex relationships between AI startups and their investors. Implemented timeline animation features to demonstrate the evolution of the AI investment landscape over time. Created interactive controls for filtering, zooming, and accessing detailed information.
+              Fine-tuned SAM2 with two PEFT approaches to a 92.0% Dice score, deployed as a public browser tool on Hugging Face Spaces where anyone can upload an angiogram and refine the segmentation interactively.
+            </p>
+            <div class="project-links">
+              <a href="https://huggingface.co/astroanand" target="_blank"><i class="fas fa-external-link-alt"></i> Hugging Face</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card fade-in">
+          <div class="project-image"><i class="fas fa-microphone"></i></div>
+          <div class="project-content">
+            <h3 class="project-title">Astro: Local-First Code-Switch Dictation</h3>
+            <p>
+              On-device dictation for code-switched speech (Hinglish/Gujlish) on Apple Silicon. Quantized a Gemma 4 audio-language model to 4-bit with MLX, built a benchmark from 631 real dictation clips, and ranked 5 local ASR backends. Rust (Tauri 2), Python, MLX, React/TypeScript.
+            </p>
+            <div class="project-links">
+              <a href="https://github.com/astroanand-6e" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card fade-in">
+          <div class="project-image"><i class="fas fa-user-md"></i></div>
+          <div class="project-content">
+            <h3 class="project-title">Failure-Aware Multi-Agent Clinical Decision Support</h3>
+            <p>
+              Three-agent pipeline on MIMIC-IV v3.1 (546K hospitalizations) that routes uncertain or out-of-distribution cases to clinicians: baseline AUROC 0.871, PCA-based OOD detection, and a failure-aware layer catching 28.5% of the baseline's false negatives. Also a ResNet-50 on BRSET fundus images (AUROC 0.8831 for macular edema).
+            </p>
+          </div>
+        </div>
+
+        <div class="project-card fade-in">
+          <div class="project-image"><i class="fas fa-project-diagram"></i></div>
+          <div class="project-content">
+            <h3 class="project-title">VentureViz: AI Startups & Investors Network</h3>
+            <p>
+              Interactive D3.js network graph of AI startup–investor relationships, with timeline animation, filtering, and zoom.
             </p>
             <div class="project-links">
               <a href="https://astroanand-6e.github.io/A_web_of_AI_startups_and_investors/" target="_blank"><i class="fas fa-external-link-alt"></i> View Project</a>
-            </div>
-          </div>
-        </div>
-        
-        <div class="project-card fade-in">
-          <div class="project-image">
-            <i class="fas fa-leaf"></i>
-          </div>
-          <div class="project-content">
-            <h3 class="project-title">Leaf Disease Detection using Fine-Tuned SAM2_tiny</h3>
-            <p>
-              Fine-tuned Segment Anything 2 (SAM2_tiny) to enhance automatic segmentation of diseased leaf regions. Built a deep learning pipeline that improves semantic segmentation accuracy and robustness across plant species. Optimized model inference for real-time disease detection applications in precision agriculture.
-            </p>
-            <div class="project-links">
-              <a href="https://github.com/astroanand-6e/SAM2_Leaf_Disease_Segmentation" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            </div>
-          </div>
-        </div>
-        
-        <div class="project-card fade-in">
-          <div class="project-image">
-            <i class="far fa-credit-card"></i>
-          </div>
-          <div class="project-content">
-            <h3 class="project-title">Credit Card Approval Prediction</h3>
-            <p>
-              Engineered an advanced stacked ensemble model combining Gradient Boosting, Random Forest, AdaBoost, and Neural Networks for high-accuracy credit approval predictions. Applied feature engineering techniques like one-hot encoding, scaling, and PCA to optimize model performance. Evaluated model effectiveness using ROC-AUC, precision-recall curves, and confusion matrices.
-            </p>
-            <div class="project-links">
-              <a href="https://github.com/astroanand-6e/Credit-Card-Approval-Prediction" target="_blank"><i class="fab fa-github"></i> GitHub</a>
             </div>
           </div>
         </div>
@@ -350,8 +171,8 @@
     </div>
   </section>
 
-  <!-- Research Interests Section -->
-  <section id="research-interests">
+  
+<section id="research-interests">
     <div class="container">
       <div class="section-title-container">
         <h2 class="section-title fade-in">Research Interests</h2>
@@ -359,7 +180,6 @@
       </div>
       
       <div class="interests-container">
-        <!-- Interest items on the left -->
         <div class="interests-list">
           <div class="interest-item-card fade-in" data-interest="deep-learning">
             <div class="interest-icon">
@@ -390,7 +210,6 @@
           </div>
         </div>
         
-        <!-- Descriptions sidebar on the right -->
         <div class="interests-sidebar fade-in">
           <div class="interest-description" id="deep-learning">
             <h3>Deep Learning Architectures</h3>
@@ -416,7 +235,6 @@
     </div>
   </section>
   
-  <!-- New section for Inspiration images -->
   <section id="inspiration" class="inspiration-section">
     <div class="inspiration-container">
       <div class="section-title-container">
@@ -426,24 +244,25 @@
       
       <div class="inspiration-images fade-in">
         <div class="inspiration-item">
-          <img src="new_images/bonsai_gemini.gif" alt="Growing Bonsai Tree" class="inspiration-image bonsai-gif">
+          <img src="new_images/bonsai_gemini.gif" alt="Growing Bonsai Tree" class="inspiration-image bonsai-gif"
+               onerror="this.onerror=null; this.src='https://placehold.co/600x300/282828/D1D7DE?text=Bonsai+Growth';" />
           <div class="inspiration-caption">
             <p>Research, like bonsai cultivation, requires patience, vision, and meticulous attention to detail.</p>
           </div>
         </div>
         
         <div class="inspiration-item">
-          <img src="new_images/KF_Panda_peachtree.jpeg" alt="Kung Fu Panda Meditating Under Cherry Blossom Tree" class="inspiration-image kf-panda-image">
+           <img src="new_images/KF_Panda_peachtree.jpeg" alt="Kung Fu Panda Meditating Under Cherry Blossom Tree" class="inspiration-image kf-panda-image"
+               onerror="this.onerror=null; this.src='https://placehold.co/600x300/282828/D1D7DE?text=Meditation';" />
           <div class="inspiration-caption">
             <p>"Your mind is like this water. When it becomes agitated, it becomes difficult to see. But if you allow it to settle, the answer becomes clear."</p>
-            <p class="quote-attribution">- Master Oogway</p>
+            <p class="quote-attribution">- Master Oogway</p> 
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer - Enhanced with more information -->
   <footer>
     <div class="container">
       <div class="footer-content">
@@ -453,66 +272,46 @@
         </div>
         <div class="footer-right">
           <div class="footer-contact">
-            <p><i class="fas fa-envelope"></i> anandthakkar2208@gmail.com</p>
-            <p><i class="fas fa-map-marker-alt"></i> Vadodara, India</p>
+            <p><i class="fas fa-envelope"></i> anandthakkar041@gmail.com</p>
+            <p><i class="fas fa-map-marker-alt"></i> Boston, MA</p>
           </div>
           <div class="footer-social">
             <a href="https://github.com/astroanand-6e" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
             <a href="https://x.com/NeuralSharingan" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.linkedin.com/in/anandthakkar-8a54s/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.linkedin.com/in/anand-thakkar" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-text">© 2025 Anand Thakkar. All rights reserved.</p>
-        <p class="footer-credits">Crafted with <i class="fas fa-brain" style="color:#bb86fc"></i> and <i class="fas fa-heart" style="color:#bb86fc"></i></p>
+        <p class="footer-text">© 2026 Anand Thakkar. All rights reserved.</p>
+        <p class="footer-credits">Crafted with <i class="fas fa-brain"></i> and <i class="fas fa-heart"></i></p>
       </div>
     </div>
   </footer>
 
-  <!-- Add additional styles to ensure footer left alignment -->
-  <style>
-    .footer-left {
-      text-align: left;
-    }
-    
-    .footer-left h3, .footer-left p {
-      text-align: left;
-      margin-left: 0;
-      padding-left: 0;
-    }
-    
-    .footer-tagline {
-      text-align: left;
-      display: block;
-      margin-top: 5px;
-    }
-  </style>
-
-  <!-- Add scroll progress indicator -->
   <div class="scroll-progress-container">
     <div class="scroll-progress-bar"></div>
   </div>
 
-  <!-- Custom JavaScript -->
   <script src="js/zen-script.js"></script>
   <script>
-    // Remove dark mode toggle functionality since we're only using dark mode
+    // This script handles functionalities that might be independent of zen-script.js or provide fallbacks/overrides.
     document.addEventListener('DOMContentLoaded', function() {
-      // Ensure the body always has the dark-mode class
+      // Ensure the body always has the dark-mode class, as per site design.
       document.body.classList.add('dark-mode');
       
-      // If zen-script.js attempts to remove the dark-mode class, prevent it
-      const originalRemove = DOMTokenList.prototype.remove;
+      // Attempt to prevent zen-script.js from removing 'dark-mode' if its toggle logic is still active.
+      // This is a safeguard. Ideally, zen-script.js's darkModeToggle would be refactored if the toggle is removed.
+      const originalBodyClassListRemove = DOMTokenList.prototype.remove;
       DOMTokenList.prototype.remove = function(...args) {
         if (this === document.body.classList && args.includes('dark-mode')) {
-          // Do nothing if trying to remove dark-mode from body
-          return;
+          // console.warn("Attempt to remove 'dark-mode' class from body was blocked by inline script in index.html.");
+          return; // Block removal of 'dark-mode' from body
         }
-        originalRemove.apply(this, args);
+        originalBodyClassListRemove.apply(this, args);
       };
       
-      // Add smooth scrolling behavior
+      // Smooth scrolling for anchor links
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
           e.preventDefault();
@@ -521,93 +320,94 @@
           const targetElement = document.querySelector(targetId);
           
           if (targetElement) {
+            const headerOffset = 80; // Approximate height of the fixed header
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            
             window.scrollTo({
-              top: targetElement.offsetTop - 80, // Offset for header
+              top: offsetPosition,
               behavior: 'smooth'
             });
           }
         });
       });
       
-      // Preloader
+      // Preloader logic (this might be redundant if zen-script.js's enhancedPreloader works as expected)
+      // Kept as a fallback or if this specific timing/hiding logic is preferred.
       window.addEventListener('load', function() {
         const preloader = document.querySelector('.preloader');
-        preloader.classList.add('hidden');
-        
-        setTimeout(function() {
-          preloader.style.display = 'none';
-        }, 500);
+        if (preloader) { 
+            preloader.classList.add('hidden'); // Add class for CSS transition
+            setTimeout(function() {
+              if(preloader) preloader.style.display = 'none'; // Hide after transition
+            }, 500); // Should match CSS transition duration for opacity/visibility
+        }
       });
     });
   </script>
   
-  <!-- Replace the previous Cherry Blossom Animation script with this improved version -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Create a canvas element if it doesn't exist
       let canvas = document.getElementById('cherry-blossom-canvas');
+      // If canvas doesn't exist in HTML, create it (though it should be there based on original files)
       if (!canvas) {
         canvas = document.createElement('canvas');
         canvas.id = 'cherry-blossom-canvas';
-        canvas.style.position = 'fixed';
-        canvas.style.top = '0';
-        canvas.style.left = '0';
-        canvas.style.pointerEvents = 'none';
-        canvas.style.zIndex = '-1';
-        document.body.appendChild(canvas);
+        // Styles for canvas are primarily in zen-style.css
+        // Ensure it's appended if created dynamically
+        document.body.appendChild(canvas); 
       }
       
       const ctx = canvas.getContext('2d');
       
-      // Set canvas size
+      // Function to resize canvas to full window
       function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
       }
       
-      resizeCanvas();
-      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas(); // Initial size
+      window.addEventListener('resize', resizeCanvas); // Adjust on window resize
       
-      // Cherry blossom petal properties
       const petals = [];
-      const petalCount = 50; // Adjust based on performance
+      const petalCount = 50; // Number of petals
       
-      // Create petals
+      // Initialize petals
       for (let i = 0; i < petalCount; i++) {
-        createPetal(true);
+        createPetal(true); // Create with random initial Y position
       }
       
+      // Function to create a single petal object
       function createPetal(randomY = false) {
         petals.push({
-          x: Math.random() * canvas.width,
-          y: randomY ? Math.random() * canvas.height : -20,
-          size: Math.random() * 8 + 5,
-          speedY: Math.random() * 1.5 + 0.5,
-          speedX: Math.random() * 0.5 - 0.25,
-          rotation: Math.random() * 360,
-          rotationSpeed: (Math.random() - 0.5) * 2,
-          opacity: Math.random() * 0.6 + 0.2,
+          x: Math.random() * canvas.width, // Random horizontal start
+          y: randomY ? Math.random() * canvas.height : -20, // Start above screen or random Y
+          size: Math.random() * 8 + 5, // Random size
+          speedY: Math.random() * 1.5 + 0.5, // Random falling speed
+          speedX: Math.random() * 0.5 - 0.25, // Random horizontal drift
+          rotation: Math.random() * 360, // Random initial rotation
+          rotationSpeed: (Math.random() - 0.5) * 2, // Random rotation speed
+          opacity: Math.random() * 0.6 + 0.2, // Random opacity
           hue: Math.random() * 10 + 350, // Pinkish hue
-          saturation: Math.random() * 30 + 70, // High saturation for cherry blossom
-          lightness: Math.random() * 20 + 80, // Light color
-          wobbleSpeed: Math.random() * 0.03,
-          wobbleSize: Math.random() * 2
+          saturation: Math.random() * 30 + 70, // Saturation for cherry blossom
+          lightness: Math.random() * 20 + 80, // Lightness for cherry blossom
+          wobbleSpeed: Math.random() * 0.03, // Wobble effect speed
+          wobbleSize: Math.random() * 2 // Wobble effect amplitude
         });
       }
       
+      // Function to draw a single petal
       function drawPetal(petal) {
         ctx.save();
         ctx.translate(petal.x, petal.y);
-        ctx.rotate((petal.rotation * Math.PI) / 180);
+        ctx.rotate((petal.rotation * Math.PI) / 180); // Convert degrees to radians
         
-        // Draw a more realistic cherry blossom petal
         const size = petal.size;
         ctx.beginPath();
-        
-        // Use HSL for more precise color control
+        // Using HSL for color allows easy control over hue/saturation/lightness
         ctx.fillStyle = `hsla(${petal.hue}, ${petal.saturation}%, ${petal.lightness}%, ${petal.opacity})`;
         
-        // Create petal shape using bezier curves
+        // Create petal shape using bezier curves for a more organic look
         ctx.moveTo(0, 0);
         ctx.bezierCurveTo(size/3, size/2, size/2, size, 0, size);
         ctx.bezierCurveTo(-size/2, size, -size/3, size/2, 0, 0);
@@ -616,40 +416,44 @@
         ctx.restore();
       }
       
+      // Function to update a petal's position and properties
       function updatePetal(petal) {
-        // Update position
-        petal.y += petal.speedY;
-        petal.x += petal.speedX + Math.sin(petal.y * petal.wobbleSpeed) * petal.wobbleSize;
-        petal.rotation += petal.rotationSpeed;
+        petal.y += petal.speedY; // Move down
+        // Add horizontal movement with wobble
+        petal.x += petal.speedX + Math.sin(petal.y * petal.wobbleSpeed) * petal.wobbleSize; 
+        petal.rotation += petal.rotationSpeed; // Rotate
         
-        // Reset if out of view
+        // Reset petal if it goes off screen
         if (petal.y > canvas.height + petal.size || petal.x < -petal.size || petal.x > canvas.width + petal.size) {
-          // Reset position to top with new random X
-          petal.x = Math.random() * canvas.width;
-          petal.y = -petal.size;
+          petal.x = Math.random() * canvas.width; // Reset to random X at the top
+          petal.y = -petal.size; // Reset Y to above the screen
+          // Optionally, re-randomize speeds for variety
           petal.speedY = Math.random() * 1.5 + 0.5;
           petal.speedX = Math.random() * 0.5 - 0.25;
         }
       }
       
+      // Animation loop
       function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Clear the canvas. For a trail effect, a semi-transparent fillRect could be used here,
+        // matching the background color. e.g., ctx.fillStyle = 'rgba(40, 40, 40, 0.05)'; ctx.fillRect(...);
+        // The zen-script.js version had such a fillStyle. This one uses clearRect.
+        ctx.clearRect(0, 0, canvas.width, canvas.height); 
         
         petals.forEach(petal => {
           updatePetal(petal);
           drawPetal(petal);
         });
         
-        // Occasionally add a new petal to maintain density
-        if (Math.random() < 0.05 && petals.length < 100) {
+        // Occasionally add a new petal to maintain density if some go off screen fast
+        if (Math.random() < 0.05 && petals.length < 100) { // Cap max petals
           createPetal();
         }
         
-        requestAnimationFrame(animate);
+        requestAnimationFrame(animate); // Continue the loop
       }
       
-      // Start animation
-      animate();
+      animate(); // Start the animation
     });
   </script>
   
