@@ -17,8 +17,12 @@
   position: fixed; inset: 0 0 auto 0; z-index: var(--z-topbar);
   display: flex; align-items: center; justify-content: space-between;
   height: 3.75rem; padding: 0 var(--gutter);
-  background: linear-gradient(to bottom, var(--paper) 35%, transparent);
   pointer-events: none;
+}
+.topbar::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 6rem; z-index: -1; pointer-events: none;
+  /* Solid behind the header row so captions scrolling under it don't ghost through. */
+  background: linear-gradient(to bottom, var(--paper) 0%, var(--paper) 40%, color-mix(in srgb, var(--paper) 70%, transparent) 70%, transparent);
 }
 .topbar > *, .topbar nav > * { pointer-events: auto; }
 .topbar::after {

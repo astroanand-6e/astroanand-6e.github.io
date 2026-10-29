@@ -17,13 +17,13 @@ const LIGHTS = {
     rimIntensity: 0.28,
   },
   ink: {
-    sky: 0xb8c2dc,
-    ground: 0x2c2832,
+    sky: 0xc2c9d6,
+    ground: 0x2a2c30,
     hemi: 1.5,
     key: 1.75,
-    keyColor: 0xffeedd,
-    rim: 0xf4a7b9,
-    rimIntensity: 1.0,
+    keyColor: 0xf4f6fb,
+    rim: 0xdce4f2,
+    rimIntensity: 0.9,
   },
 };
 

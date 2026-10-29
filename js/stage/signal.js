@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { CriticalSpring } from './motion.js';
 import { STATIONS } from './stations.js';
+import { NARROW_SLOT_PX } from './slots.js';
 
 const POINT_COUNT = 5600;
 const POINT_SIZE = { paper: 3.4, ink: 4.8 };
@@ -15,6 +16,8 @@ const MAX_SCALE = 1.5;
 const BASE_PPU = 34;
 const OUTSIDE_SLOT_GLOW = 0.14;
 const SLOT_SOFT_EDGE = 0.12;
+const LEFT_RAMP_PX = 80;
+const THREAD_RENDER_ORDER = 1;
 // The thread starts under the desk's controller, slips out of the front-right
 // edge, then trails each station's front corner.
 const DESK_EXIT = [[0.4, 0.5], [1.9, 2.5], [5.2, 2.95], [9, 4.2]];
@@ -99,6 +102,7 @@ const VERTEX = /* glsl */ `
 
 const FRAGMENT = /* glsl */ `
   uniform vec3 uColor, uPulseColor;
+  uniform float uLeftPx, uDpr;
   varying float vGlow;
   varying float vPulse;
   void main() {
@@ -106,7 +110,8 @@ const FRAGMENT = /* glsl */ `
     if (d > 1.0) discard;
     float falloff = exp(-d * d * 4.2);
     vec3 color = mix(uColor, uPulseColor, clamp(vPulse * 1.3, 0.0, 1.0));
-    gl_FragColor = vec4(color, falloff * vGlow);
+    float leftFade = smoothstep(uLeftPx, uLeftPx + ${LEFT_RAMP_PX.toFixed(1)} * uDpr, gl_FragCoord.x);
+    gl_FragColor = vec4(color, falloff * vGlow * leftFade);
   }
 `;
 
@@ -146,12 +151,15 @@ export function createSignal({ scene, theme, pixelRatio }) {
     vertexShader: VERTEX,
     fragmentShader: FRAGMENT,
     transparent: true,
+    depthTest: true,
     depthWrite: false,
     uniforms: {
       uTime: { value: 0 },
       uHead: { value: stationT[0] },
       uSize: { value: POINT_SIZE[theme] || POINT_SIZE.paper },
       uPx: { value: pixelRatio },
+      uDpr: { value: pixelRatio },
+      uLeftPx: { value: 0 },
       uScale: { value: 1 },
       uMix: { value: 1 },
       uModeA: { value: MODE.DRIFT },
@@ -165,7 +173,7 @@ export function createSignal({ scene, theme, pixelRatio }) {
   });
   const points = new THREE.Points(geometry, material);
   points.frustumCulled = false;
-  points.renderOrder = 2;
+  points.renderOrder = THREAD_RENDER_ORDER;
   scene.add(points);
   const head = new CriticalSpring(stationT[0], HEAD_SMOOTH_SECONDS);
 
@@ -183,12 +191,15 @@ export function createSignal({ scene, theme, pixelRatio }) {
     setTheme,
     setPixelRatio: (value) => {
       material.uniforms.uPx.value = value;
+      material.uniforms.uDpr.value = value;
     },
     /** Slot rect and canvas rect (viewport px) the thread is allowed to glow in. */
-    setSlot(slot, view) {
+    setSlot(slot, view, isHero = false) {
       const x = (px) => ((px - view.left) / view.width) * 2 - 1;
       const y = (py) => 1 - ((py - view.top) / view.height) * 2;
       material.uniforms.uSlot.value.set(x(slot.left), x(slot.right), y(slot.bottom), y(slot.top));
+      // Hero lets the thread run free; story slots fade it left of their edge.
+      material.uniforms.uLeftPx.value = isHero || slot.width < NARROW_SLOT_PX ? 0 : (slot.left - view.left) * material.uniforms.uDpr.value;
     },
     /** The glowing waveform follows the active station along the thread. */
     setStation(index) {

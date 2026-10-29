@@ -47,6 +47,12 @@ export function createStationLoader({ scene, ctx, partSystem, labels, shadows, i
     const footprint = box.clone().translate(wrapper.position.clone().negate());
     shadows.add(pivot, footprint);
     const corners = boxCorners(footprint);
+    const figureBoxes = new Map(
+      Object.entries(obj.figures || {}).map(([key, fig]) => [
+        key,
+        new THREE.Box3().setFromObject(fig.group).translate(wrapper.position.clone().negate()),
+      ]),
+    );
 
     partSystem.register(def.id, obj.parts || [], pivot, {
       exploded: partSystem.isExploded() || !isReduced(),
@@ -60,6 +66,7 @@ export function createStationLoader({ scene, ctx, partSystem, labels, shadows, i
       pivot,
       floater,
       focus: { center, radius, corners },
+      figureBoxes,
       hasIntro: false,
       labelsReadyAt: Infinity,
     };

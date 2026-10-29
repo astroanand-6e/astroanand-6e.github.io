@@ -8,19 +8,19 @@ const GENRES = ['ROCK', 'HIP-HOP', 'ELECTRONIC', 'FOLK', 'JAZZ', 'POP', 'BLUES',
 const ALPHABET = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ-';
 const [CELLS, FLIP_S, FLIP_STAGGER, HOLD_S, FLIP_STEPS] = [10, 0.55, 0.06, 3.4, 8];
 const [BOARD_W, BOARD_H, REPAINT_S] = [680, 220, 1 / 30];
-const [AUDIO_H, TEXT_H, TOWER_Z_AUDIO, TOWER_Z_TEXT, TOWER_X] = [1.3, 2.4, 0, -0.95, -0.35];
-const [TURNTABLE_X, TURNTABLE_SCALE, GEARBOX_X, GEARBOX_Z, BOARD_X, PIPE_Y] = [-1.9, 1.15, 0.9, -0.45, 2.1, 0.4];
+const [AUDIO_H, TEXT_H, TOWER_Z_AUDIO, TOWER_Z_TEXT, AUDIO_X, TEXT_X] = [1.3, 2.08, 0.35, -0.35, -1.15, -0.2];
+const [TURNTABLE_X, TURNTABLE_SCALE, GEARBOX_X, GEARBOX_Z, BOARD_X, PIPE_Y] = [-2.45, 1.15, 0.9, 0, 2.35, 0.4];
 const [SPIN_RATE, SPIN_BOOST_DECAY, GEAR_RATE, FLOW_SPEED] = [2.2, 2, 1.1, 0.55];
 const [TILT_RANGE, WOBBLE, TILT_SMOOTH] = [0.32, 0.05, 8];
-const [RIG_Z, EXPLODE_RATE, SHADOW_RADIUS] = [0.43, 7, 4.2];
+const [RIG_Z, EXPLODE_RATE, SHADOW_RADIUS] = [0.43, 7, 4.8];
 const GEARS = [{ teeth: 10, radius: 0.17 }, { teeth: 14, radius: 0.238 }, { teeth: 8, radius: 0.136 }];
 const BRASS = 0xc79a4a;
 const lane = (x0, x1, z, count) => ({ from: [x0, PIPE_Y, z], to: [x1, PIPE_Y, z], count });
-const [TOWER_L, TOWER_R, GEARBOX_L, GEARBOX_R, STAND_L] = [TOWER_X - 0.3, TOWER_X + 0.3, GEARBOX_X - 0.55, GEARBOX_X + 0.55, BOARD_X - 0.275];
+const [AUDIO_L, AUDIO_R, TEXT_R, GEARBOX_L, GEARBOX_R, STAND_L] = [AUDIO_X - 0.3, AUDIO_X + 0.3, TEXT_X + 0.3, GEARBOX_X - 0.55, GEARBOX_X + 0.55, BOARD_X - 0.275];
 const LANES = [
-  lane(-1.4, TOWER_L, TOWER_Z_AUDIO, 6),
-  lane(TOWER_R, GEARBOX_L, TOWER_Z_AUDIO, 2),
-  lane(TOWER_R, GEARBOX_L, TOWER_Z_TEXT, 2),
+  lane(TURNTABLE_X + 0.5, AUDIO_L, TOWER_Z_AUDIO, 3),
+  lane(AUDIO_R, GEARBOX_L, TOWER_Z_AUDIO, 4),
+  lane(TEXT_R, GEARBOX_L, TOWER_Z_TEXT, 2),
   lane(GEARBOX_R, STAND_L, GEARBOX_Z, 2),
 ];
 const FROST = { shell: { paper: 0xdcecf3, ink: 0x56788a }, core: { paper: 0xa9c8da, ink: 0x2f4a58 } };
@@ -212,7 +212,7 @@ export function create(ctx) {
   arm.rotation.y = Math.atan2(-0.2, 0.27);
   turntable.add(at(arm, 0.235, 0.24, -0.165), at(rbox(0.07, 0.025, 0.06, 0.005, kit.mat('ink')), 0.14, 0.23, -0.03));
   turntable.scale.setScalar(TURNTABLE_SCALE);
-  kit.addPart(rig, parts, turntable, 'turntable', v(TURNTABLE_X, 0, 0), 0);
+  kit.addPart(rig, parts, turntable, 'turntable', v(TURNTABLE_X, 0, TOWER_Z_AUDIO), 0);
 
   const vinyl = new THREE.Group();
   const spinner = new THREE.Group();
@@ -222,7 +222,7 @@ export function create(ctx) {
   spinner.add(at(new THREE.Mesh(sheenGeo, kit.mat('silver')), 0, 0.036, 0));
   vinyl.add(at(spinner, 0, 0.02, 0));
   vinyl.scale.setScalar(TURNTABLE_SCALE);
-  kit.addPart(rig, parts, vinyl, 'vinyl', v(TURNTABLE_X, 0.14 * TURNTABLE_SCALE, 0), 1.3);
+  kit.addPart(rig, parts, vinyl, 'vinyl', v(TURNTABLE_X, 0.14 * TURNTABLE_SCALE, TOWER_Z_AUDIO), 1.3);
 
   const pipes = new THREE.Group();
   const addPipe = (from, to, r) => {
@@ -232,7 +232,7 @@ export function create(ctx) {
     for (const x of [from[0], to[0]]) pipes.add(at(cyl(r * 1.35, 0.05, kit.mat('silver'), 20).rotateZ(Math.PI / 2), x, from[1], from[2]));
   };
   LANES.forEach(({ from, to }, i) => addPipe(from, to, i === 0 ? 0.13 : 0.1));
-  for (const x of [-1.2, -0.9]) pipes.add(at(cyl(0.04, PIPE_Y - 0.14, kit.mat('silver'), 10), x, (PIPE_Y + 0.14) / 2, 0));
+  pipes.add(at(cyl(0.04, PIPE_Y - 0.14, kit.mat('silver'), 10), TURNTABLE_X + 0.75, (PIPE_Y + 0.14) / 2, TOWER_Z_AUDIO));
   const particleCount = LANES.reduce((n, lane) => n + lane.count, 0);
   const coreMat = kit.basic({ color: FALLBACK.sakura });
   const haloMat = kit.basic({ color: FALLBACK.sakura, transparent: true, opacity: 0.28, depthWrite: false, blending: THREE.AdditiveBlending });
@@ -248,7 +248,7 @@ export function create(ctx) {
     lock.add(at(rbox(0.26, 0.22, 0.1, 0.03, kit.mat('ink')), 0, 0, 0), at(shackle, 0, 0.11, 0), at(hole, 0, -0.01, 0.056));
     return at(lock, 0, y, 0.36);
   };
-  const buildTower = (height, label, z) => {
+  const buildTower = (height, label, x, z) => {
     const tower = new THREE.Group();
     const shell = kit.outline(new THREE.Mesh(new THREE.BoxGeometry(0.6, height, 0.6), kit.tinted('glass', FROST.shell)));
     shell.material.opacity = 0.62;
@@ -258,10 +258,10 @@ export function create(ctx) {
     const icicles = [0, 1, 2, 3, 4, 5].map((i) => new THREE.ConeGeometry(0.03, 0.1 + (i % 3) * 0.05, 6).rotateX(Math.PI).translate(-0.25 + i * 0.1, 0.08 + height - (0.05 + (i % 3) * 0.025), 0.31));
     tower.add(new THREE.Mesh(mergeGeometries(icicles), kit.tinted('white', FROST.shell)), padlock(0.08 + height * 0.62));
     icicles.forEach((g) => g.dispose());
-    return kit.addPart(rig, parts, tower, label, v(TOWER_X, 0, z), 0.5);
+    return kit.addPart(rig, parts, tower, label, v(x, 0, z), 0.5);
   };
-  const audioTower = buildTower(AUDIO_H, '305m audio', TOWER_Z_AUDIO);
-  const textTower = buildTower(TEXT_H, '4.6b text', TOWER_Z_TEXT);
+  const audioTower = buildTower(AUDIO_H, '305m audio', AUDIO_X, TOWER_Z_AUDIO);
+  const textTower = buildTower(TEXT_H, '4.6b text', TEXT_X, TOWER_Z_TEXT);
 
   const gearbox = new THREE.Group();
   gearbox.add(at(rbox(1.1, 0.6, 1.2, 0.04, kit.mat('silver', BRASS)), 0, 0, 0), at(rbox(1.02, 0.03, 0.03, 0.01, kit.mat('sakura')), 0, 0.26, 0.61));
@@ -324,8 +324,8 @@ export function create(ctx) {
   repaintBoard();
 
   anchors.push(anchorOn(vinyl, v(0.25, 0.1, 0.1), 'vinyl', 'left'));
-  anchors.push(anchorOn(pipes, v(-1.3, PIPE_Y + 0.12, 0), 'glass pipe', 'left'));
-  anchors.push(anchorOn(audioTower, v(0.3, AUDIO_H * 0.62 + 0.08, 0.3), '305m audio', 'left'));
+  anchors.push(anchorOn(pipes, v(TURNTABLE_X + 0.65, PIPE_Y + 0.12, TOWER_Z_AUDIO), 'glass pipe', 'left'));
+  anchors.push(anchorOn(audioTower, v(-0.3, AUDIO_H * 0.62 + 0.08, 0.3), '305m audio', 'left'));
   anchors.push(anchorOn(textTower, v(0.3, TEXT_H * 0.62 + 0.08, 0.3), '4.6b text', 'right'));
   anchors.push(anchorOn(gearbox, v(0.4, 0.3, 0.6), '~4m trainable', 'right'));
   anchors.push(anchorOn(board, v(0.3, 0.2, 0.07), 'genre board', 'right'));

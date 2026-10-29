@@ -12,7 +12,7 @@ import { createLife } from './life.js';
 import { createDprGovernor } from './perf.js';
 import { createSlots, fitRect } from './slots.js';
 import { createStationLoader } from './station-loader.js';
-import { STATIONS, stationIndex, viewForChapter, focusZones, readChapter } from './stations.js';
+import { STATIONS, stationIndex, viewForChapter, readChapter } from './stations.js';
 import { CriticalSpring, createDragTurn, YAW_LIMIT } from './motion.js';
 
 const MAX_DT = 0.05;
@@ -26,6 +26,7 @@ const PRESENCE_RATE = 9;
 const PRESENCE_EPSILON = 0.004;
 const FALLBACK_RADIUS = 5;
 const FALLBACK_LIFT = 1.2;
+const FIGURE_FOCUS_PADDING = 1.08;
 
 /**
  * Boots the stage. Returns a handle { dispose, setTheme, ... } or null when
@@ -93,7 +94,9 @@ export function startStage({ canvas, theme = 'paper' }) {
   const silhouetteRadius = new CriticalSpring(0, SILHOUETTE_SMOOTH_SECONDS);
   const size = { width: 1, height: 1 };
   const pointer = { x: 0, y: 0, isDirty: false, isInside: false };
-  const focus = { center: new THREE.Vector3(), radius: FALLBACK_RADIUS, corners: null, zones: null };
+  const focus = { center: new THREE.Vector3(), radius: FALLBACK_RADIUS, corners: null, labels: null };
+  const figureBox = new THREE.Box3();
+  const figureSphere = new THREE.Sphere();
   const cornerPool = Array.from({ length: 8 }, () => new THREE.Vector3());
   const cameraFocus = new THREE.Vector3();
   const scratch = new THREE.Vector3();
@@ -117,7 +120,7 @@ export function startStage({ canvas, theme = 'paper' }) {
     if (nextId !== activeId) activeSince = state.time;
     activeIndex = nextIndex;
     activeId = nextId;
-    focus.zones = focusZones(activeView, nextIndex);
+    focus.labels = activeView && activeView.labels ? activeView.labels : null;
     state.t = Math.max(0, activeIndex) / (STATIONS.length - 1);
     signal.setChapter(chapter.id, chapter.index);
     signal.setStation(activeIndex);
@@ -148,14 +151,31 @@ export function startStage({ canvas, theme = 'paper' }) {
   /** World-space volume the camera should frame for the active chapter. */
   function resolveFocus(record) {
     const def = STATIONS[activeIndex];
-    const override = activeView.focus;
-    if (override) scratch.set(...override.center);
-    else if (record) scratch.copy(record.focus.center);
+    const keys = activeView.focusFigures;
+    const boxes = keys && record ? keys.map((key) => record.figureBoxes.get(key)).filter(Boolean) : [];
+    const hasFigures = boxes.length > 0;
+    if (hasFigures) {
+      figureBox.makeEmpty();
+      boxes.forEach((box) => figureBox.union(box));
+      figureBox.getBoundingSphere(figureSphere);
+      scratch.copy(figureSphere.center);
+    } else if (record) scratch.copy(record.focus.center);
     else scratch.set(0, FALLBACK_LIFT, 0);
     focus.center.set(...def.position).add(scratch);
-    focus.radius = override ? override.radius : record ? record.focus.radius : FALLBACK_RADIUS;
+    if (hasFigures) focus.radius = figureSphere.radius * FIGURE_FOCUS_PADDING;
+    else focus.radius = record ? record.focus.radius : FALLBACK_RADIUS;
     focus.corners = null;
-    if (override || !record) return;
+    if (!record) return;
+    if (hasFigures) {
+      focus.corners = cornerPool;
+      const { min, max } = figureBox;
+      [min.x, max.x].forEach((x, i) =>
+        [min.y, max.y].forEach((y, j) =>
+          [min.z, max.z].forEach((z, k) => cornerPool[i * 4 + j * 2 + k].set(x, y, z).add(record.wrapper.position)),
+        ),
+      );
+      return;
+    }
     focus.corners = cornerPool;
     record.focus.corners.forEach((corner, i) => cornerPool[i].copy(corner).add(record.wrapper.position));
   }
@@ -255,7 +275,7 @@ export function startStage({ canvas, theme = 'paper' }) {
     loader.updateVisibility(cameraFocus, scratch, presence);
     updateStations(dt);
     updateHover();
-    signal.setSlot(frameInfo.slot, frameInfo.view);
+    signal.setSlot(frameInfo.slot, frameInfo.view, state.chapter.id === 'hero');
     signal.update(dt, state.time, rig.pixelsPerUnit(), state.reducedMotion);
     updateLabels(record, dt, frameInfo);
     renderer.render(scene, camera);

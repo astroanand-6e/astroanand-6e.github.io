@@ -103,12 +103,13 @@ html[data-zone="index"] .stage-labels, html[data-zone="index"] .rail { opacity: 
   .story-grid { display: block; padding-inline: 0; }
   .story-slot {
     height: var(--stage-mobile-h); border-bottom: var(--hairline) solid var(--rule);
-    background: var(--paper) var(--slot-stars) 0 0 / var(--star-size) fixed;
+    background-color: var(--paper); background-image: var(--slot-stars); background-size: var(--star-size, 340px 300px);
+    background-attachment: fixed; box-shadow: 0 0.6rem 1rem -0.4rem var(--paper-veil);
   }
   .story-slot::before { inset: 4.25rem var(--gutter) 1.25rem; }
   .story-slot::after { left: var(--gutter); bottom: 0.4rem; }
-  .story-steps { padding-inline: var(--gutter); background: var(--paper) var(--slot-stars) 0 0 / var(--star-size) fixed; }
-  .step { min-height: 0; padding-block: var(--space-6) var(--space-7); }
+  .story-steps { padding-inline: var(--gutter); background-color: var(--paper); background-image: var(--slot-stars); background-size: var(--star-size, 340px 300px); background-attachment: fixed; }
+  .step { min-height: 0; padding-block: var(--space-6) var(--space-7); scroll-margin-top: calc(var(--stage-mobile-h) + var(--space-2)); }
   .step + .step { border-top: var(--hairline) solid var(--rule); }
   .reveal-on .step:not(.is-active):not(:focus-within) .step-body { opacity: 1; }
 }

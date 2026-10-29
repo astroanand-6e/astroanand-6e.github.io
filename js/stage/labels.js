@@ -31,11 +31,9 @@ function segmentsCross(a, b) {
   return d1 * d2 < 0 && d3 * d4 < 0;
 }
 
-/** Anchors count when inside any focus zone, or else inside the focus sphere. */
-function isInFocus(point, focus) {
-  if (focus.zones && focus.zones.length) {
-    return focus.zones.some((zone) => point.distanceTo(zone.center) <= zone.radius);
-  }
+/** Anchors count when inside the focus sphere (and named, if the view lists labels). */
+function isInFocus(point, focus, label) {
+  if (focus.labels && !focus.labels.includes(label)) return false;
   return point.distanceTo(focus.center) <= focus.radius * FOCUS_SLACK;
 }
 
@@ -144,7 +142,7 @@ export function createLabels() {
 
   function project(entry, camera, view, focus, bounds) {
     entry.anchor.object3D.getWorldPosition(world);
-    const inFocus = !focus || isInFocus(world, focus);
+    const inFocus = !focus || isInFocus(world, focus, entry.anchor.label);
     world.project(camera);
     if (!inFocus || world.z > 1 || world.z < -1) return false;
     entry.sx = view.left + (world.x * 0.5 + 0.5) * view.width;

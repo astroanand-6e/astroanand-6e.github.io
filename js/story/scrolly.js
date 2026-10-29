@@ -1,7 +1,7 @@
 import { CHAPTERS, MOBILE_QUERY, chapterIndex } from './chapters.js';
 
 const BAND_DESKTOP = '-45% 0px -45% 0px';
-const BAND_MOBILE = '-72% 0px -20% 0px';
+const BAND_MOBILE = '-55% 0px -20% 0px';
 const ACTIVE_CLASS = 'is-active';
 
 let currentIndex = -1;

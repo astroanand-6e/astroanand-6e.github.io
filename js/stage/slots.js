@@ -19,7 +19,7 @@ const POLL_SECONDS = 0.5;
 const TOPBAR_PX = 64;
 // Kept small: callouts can sit over the plinth's empty corners, so the object
 // gets most of the slot width and its details stay readable.
-const WIDE_GUTTER_MAX_SHARE = 0.09;
+const WIDE_GUTTER_MAX_SHARE = 0.13;
 // Labels may reach into the empty corners of the object's bounding box.
 const LABEL_GUTTER_SHARE = 0.62;
 const MIN_FIT_PX = 60;

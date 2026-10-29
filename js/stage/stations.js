@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 /**
  * Station table and the chapter -> station mapping. Stations sit along +x,
  * 15 units apart; a missing module keeps its slot so the others never shift.
@@ -14,8 +12,7 @@ export const STATIONS = Object.freeze([
 ]);
 
 /**
- * What each chapter looks at. `focus` re-aims the framing sphere (station-local
- * center, radius in scene units) and may limit callouts to `zones`; `null`
+ * What each chapter looks at. `focus` re-aims the framing sphere (`focusFigures` frames just those desk figures, `labels` limits callouts); `null`
  * means no station (the index).
  */
 export const CHAPTER_VIEWS = Object.freeze({
@@ -27,15 +24,9 @@ export const CHAPTER_VIEWS = Object.freeze({
   calm: { station: 'calm-machine' },
   voice: {
     station: 'desk',
-    // Zoomed to the MacBook and the mic; only their callouts are drawn.
-    focus: {
-      center: [0.4, 1.0, -1.2],
-      radius: 5.4,
-      zones: [
-        { center: [-3.9, 1.1, -1.8], radius: 2.6 },
-        { center: [4.7, 1.0, -0.9], radius: 2.4 },
-      ],
-    },
+    // Framed on the mic and the MacBook; only their callouts are drawn.
+    focusFigures: ['mic', 'macbook'],
+    labels: ['dynamic mic', 'm5 pro · 14 in', 'game library / code'],
   },
   now: { station: 'desk' },
   index: null,
@@ -57,16 +48,6 @@ export function importStation(def, attempt = 0) {
   const url = new URL(`../objects/${def.file}`, import.meta.url);
   if (attempt > 0) url.searchParams.set('retry', String(attempt));
   return import(url.href);
-}
-
-/** World-space callout zones for a view that narrows its labels, else null. */
-export function focusZones(view, index) {
-  if (!view || !view.focus || !view.focus.zones) return null;
-  const origin = new THREE.Vector3(...STATIONS[index].position);
-  return view.focus.zones.map((zone) => ({
-    center: new THREE.Vector3(...zone.center).add(origin),
-    radius: zone.radius,
-  }));
 }
 
 /** The chapter currently marked active by the story scroller (hero if none yet). */
