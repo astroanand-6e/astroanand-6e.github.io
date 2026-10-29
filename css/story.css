@@ -1,0 +1,128 @@
+/* Layout: 12-column specimen plate. Type left, one stage slot right. */
+.grid {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap);
+  width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter);
+}
+
+/* The canvas is fixed and full viewport. It renders into the stage slots. */
+#stage {
+  position: fixed; inset: 0; width: 100vw; height: 100svh; z-index: var(--z-stage);
+  touch-action: pan-y; transition: opacity var(--dur-slow) var(--ease-out);
+}
+html[data-zone="index"] #stage { opacity: 0.12; transition: opacity 0.6s; }
+html[data-zone="index"] .stage-labels, html[data-zone="index"] .rail { opacity: 0; pointer-events: none; }
+.stage-labels { transition: opacity var(--dur-slow) var(--ease-out); }
+.no-webgl #stage, .no-webgl [data-stage-slot] { display: none; }
+
+#main { position: relative; z-index: var(--z-content); pointer-events: none; }
+.hero-copy, .step-body, .index, .site-footer, dialog { pointer-events: auto; }
+
+/* Stage slots: empty boxes. Only hairline crop marks and a figure readout. */
+[data-stage-slot] { position: relative; pointer-events: none; }
+[data-stage-slot]::before { content: ""; position: absolute; inset: 0; background: var(--crop-marks); opacity: 0.9; }
+[data-stage-slot]::after {
+  content: "Fig. 00 / 07"; position: absolute; left: 0; bottom: -1.6rem;
+  font: 500 var(--fs-12)/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hero */
+.hero { position: relative; z-index: var(--z-content); display: flex; align-items: center; min-height: 100svh; padding: 4.75rem 0 var(--space-5); }
+.hero-grid { align-items: center; min-height: calc(100svh - 7.5rem); }
+.hero-copy { grid-column: 1 / span 5; grid-row: 1; display: grid; gap: var(--space-3); justify-items: start; align-content: center; }
+.hero-copy > * { position: relative; animation: rise var(--dur-slow) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 60ms + 80ms); }
+.hero-copy > .plate { z-index: 1; }
+.hero-name {
+  z-index: 2; margin-top: calc(var(--fs-name) * -0.32);
+  font-size: var(--fs-name); line-height: 0.82; letter-spacing: -0.03em;
+  paint-order: stroke fill; -webkit-text-stroke: 0.045em var(--paper);
+}
+.hero-name span { display: block; }
+.hero-line { max-width: 22ch; font: italic clamp(1.5rem, 2.1vw, var(--fs-32))/1.15 var(--font-display); }
+.hero-sub { max-width: 52ch; color: var(--ink-2); font-size: var(--fs-14); }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-5); }
+.hero-slot { grid-column: 6 / -1; grid-row: 1; align-self: stretch; min-height: 60svh; animation: fade 1s var(--ease-out) 0.2s both; }
+
+/* Story: steps left, one sticky slot right */
+.story-grid { align-items: start; }
+.story-slot { grid-column: 6 / -1; grid-row: 1; position: sticky; top: 0; height: 100svh; z-index: var(--z-slot); }
+.story-slot::before { inset: 4.75rem 0 2.75rem; }
+.story-slot::after { content: "Fig. " var(--fig, "00") " / 07"; bottom: 1.1rem; }
+.story-steps { grid-column: 1 / span 5; grid-row: 1; position: relative; z-index: var(--z-content); }
+.step { display: flex; align-items: center; min-height: 100svh; padding-block: var(--space-8); }
+.step-body { display: grid; gap: var(--space-4); width: min(var(--measure), 100%); transition: opacity var(--dur-slow) var(--ease-out); }
+.reveal-on .step:not(.is-active):not(:focus-within) .step-body { opacity: 0.4; }
+.step-numeral { margin-bottom: calc(var(--space-2) * -1); }
+.step-numeral span {
+  display: block; font: italic var(--fs-numeral)/0.8 var(--font-display); letter-spacing: -0.02em;
+  color: transparent; -webkit-text-stroke: 1px var(--rule-strong); user-select: none;
+  transition: -webkit-text-stroke-color var(--dur-slow) var(--ease-out);
+}
+.step.is-active .step-numeral span { -webkit-text-stroke-color: var(--sakura); }
+.step-kicker { display: flex; align-items: center; gap: var(--space-3); color: var(--sakura-text); }
+.step-kicker::before { content: ""; flex: none; width: 1.75rem; height: 1px; background: currentColor; }
+.step h2 { font-size: clamp(var(--fs-32), 3.4vw, var(--fs-48)); line-height: 1.02; }
+.step-prose { display: grid; gap: var(--space-3); }
+.step-prose p { color: var(--ink-2); }
+.step-prose .lede { font-size: var(--fs-18); line-height: 1.5; color: var(--ink); }
+.step-prose .pull { font: italic var(--fs-24)/1.2 var(--font-display); color: var(--sakura-text); }
+
+/* Spec sheet: 2 to 4 numbers between hairline rules */
+.spec { display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); margin-top: var(--space-2); border-block: var(--hairline) solid var(--rule); }
+.spec[data-n="3"] { --n: 3; }
+.spec[data-n="2"] { --n: 2; }
+.spec > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 0.35rem; padding: 0.9rem 0.75rem 0.8rem; }
+.spec > div:first-child { padding-left: 0; }
+.spec > div + div { border-left: var(--hairline) solid var(--rule); }
+.spec dd { font: 500 var(--fs-24)/1 var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.03em; color: var(--ink); overflow-wrap: anywhere; }
+.spec dt { font: 400 var(--fs-12)/1.3 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-2); }
+
+/* Scroll-driven parallax where supported */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes drift { from { transform: translateY(40px); } to { transform: translateY(-40px); } }
+    @keyframes lift-plate { to { transform: translateY(-36px); } }
+    @keyframes lift-name { to { transform: translateY(-70px); } }
+    .step-numeral span { animation: drift linear both; animation-timeline: view(); animation-range: cover; }
+    .plate-frame picture { animation: lift-plate linear both; animation-timeline: scroll(root); animation-range: 0 90svh; }
+    .hero-name span { animation: lift-name linear both; animation-timeline: scroll(root); animation-range: 0 90svh; }
+  }
+}
+
+/* Mobile: hero stacks plate, name, text, slot. The story slot sticks to the top 55svh. */
+@media (max-width: 767.98px) {
+  #main { z-index: auto; }
+  #stage { z-index: var(--z-stage-mobile); }
+  .hero { display: block; min-height: 0; padding: 4.5rem 0 0; }
+  .hero-grid { display: block; min-height: 0; }
+  :root { --fs-name: clamp(4rem, 24vw, 6.5rem); }
+  .hero-copy .plate-frame { width: min(58vw, 15rem); }
+  .hero-slot { height: var(--stage-mobile-h); min-height: 0; margin: var(--space-7) calc(var(--gutter) * -1) var(--space-8); }
+  .hero-slot::before { inset: 0.75rem var(--gutter); }
+  .hero-slot::after { left: var(--gutter); bottom: -1.4rem; }
+  .story-grid { display: block; padding-inline: 0; }
+  .story-slot {
+    height: var(--stage-mobile-h); border-bottom: var(--hairline) solid var(--rule);
+    background: var(--paper) var(--slot-stars) 0 0 / var(--star-size) fixed;
+  }
+  .story-slot::before { inset: 4.25rem var(--gutter) 1.25rem; }
+  .story-slot::after { left: var(--gutter); bottom: 0.4rem; }
+  .story-steps { padding-inline: var(--gutter); background: var(--paper) var(--slot-stars) 0 0 / var(--star-size) fixed; }
+  .step { min-height: 0; padding-block: var(--space-6) var(--space-7); }
+  .step + .step { border-top: var(--hairline) solid var(--rule); }
+  .reveal-on .step:not(.is-active):not(:focus-within) .step-body { opacity: 1; }
+}
+@media (max-width: 520px) {
+  .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .spec > div, .spec > div:first-child { padding-left: 0.75rem; border-left: 0; }
+  .spec > div:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .spec > div:nth-child(even) { border-left: var(--hairline) solid var(--rule); }
+  .spec > div:nth-child(n+3) { border-top: var(--hairline) solid var(--rule); }
+}
+
+/* No WebGL or no JS: text first, one centered column. */
+.no-webgl .hero, html:not(.js) .hero { min-height: 0; }
+.no-webgl .hero-grid, html:not(.js) .hero-grid { min-height: 0; }
+.no-webgl .hero-copy, .no-webgl .story-steps, html:not(.js) .hero-copy, html:not(.js) .story-steps { grid-column: 1 / -1; max-width: 40rem; }
+.no-webgl .step, html:not(.js) .step { min-height: 0; }
+.no-webgl .story-steps, html:not(.js) .story-steps { background: none; }

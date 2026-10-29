@@ -1,461 +1,399 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-zone="story">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anand Thakkar - Portfolio</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  
-  <link rel="stylesheet" href="css/zen-style.css">
-  
-  <meta name="description" content="Anand Thakkar - Portfolio showcasing research and projects in AI, deep learning, and neuroscience">
-  <meta name="keywords" content="AI research, deep learning, machine learning, neural networks, brain-inspired AI">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anand Thakkar | Applied AI/ML</title>
+  <meta name="description" content="Anand Thakkar builds things, then breaks them to see how they work. MS in AI at Northeastern. Audio, vision and on-device models.">
   <meta name="author" content="Anand Thakkar">
-  
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+  <meta name="theme-color" content="#F4EFE6">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var saved = null;
+      root.classList.add('js');
+      try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : (dark ? 'ink' : 'paper');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari&display=swap&text=%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A5%87%20%E0%A4%95%E0%A4%B2%20%E0%A4%B9%E0%A5%88%20%E0%A4%AD%E0%A5%87%E0%A4%9C%20%E0%A4%A6%E0%A5%87%E0%A4%A8%E0%A4%BE">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati&display=swap&text=%E0%AA%95%E0%AB%87%E0%AA%AE%20%E0%AA%9B%E0%AB%8B">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/story.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/stage.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="js/main.js"></script>
 </head>
-<body class="dark-mode"> <div class="preloader">
-    <div class="spinner"></div>
-    <div class="preloader-text">LOADING</div> 
-  </div>
+<body>
+  <a class="skip" href="#story">Skip to content</a>
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
 
-  <header>
-    <div class="header-container">
-      <div class="logo">
-        <h3>Anand Thakkar</h3>
-      </div>
-      
-      <nav>
-        <ul>
-          <li><a href="#about">About Me</a></li>
-          <li><a href="#research">Research</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#research-interests">Research Interests</a></li>
-        </ul>
-        
-        <div class="burger">
-          <div class="line1"></div>
-          <div class="line2"></div>
-          <div class="line3"></div>
-        </div>
-      </nav>
-    </div>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Anand Thakkar, back to top"><span class="hanko hanko-sm" aria-hidden="true">AT</span></a>
+    <nav aria-label="Page">
+      <a class="skip-story" href="#index">Skip the story<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7"/></svg></a>
+      <button type="button" id="help-btn" class="icon-btn" aria-label="Keyboard shortcuts">?</button>
+      <button type="button" id="theme-toggle" class="fader" role="switch" aria-checked="false" aria-label="Night mode">
+        <span class="fader-ticks" aria-hidden="true"></span>
+        <span class="fader-knob" aria-hidden="true"></span>
+      </button>
+    </nav>
   </header>
 
-  <section id="about">
-    <div class="container">
-      <div class="about-content fade-in">
-        <div>
-          <img src="new_images/pfp.jpg" alt="Anand Thakkar" class="profile-image" 
-               onerror="this.onerror=null; this.src='https://placehold.co/250x250/282828/D1D7DE?text=Anand+Thakkar';" />
-        </div>
-        <div>
-          <div class="about-header">
-            <h1>About Me</h1>
-            <div class="about-social-buttons">
-              <a href="https://github.com/astroanand-6e" target="_blank" class="social-button github" title="GitHub"><i class="fab fa-github"></i></a>
-              <a href="https://x.com/NeuralSharingan" target="_blank" class="social-button twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
-              <a href="https://www.linkedin.com/in/anand-thakkar" target="_blank" class="social-button linkedin" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-              <a href="https://huggingface.co/astroanand" target="_blank" class="social-button" title="Hugging Face">🤗</a>
-              <a href="mailto:anandthakkar041@gmail.com" class="social-button email" title="Email"><i class="fas fa-envelope"></i></a>
-              <a href="./Anand_Resume.pdf" target="_blank" class="social-button cv" title="CV"><i class="fas fa-file-pdf"></i></a>
-            </div>
-          </div>
-          <p>
-            I'm pursuing an <strong>MS in Artificial Intelligence</strong> at Northeastern University's Khoury College of Computer Sciences in Boston (Jan 2026 – present), after a B.Tech in Computer Science &amp; Engineering from SRM Institute of Science and Technology.
-          </p>
-          <p>
-            I build on-device ML for Apple Silicon and do research across multimodal audio-language modeling, self-supervised vision, and failure-aware clinical AI. I'm currently studying reinforcement learning and sequential decision making.
-          </p>
-          <p>
-            Previously I was an <strong>R&amp;D Intern → Junior R&amp;D Engineer</strong> in Computer Vision at <a href="https://spansystems.in/" target="_blank">SPAN Inspection Systems</a> (Dec 2024 – Oct 2025), working on coronary artery segmentation and stenosis detection.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <nav class="rail" aria-label="Chapters">
+    <ol>
+      <li><a href="#top" data-rail="hero"><span class="rail-label">Intro</span><span class="rail-tick" aria-hidden="true"></span></a></li>
+      <li><a href="#heart" data-rail="heart"><span class="rail-label">01 Heart</span><span class="rail-tick" aria-hidden="true"></span></a></li>
+      <li><a href="#vision" data-rail="vision"><span class="rail-label">02 Vision</span><span class="rail-tick" aria-hidden="true"></span></a></li>
+      <li><a href="#care" data-rail="care"><span class="rail-label">03 Care</span><span class="rail-tick" aria-hidden="true"></span></a></li>
+      <li><a href="#decks" data-rail="decks"><span class="rail-label">04 Decks</span><span class="rail-tick" aria-hidden="true"></span></a></li>
+      <li><a href="#calm" data-rail="calm"><span class="rail-label">05 CALM</span><span class="rail-tick" aria-hidden="true"></span></a></li>
+      <li><a href="#voice" data-rail="voice"><span class="rail-label">06 Voice</span><span class="rail-tick" aria-hidden="true"></span></a></li>
+      <li><a href="#now" data-rail="now"><span class="rail-label">07 Now</span><span class="rail-tick" aria-hidden="true"></span></a></li>
+    </ol>
+  </nav>
 
-  <section id="research">
-    <div class="container">
-      <div class="section-title-container">
-        <h2 class="section-title fade-in">Publications & Research 🔬</h2>
-        <span class="japanese-symbol">研究</span>
-      </div>
-
-      <div class="research-item fade-in">
-        <div class="research-title">CALM: Conformer Audio-Language Model</div>
-        <div class="research-status">In Progress <span><i class="fas fa-spinner fa-spin"></i></span></div>
-        <p>
-          Graduate research at Northeastern. Fuses Gemma 4's frozen audio Conformer (305M) with its frozen text encoder (4.6B) via bidirectional cross-modal attention, training only ~4M parameters. Reaches 83.9% test accuracy on 16-genre FMA-Medium, +9.1 pp over the best audio-only baseline, with ~25× fewer trainable parameters than full fine-tuning. Six pre-trained audio encoders were benchmarked on Northeastern's Explorer HPC cluster.
-        </p>
-      </div>
-
-      <div class="research-item fade-in">
-        <div class="research-title">ResFormer: Integrating Deep Learning Models for Atrial Fibrillation Detection using ECG</div>
-        <div class="research-status">Published · ICIOT'25 (First author)</div>
-        <p>
-          Comparative analysis of ResNet, Bi-LSTM, and their attention variants for ECG classification, and a proposed ResNet + Transformer-encoder architecture for better feature extraction and classification.
-        </p>
-      </div>
-
-      <div class="research-item fade-in">
-        <div class="research-title">Self-Supervised Coronary Stenosis Detection (SPAN Inspection Systems)</div>
-        <div class="research-status">Industry R&amp;D</div>
-        <p>
-          Implemented ViT and Masked Autoencoders from scratch in PyTorch for pre-training, fine-tuning, and linear probing on the CADICA dataset, learning from unlabeled angiograms. Benchmarked U-Net, SAM2, TransUNet, and Swin-UNet for X-ray coronary segmentation across accuracy, generalizability, and compute cost, and shipped models to production via ONNX.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section id="projects">
-    <div class="container">
-      <div class="section-title-container">
-        <h2 class="section-title fade-in">Projects</h2>
-        <span class="japanese-symbol">作品</span>
-      </div>
-
-      <div class="project-grid">
-        <div class="project-card fade-in">
-          <div class="project-image"><i class="fas fa-heartbeat"></i></div>
-          <div class="project-content">
-            <h3 class="project-title">CoronarySAM2: Interactive Coronary Artery Segmentation</h3>
-            <p>
-              Fine-tuned SAM2 with two PEFT approaches to a 92.0% Dice score, deployed as a public browser tool on Hugging Face Spaces where anyone can upload an angiogram and refine the segmentation interactively.
+  <main id="main">
+    <div id="story">
+      <section class="hero" id="top" data-chapter="hero" aria-labelledby="name">
+        <div class="grid hero-grid">
+          <div class="hero-copy">
+            <p class="kicker mono" style="--i:0">
+              <span id="greeting" class="flap" data-words="Hello|नमस्ते|કેમ છો" data-langs="en|hi|gu" aria-label="Hello, नमस्ते, કેમ છો"><span class="flap-word" lang="en">Hello</span><span class="sep">·</span><span class="flap-word" lang="hi">नमस्ते</span><span class="sep">·</span><span class="flap-word" lang="gu">કેમ છો</span></span>
+              <span class="kicker-rule" aria-hidden="true"></span>
+              <span>Boston</span>
             </p>
-            <div class="project-links">
-              <a href="https://huggingface.co/astroanand" target="_blank"><i class="fas fa-external-link-alt"></i> Hugging Face</a>
+            <figure class="plate" style="--i:1">
+              <div class="plate-frame">
+                <picture>
+                  <source type="image/avif" srcset="assets/img/portrait-800.avif 800w, assets/img/portrait-1600.avif 1600w" sizes="(max-width: 767px) 58vw, 240px">
+                  <source type="image/webp" srcset="assets/img/portrait-800.webp 800w, assets/img/portrait-1600.webp 1600w" sizes="(max-width: 767px) 58vw, 240px">
+                  <img src="assets/img/portrait-800.webp" width="1600" height="2000" alt="Portrait of Anand Thakkar" fetchpriority="high" decoding="async">
+                </picture>
+                <span class="hanko" aria-hidden="true">AT</span>
+              </div>
+              <figcaption class="mono">Plate I · Charles River</figcaption>
+            </figure>
+            <h1 id="name" class="hero-name" style="--i:2"><span>Anand</span> <span>Thakkar</span></h1>
+            <p class="hero-line" style="--i:3">I build things, then break them to see how they work.</p>
+            <p class="hero-sub" style="--i:4">MS in AI at Northeastern, in Boston. Audio, vision and on-device models.</p>
+            <p class="status" style="--i:5"><span class="dot" aria-hidden="true"></span>Open to applied AI/ML internships and co-ops</p>
+            <ul class="link-row" aria-label="Links" style="--i:6">
+              <li><a href="Anand_Resume.pdf">Résumé</a></li>
+              <li><a href="https://github.com/astroanand-6e" rel="noopener">GitHub</a></li>
+              <li><a href="https://huggingface.co/astroanand" rel="noopener">Hugging Face</a></li>
+              <li><a href="https://www.linkedin.com/in/anand-thakkar" rel="noopener">LinkedIn</a></li>
+              <li><a href="mailto:anandthakkar041@gmail.com">Email</a></li>
+            </ul>
+            <div class="hero-actions" style="--i:7">
+              <button type="button" id="break-btn" class="btn btn-primary" data-action="break"><svg class="icon-burst" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M8 1.5v13M1.5 8h13M3.4 3.4l9.2 9.2M12.6 3.4l-9.2 9.2"/></svg>Break it</button>
+              <a class="cue" href="#heart"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7"/></svg>The story starts with a heartbeat</a>
             </div>
           </div>
+          <div class="hero-slot" data-stage-slot="hero" aria-hidden="true"></div>
         </div>
+      </section>
 
-        <div class="project-card fade-in">
-          <div class="project-image"><i class="fas fa-microphone"></i></div>
-          <div class="project-content">
-            <h3 class="project-title">Astro: Local-First Code-Switch Dictation</h3>
-            <p>
-              On-device dictation for code-switched speech (Hinglish/Gujlish) on Apple Silicon. Quantized a Gemma 4 audio-language model to 4-bit with MLX, built a benchmark from 631 real dictation clips, and ranked 5 local ASR backends. Rust (Tauri 2), Python, MLX, React/TypeScript.
-            </p>
-            <div class="project-links">
-              <a href="https://github.com/astroanand-6e" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      <div class="grid story-grid">
+        <div class="story-slot" data-stage-slot="story" aria-hidden="true"></div>
+        <div class="story-steps">
+
+          <section class="step" id="heart" data-chapter="heart" aria-labelledby="h-heart"><div class="step-body" data-reveal-group>
+              <div class="step-numeral" aria-hidden="true"><span>01</span></div><p class="mono step-kicker">Heart</p>
+              <h2 id="h-heart">It started with a heartbeat</h2>
+              <div class="step-prose">
+                <p class="lede">At SRM (2021–25) I trained models to spot atrial fibrillation in ECG traces.</p>
+                <p>ResFormer pairs a ResNet with a Transformer encoder. I presented it at ICIOT'25 as first author. I was class rep for 2 years, and I've tutored since 2019.</p>
+              </div>
+              <dl class="spec" data-n="4">
+                <div><dt>Years at SRM</dt><dd>2021–25</dd></div><div><dt>Author on ICIOT'25</dt><dd>1st</dd></div><div><dt>Class rep</dt><dd>2 yrs</dd></div><div><dt>Tutoring since</dt><dd>2019</dd></div>
+              </dl>
+              <div class="twin" role="group" aria-label="ECG rhythm" data-group>
+                <span class="mono twin-label">Pick a rhythm. The trace redraws.</span>
+                <button type="button" data-action="heart-rhythm" data-value="sinus" aria-pressed="true">Sinus rhythm</button>
+                <button type="button" data-action="heart-rhythm" data-value="af" aria-pressed="false">Atrial fibrillation</button>
+              </div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        <div class="project-card fade-in">
-          <div class="project-image"><i class="fas fa-user-md"></i></div>
-          <div class="project-content">
-            <h3 class="project-title">Failure-Aware Multi-Agent Clinical Decision Support</h3>
-            <p>
-              Three-agent pipeline on MIMIC-IV v3.1 (546K hospitalizations) that routes uncertain or out-of-distribution cases to clinicians: baseline AUROC 0.871, PCA-based OOD detection, and a failure-aware layer catching 28.5% of the baseline's false negatives. Also a ResNet-50 on BRSET fundus images (AUROC 0.8831 for macular edema).
-            </p>
-          </div>
-        </div>
-
-        <div class="project-card fade-in">
-          <div class="project-image"><i class="fas fa-project-diagram"></i></div>
-          <div class="project-content">
-            <h3 class="project-title">VentureViz: AI Startups & Investors Network</h3>
-            <p>
-              Interactive D3.js network graph of AI startup–investor relationships, with timeline animation, filtering, and zoom.
-            </p>
-            <div class="project-links">
-              <a href="https://astroanand-6e.github.io/A_web_of_AI_startups_and_investors/" target="_blank"><i class="fas fa-external-link-alt"></i> View Project</a>
+          <section class="step" id="vision" data-chapter="vision" aria-labelledby="h-vision"><div class="step-body" data-reveal-group>
+              <div class="step-numeral" aria-hidden="true"><span>02</span></div><p class="mono step-kicker">Vision</p>
+              <h2 id="h-vision">Then I learned to read X-rays</h2>
+              <div class="step-prose">
+                <p class="lede">At SPAN Inspection Systems (Dec 2024 to Oct 2025) I went from R&amp;D intern to Junior R&amp;D Engineer.</p>
+                <p>I built ViT and MAE from scratch in PyTorch, then moved trained models into the production inspection system with ONNX. CoronarySAM2 reaches 92.0% Dice and <a href="https://huggingface.co/spaces/astroanand/CoronarySAM2_FT" rel="noopener">runs live on Hugging Face</a>.</p>
+              </div>
+              <dl class="spec" data-n="4">
+                <div><dt>CoronarySAM2 Dice</dt><dd>92.0%</dd></div><div><dt>Segmentation models benchmarked</dt><dd>4</dd></div><div><dt>PEFT approaches</dt><dd>2</dd></div><div><dt>Production format</dt><dd>ONNX</dd></div>
+              </dl>
+              <div class="twin" role="group" aria-label="Vision controls">
+                <span class="mono twin-label">Hide patches, bring them back, grow the vessel mask.</span>
+                <button type="button" data-action="vision-mae" data-value="mask">Mask patches</button>
+                <button type="button" data-action="vision-mae" data-value="unmask">Unmask</button>
+                <button type="button" data-action="vision-grow" data-value="grow">Grow mask</button>
+              </div>
             </div>
-          </div>
+          </section>
+
+          <section class="step" id="care" data-chapter="care" aria-labelledby="h-care"><div class="step-body" data-reveal-group>
+              <div class="step-numeral" aria-hidden="true"><span>03</span></div><p class="mono step-kicker">Care · team project</p>
+              <h2 id="h-care">Then patient records</h2>
+              <div class="step-prose">
+                <p class="lede">My CS 5130 team built a failure-aware clinical decision support system on MIMIC-IV: Proposer, Skeptic, Safety Harness.</p>
+                <p>AUROC 0.871, Brier 0.019, and 28.5% of false negatives caught. 7.1% of cases escalate to a clinician, so about 1 card in 14 rings the bell.</p>
+              </div>
+              <dl class="spec" data-n="4">
+                <div><dt>AUROC</dt><dd>0.871</dd></div><div><dt>Brier</dt><dd>0.019</dd></div><div><dt>False negatives caught</dt><dd>28.5%</dd></div><div><dt>Escalated to a clinician</dt><dd>7.1%</dd></div>
+              </dl>
+              <div class="twin" role="group" aria-label="Conveyor controls" data-group>
+                <span class="mono twin-label">Conveyor speed</span>
+                <button type="button" data-action="care-speed" data-value="slow" aria-pressed="false">Slow</button>
+                <button type="button" data-action="care-speed" data-value="normal" aria-pressed="true">Normal</button>
+                <button type="button" data-action="care-speed" data-value="fast" aria-pressed="false">Fast</button>
+                <button type="button" data-action="care-pause" data-toggle aria-pressed="false">Pause</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="step" id="decks" data-chapter="decks" aria-labelledby="h-decks"><div class="step-body" data-reveal-group>
+              <div class="step-numeral" aria-hidden="true"><span>04</span></div><p class="mono step-kicker">Decks</p>
+              <h2 id="h-decks">Then music</h2>
+              <div class="step-prose">
+                <p class="lede">I'm a beginner DJ on a white DDJ-FLX4. I mix for fun.</p>
+                <p>It made me wonder what a model hears when it listens to a track.</p>
+              </div>
+              <dl class="spec" data-n="3">
+                <div><dt>Decks</dt><dd>2</dd></div><div><dt>Performance pads</dt><dd>16</dd></div><div><dt>Skill level</dt><dd>Beginner</dd></div>
+              </dl>
+              <div class="twin">
+                <div class="range-row">
+                  <label class="mono" for="crossfader">Deck A</label>
+                  <input type="range" id="crossfader" min="0" max="1" step="0.01" value="0.5" data-action="decks-crossfader" data-labels="Deck A|Centered|Deck B" aria-label="Crossfader">
+                  <span class="mono" aria-hidden="true">Deck B</span>
+                </div>
+                <button type="button" id="sound-btn" data-action="sound" data-toggle aria-pressed="false">Sound off (M)</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="step" id="calm" data-chapter="calm" aria-labelledby="h-calm"><div class="step-body" data-reveal-group>
+              <div class="step-numeral" aria-hidden="true"><span>05</span></div><p class="mono step-kicker">CALM</p>
+              <h2 id="h-calm">So I pivoted to sound</h2>
+              <div class="step-prose">
+                <p class="lede">CALM fuses Gemma 4's frozen audio Conformer (305M parameters) with its frozen text encoder (4.6B) through bidirectional cross-modal attention. Only ~4M parameters train.</p>
+                <p>83.9% test accuracy on 16-genre FMA-Medium, +9.1 pp over the best audio-only baseline, with ~25× fewer trainable parameters than full fine-tuning. I benchmarked 6 audio encoders on Northeastern's Explorer HPC cluster.</p>
+                <p class="pull">Is it listening, or reading? I'm probing that with mechanistic interpretability.</p>
+              </div>
+              <dl class="spec" data-n="4">
+                <div><dt>Test accuracy, 16 genres</dt><dd>83.9%</dd></div><div><dt>Over best audio-only</dt><dd>+9.1 pp</dd></div><div><dt>Fewer trainable parameters</dt><dd>~25×</dd></div><div><dt>Audio encoders benchmarked</dt><dd>6</dd></div>
+              </dl>
+              <div class="twin">
+                <span class="mono twin-label">Where does the model look? <span class="tag">ongoing</span></span>
+                <div class="range-row">
+                  <label class="mono" for="calm-fader">Audio</label>
+                  <input type="range" id="calm-fader" min="0" max="1" step="0.01" value="0.5" data-action="calm-fader" data-labels="Audio|Both|Text" aria-label="Audio to text fader">
+                  <span class="mono" aria-hidden="true">Text</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="step" id="voice" data-chapter="voice" aria-labelledby="h-voice"><div class="step-body" data-reveal-group>
+              <div class="step-numeral" aria-hidden="true"><span>06</span></div><p class="mono step-kicker">Voice</p>
+              <h2 id="h-voice">Then my own voice</h2>
+              <div class="step-prose">
+                <p class="lede">Astro is on-device dictation for Hinglish and Gujlish, the code-switched speech mainstream dictation tools fumble. No audio leaves the Mac.</p>
+                <p>I built a benchmark from 631 real clips and ranked 5 local ASR backends. A 4-bit Gemma 4 E4B (4.8 GB) led policy purity at 0.974, at 333 ms p50. The negative results stay in the design record. The M5 Pro that runs my Steam library also runs my models.</p>
+              </div>
+              <dl class="spec" data-n="4">
+                <div><dt>Real clips</dt><dd>631</dd></div><div><dt>ASR backends ranked</dt><dd>5</dd></div><div><dt>Policy purity</dt><dd>0.974</dd></div><div><dt>Latency, p50</dt><dd>333 ms</dd></div>
+              </dl>
+              <div class="twin" role="group" aria-label="Script" data-group>
+                <button type="button" data-action="voice-script" data-value="native" aria-pressed="true">Native script</button>
+                <button type="button" data-action="voice-script" data-value="roman" aria-pressed="false">Roman</button>
+              </div>
+              <p id="voice-line" class="quote-line" lang="hi" aria-live="polite" data-native="कल meeting है, slides भेज देना" data-roman="kal meeting hai, slides bhej dena">कल meeting है, slides भेज देना</p>
+            </div>
+          </section>
+
+          <section class="step" id="now" data-chapter="now" aria-labelledby="h-now"><div class="step-body" data-reveal-group>
+              <div class="step-numeral" aria-hidden="true"><span>07</span></div><p class="mono step-kicker">Now</p>
+              <h2 id="h-now">Back at the desk</h2>
+              <div class="step-prose">
+                <p class="lede">This term I'm taking CS 5180, reinforcement learning. After hours it's Steam and Epic on the MacBook Pro.</p>
+                <p>Got a controller plugged in? Left stick turns the desk, the cross button breaks it, D-pad jumps chapters.</p>
+              </div>
+              <p class="status"><span class="dot" aria-hidden="true"></span>Open to applied AI/ML internships and co-ops</p>
+              <dl class="spec" data-n="3">
+                <div><dt>Started the MS</dt><dd>Jan 2026</dd></div><div><dt>Reinforcement learning</dt><dd>CS 5180</dd></div><div><dt>ML and data analytics</dt><dd>DADS 7275</dd></div>
+              </dl>
+              <div class="step-actions">
+                <button type="button" class="btn btn-primary" data-action="break"><svg class="icon-burst" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M8 1.5v13M1.5 8h13M3.4 3.4l9.2 9.2M12.6 3.4l-9.2 9.2"/></svg>Break it</button>
+                <a class="btn" href="#index">See the index</a>
+                <a class="btn" href="mailto:anandthakkar041@gmail.com">Email me</a>
+              </div>
+            </div>
+          </section>
+
         </div>
       </div>
     </div>
-  </section>
 
-  
-<section id="research-interests">
-    <div class="container">
-      <div class="section-title-container">
-        <h2 class="section-title fade-in">Research Interests</h2>
-        <span class="japanese-symbol">興味</span>
-      </div>
-      
-      <div class="interests-container">
-        <div class="interests-list">
-          <div class="interest-item-card fade-in" data-interest="deep-learning">
-            <div class="interest-icon">
-              <i class="fas fa-brain"></i>
-            </div>
-            <h4 class="interest-title">Deep Learning Architectures</h4>
-          </div>
-          
-          <div class="interest-item-card fade-in" data-interest="generative-models">
-            <div class="interest-icon">
-              <i class="fas fa-lightbulb"></i>
-            </div>
-            <h4 class="interest-title">Generative Models and Architectural Complexity</h4>
-          </div>
-          
-          <div class="interest-item-card fade-in" data-interest="brain">
-            <div class="interest-icon">
-              <i class="fas fa-network-wired"></i> 
-            </div>
-            <h4 class="interest-title">Human Brain & Connectomics</h4>
-          </div>
-          
-          <div class="interest-item-card fade-in" data-interest="interpretability">
-            <div class="interest-icon">
-              <i class="fas fa-search"></i>
-            </div>
-            <h4 class="interest-title">Mechanistic Interpretability and AI Safety</h4>
-          </div>
-        </div>
-        
-        <div class="interests-sidebar fade-in">
-          <div class="interest-description" id="deep-learning">
-            <h3>Deep Learning Architectures</h3>
-            <p>My foundation lies in developing and understanding deep learning models, evidenced by my work with ResNet, LSTM, Bi-LSTM, and UNet architectures. This experience has provided me with a strong understanding of complex neural networks and their applications in areas like image recognition and sequence modeling.</p>
-          </div>
-          
-          <div class="interest-description" id="generative-models">
-            <h3>Generative Models and Architectural Complexity</h3>
-            <p>I am particularly fascinated by the architectural innovations in generative models like Stable Diffusion, especially their use of VAEs and UNet. These models represent a significant leap in architectural complexity, and I am eager to contribute to their further development and understanding.</p>
-          </div>
-          
-          <div class="interest-description" id="brain">
-            <h3>Human Brain & Connectomics 🧠</h3>
-            <p>My interest naturally extends to the most complex system we know – THE HUMAN BRAIN. Inspired by advancements in connectomics, I am captivated by the brain's design and architecture. I believe that insights from neuroscience and connectomics can offer invaluable inspiration for the next generation of AI architectures.</p>
-          </div>
-          
-          <div class="interest-description" id="interpretability">
-            <h3>Mechanistic Interpretability and AI Safety</h3>
-            <p>I believe that truly understanding how complex systems arrive at their outputs is crucial for both advancing the field and ensuring AI safety. My current independent research into how LLMs process semantically equivalent prompts across languages directly reflects this commitment to interpretability.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <section id="inspiration" class="inspiration-section">
-    <div class="inspiration-container">
-      <div class="section-title-container">
-        <h2 class="section-title fade-in">Motivation</h2>
-        <span class="japanese-symbol">動機</span>
-      </div>
-      
-      <div class="inspiration-images fade-in">
-        <div class="inspiration-item">
-          <img src="new_images/bonsai_gemini.gif" alt="Growing Bonsai Tree" class="inspiration-image bonsai-gif"
-               onerror="this.onerror=null; this.src='https://placehold.co/600x300/282828/D1D7DE?text=Bonsai+Growth';" />
-          <div class="inspiration-caption">
-            <p>Research, like bonsai cultivation, requires patience, vision, and meticulous attention to detail.</p>
-          </div>
-        </div>
-        
-        <div class="inspiration-item">
-           <img src="new_images/KF_Panda_peachtree.jpeg" alt="Kung Fu Panda Meditating Under Cherry Blossom Tree" class="inspiration-image kf-panda-image"
-               onerror="this.onerror=null; this.src='https://placehold.co/600x300/282828/D1D7DE?text=Meditation';" />
-          <div class="inspiration-caption">
-            <p>"Your mind is like this water. When it becomes agitated, it becomes difficult to see. But if you allow it to settle, the answer becomes clear."</p>
-            <p class="quote-attribution">- Master Oogway</p> 
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    <section class="index" id="index" data-chapter="index" tabindex="-1" aria-labelledby="h-index">
+      <div class="grid index-grid">
+        <header class="index-head" data-reveal-group>
+          <p class="mono">Index</p>
+          <h2 id="h-index">Selected work</h2>
+        </header>
 
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-left">
-          <h3>Anand Thakkar</h3>
-          <p class="footer-tagline">Using AI to understand the brain, and the brain to improve AI</p>
+        <div class="work-grid" data-reveal-group>
+          <article class="work-card span-7">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">01</span><span>Ongoing research · CS 5100</span></p></div>
+            <h3>CALM: Conformer Audio-Language Model</h3>
+            <p>Frozen audio Conformer (305M) fused with a frozen text encoder (4.6B). ~4M trainable parameters. 83.9% on 16-genre FMA-Medium.</p>
+            <ul class="chips"><li>PyTorch</li><li>Gemma 4</li><li>Slurm</li><li>W&amp;B</li></ul>
+          </article>
+          <article class="work-card span-5">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">02</span><span>Ongoing research · v0.2.0-alpha</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
+            <h3>Astro: local-first code-switch dictation</h3>
+            <p>On-device Hinglish and Gujlish dictation for macOS. 4-bit Gemma 4 E4B (4.8 GB), 631-clip benchmark, 5 ASR backends ranked.</p>
+            <ul class="chips"><li>Rust</li><li>Tauri 2</li><li>Python</li><li>MLX</li></ul>
+            <a class="work-link" href="https://github.com/astroanand-6e" rel="noopener">GitHub profile</a>
+          </article>
+          <article class="work-card span-5">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">03</span><span>Live demo</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
+            <h3>CoronarySAM2: interactive coronary artery segmentation</h3>
+            <p>SAM2 fine-tuned with two PEFT approaches. 92.0% Dice. Upload an angiogram and refine the mask in the browser.</p>
+            <ul class="chips"><li>PyTorch</li><li>SAM2</li><li>Gradio</li><li>HF Spaces</li></ul>
+            <a class="work-link" href="https://huggingface.co/spaces/astroanand/CoronarySAM2_FT" rel="noopener">Open the demo</a>
+          </article>
+          <article class="work-card span-7">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">04</span><span>Team project · CS 5130</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
+            <h3>Failure-aware clinical decision support</h3>
+            <p>Proposer, Skeptic and Safety Harness agents on MIMIC-IV v3.1 (546K hospitalizations). AUROC 0.871, Brier 0.019, 28.5% of false negatives caught, 7.1% handed to clinicians.</p>
+            <ul class="chips"><li>PyTorch</li><li>scikit-learn</li><li>MIMIC-IV</li></ul>
+            <a class="work-link" href="https://github.com/Dhruv2422/Reliable-Clinical-Decision-Support-A-Failure-Aware-Multi-Agent-System" rel="noopener">Team repository</a>
+          </article>
+          <article class="work-card span-6">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">05</span><span>Paper · ICIOT'25</span></p></div>
+            <h3>ResFormer: atrial fibrillation detection from ECG</h3>
+            <p>ResNet plus Transformer encoder, compared against Bi-LSTM and attention variants. First author.</p>
+            <ul class="chips"><li>PyTorch</li><li>ECG</li><li>Transformers</li></ul>
+          </article>
+          <article class="work-card span-6">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">06</span><span>Interactive graph</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
+            <h3>VentureViz</h3>
+            <p>D3.js network of AI startup and investor relationships, with timeline animation and filtering.</p>
+            <ul class="chips"><li>JavaScript</li><li>D3.js</li></ul>
+            <a class="work-link" href="https://astroanand-6e.github.io/A_web_of_AI_startups_and_investors/" rel="noopener">View the graph</a>
+          </article>
         </div>
-        <div class="footer-right">
-          <div class="footer-contact">
-            <p><i class="fas fa-envelope"></i> anandthakkar041@gmail.com</p>
-            <p><i class="fas fa-map-marker-alt"></i> Boston, MA</p>
-          </div>
-          <div class="footer-social">
-            <a href="https://github.com/astroanand-6e" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://x.com/NeuralSharingan" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.linkedin.com/in/anand-thakkar" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          </div>
+
+        <div class="index-rows">
+          <section class="row" data-reveal-group aria-labelledby="h-pubs">
+            <div class="row-label"><h2 id="h-pubs">Publications</h2></div>
+            <div class="row-body">
+              <div class="entry">
+                <p>Thakkar, A., Sharma, Y., Nahak, S. "ResFormer: Integrating Deep Learning Models for Atrial Fibrillation Detection using ECG." 5th International Conference on Internet of Things (ICIOT'25), April 2025. Presented.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="row" data-reveal-group aria-labelledby="h-exp">
+            <div class="row-label"><h2 id="h-exp">Experience</h2></div>
+            <div class="row-body">
+              <div class="entry">
+                <div class="entry-head"><h3>SPAN Inspection Systems</h3><span class="mono">Dec 2024 – Oct 2025</span></div>
+                <p>R&amp;D Intern, then Junior R&amp;D Engineer, computer vision. Ahmedabad, India.</p>
+                <ul>
+                  <li>ViT and MAE from scratch in PyTorch on the CADICA coronary dataset.</li>
+                  <li>Benchmarked U-Net, SAM2, TransUNet and Swin-UNet for X-ray segmentation.</li>
+                  <li>Converted models to ONNX and parity-tested them before the production branch.</li>
+                </ul>
+              </div>
+              <div class="entry">
+                <div class="entry-head"><h3>Peer mentor and tutor</h3><span class="mono">2019 – present</span></div>
+                <p>1:1 mentorship in CS fundamentals and AI/ML. Class representative for 60+ students, 2021–2023.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="row" data-reveal-group aria-labelledby="h-edu">
+            <div class="row-label"><h2 id="h-edu">Education</h2></div>
+            <div class="row-body">
+              <div class="entry">
+                <div class="entry-head"><h3>Northeastern University</h3><span class="mono">Jan 2026 – present</span></div>
+                <p>MS in Artificial Intelligence, Khoury College of Computer Sciences, Boston. In progress: CS 5180 Reinforcement Learning, DADS 7275 Machine Learning &amp; Data Analytics.</p>
+              </div>
+              <div class="entry">
+                <div class="entry-head"><h3>SRM Institute of Science and Technology</h3><span class="mono">2021 – 2025</span></div>
+                <p>B.Tech in Computer Science &amp; Engineering, Chennai. CGPA 7.58/10.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="row" data-reveal-group aria-labelledby="h-skills">
+            <div class="row-label"><h2 id="h-skills">Skills</h2></div>
+            <div class="row-body">
+              <dl class="skills">
+                <div><dt class="mono">Languages</dt><dd>Python, C/C++, Rust, JavaScript/TypeScript, Swift</dd></div>
+                <div><dt class="mono">ML and research</dt><dd>PyTorch, TensorFlow, scikit-learn, OpenCV, ViT, MAE, SAM2, Conformer, MERT, CLAP, AST, multimodal fusion, W&amp;B</dd></div>
+                <div><dt class="mono">LLMs and foundation models</dt><dd>Hugging Face, PEFT (LoRA/QLoRA), Claude API, Gemini, Ollama, llama.cpp, GGUF</dd></div>
+                <div><dt class="mono">Deployment</dt><dd>ONNX, 4-bit quantization, MLX, on-device inference</dd></div>
+                <div><dt class="mono">Systems</dt><dd>Linux, SSH, Slurm/HPC, Docker, gRPC, REST, Tauri 2, React, Tailscale, Git</dd></div>
+              </dl>
+            </div>
+          </section>
+
+          <section class="row" id="contact" data-reveal-group aria-labelledby="h-contact">
+            <div class="row-label"><h2 id="h-contact">Contact</h2></div>
+            <div class="row-body">
+              <p class="contact-lede">Boston, MA. Email is the fastest route.</p>
+              <a class="contact-mail" href="mailto:anandthakkar041@gmail.com">anandthakkar041@gmail.com</a>
+              <ul class="link-row" aria-label="Contact links">
+                <li><a href="https://www.linkedin.com/in/anand-thakkar" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/astroanand-6e" rel="noopener">GitHub</a></li>
+                <li><a href="https://huggingface.co/astroanand" rel="noopener">Hugging Face</a></li>
+                <li><a href="Anand_Resume.pdf">Résumé</a></li>
+              </ul>
+            </div>
+          </section>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p class="footer-text">© 2026 Anand Thakkar. All rights reserved.</p>
-        <p class="footer-credits">Crafted with <i class="fas fa-brain"></i> and <i class="fas fa-heart"></i></p>
-      </div>
-    </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="mono">Figures built in Three.js, inspired by Anatomy.</p>
+    <p class="mono">© 2026 Anand Thakkar</p>
   </footer>
 
-  <div class="scroll-progress-container">
-    <div class="scroll-progress-bar"></div>
-  </div>
-
-  <script src="js/zen-script.js"></script>
-  <script>
-    // This script handles functionalities that might be independent of zen-script.js or provide fallbacks/overrides.
-    document.addEventListener('DOMContentLoaded', function() {
-      // Ensure the body always has the dark-mode class, as per site design.
-      document.body.classList.add('dark-mode');
-      
-      // Attempt to prevent zen-script.js from removing 'dark-mode' if its toggle logic is still active.
-      // This is a safeguard. Ideally, zen-script.js's darkModeToggle would be refactored if the toggle is removed.
-      const originalBodyClassListRemove = DOMTokenList.prototype.remove;
-      DOMTokenList.prototype.remove = function(...args) {
-        if (this === document.body.classList && args.includes('dark-mode')) {
-          // console.warn("Attempt to remove 'dark-mode' class from body was blocked by inline script in index.html.");
-          return; // Block removal of 'dark-mode' from body
-        }
-        originalBodyClassListRemove.apply(this, args);
-      };
-      
-      // Smooth scrolling for anchor links
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-          e.preventDefault();
-          
-          const targetId = this.getAttribute('href');
-          const targetElement = document.querySelector(targetId);
-          
-          if (targetElement) {
-            const headerOffset = 80; // Approximate height of the fixed header
-            const elementPosition = targetElement.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-            
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: 'smooth'
-            });
-          }
-        });
-      });
-      
-      // Preloader logic (this might be redundant if zen-script.js's enhancedPreloader works as expected)
-      // Kept as a fallback or if this specific timing/hiding logic is preferred.
-      window.addEventListener('load', function() {
-        const preloader = document.querySelector('.preloader');
-        if (preloader) { 
-            preloader.classList.add('hidden'); // Add class for CSS transition
-            setTimeout(function() {
-              if(preloader) preloader.style.display = 'none'; // Hide after transition
-            }, 500); // Should match CSS transition duration for opacity/visibility
-        }
-      });
-    });
-  </script>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      let canvas = document.getElementById('cherry-blossom-canvas');
-      // If canvas doesn't exist in HTML, create it (though it should be there based on original files)
-      if (!canvas) {
-        canvas = document.createElement('canvas');
-        canvas.id = 'cherry-blossom-canvas';
-        // Styles for canvas are primarily in zen-style.css
-        // Ensure it's appended if created dynamically
-        document.body.appendChild(canvas); 
-      }
-      
-      const ctx = canvas.getContext('2d');
-      
-      // Function to resize canvas to full window
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      
-      resizeCanvas(); // Initial size
-      window.addEventListener('resize', resizeCanvas); // Adjust on window resize
-      
-      const petals = [];
-      const petalCount = 50; // Number of petals
-      
-      // Initialize petals
-      for (let i = 0; i < petalCount; i++) {
-        createPetal(true); // Create with random initial Y position
-      }
-      
-      // Function to create a single petal object
-      function createPetal(randomY = false) {
-        petals.push({
-          x: Math.random() * canvas.width, // Random horizontal start
-          y: randomY ? Math.random() * canvas.height : -20, // Start above screen or random Y
-          size: Math.random() * 8 + 5, // Random size
-          speedY: Math.random() * 1.5 + 0.5, // Random falling speed
-          speedX: Math.random() * 0.5 - 0.25, // Random horizontal drift
-          rotation: Math.random() * 360, // Random initial rotation
-          rotationSpeed: (Math.random() - 0.5) * 2, // Random rotation speed
-          opacity: Math.random() * 0.6 + 0.2, // Random opacity
-          hue: Math.random() * 10 + 350, // Pinkish hue
-          saturation: Math.random() * 30 + 70, // Saturation for cherry blossom
-          lightness: Math.random() * 20 + 80, // Lightness for cherry blossom
-          wobbleSpeed: Math.random() * 0.03, // Wobble effect speed
-          wobbleSize: Math.random() * 2 // Wobble effect amplitude
-        });
-      }
-      
-      // Function to draw a single petal
-      function drawPetal(petal) {
-        ctx.save();
-        ctx.translate(petal.x, petal.y);
-        ctx.rotate((petal.rotation * Math.PI) / 180); // Convert degrees to radians
-        
-        const size = petal.size;
-        ctx.beginPath();
-        // Using HSL for color allows easy control over hue/saturation/lightness
-        ctx.fillStyle = `hsla(${petal.hue}, ${petal.saturation}%, ${petal.lightness}%, ${petal.opacity})`;
-        
-        // Create petal shape using bezier curves for a more organic look
-        ctx.moveTo(0, 0);
-        ctx.bezierCurveTo(size/3, size/2, size/2, size, 0, size);
-        ctx.bezierCurveTo(-size/2, size, -size/3, size/2, 0, 0);
-        
-        ctx.fill();
-        ctx.restore();
-      }
-      
-      // Function to update a petal's position and properties
-      function updatePetal(petal) {
-        petal.y += petal.speedY; // Move down
-        // Add horizontal movement with wobble
-        petal.x += petal.speedX + Math.sin(petal.y * petal.wobbleSpeed) * petal.wobbleSize; 
-        petal.rotation += petal.rotationSpeed; // Rotate
-        
-        // Reset petal if it goes off screen
-        if (petal.y > canvas.height + petal.size || petal.x < -petal.size || petal.x > canvas.width + petal.size) {
-          petal.x = Math.random() * canvas.width; // Reset to random X at the top
-          petal.y = -petal.size; // Reset Y to above the screen
-          // Optionally, re-randomize speeds for variety
-          petal.speedY = Math.random() * 1.5 + 0.5;
-          petal.speedX = Math.random() * 0.5 - 0.25;
-        }
-      }
-      
-      // Animation loop
-      function animate() {
-        // Clear the canvas. For a trail effect, a semi-transparent fillRect could be used here,
-        // matching the background color. e.g., ctx.fillStyle = 'rgba(40, 40, 40, 0.05)'; ctx.fillRect(...);
-        // The zen-script.js version had such a fillStyle. This one uses clearRect.
-        ctx.clearRect(0, 0, canvas.width, canvas.height); 
-        
-        petals.forEach(petal => {
-          updatePetal(petal);
-          drawPetal(petal);
-        });
-        
-        // Occasionally add a new petal to maintain density if some go off screen fast
-        if (Math.random() < 0.05 && petals.length < 100) { // Cap max petals
-          createPetal();
-        }
-        
-        requestAnimationFrame(animate); // Continue the loop
-      }
-      
-      animate(); // Start the animation
-    });
-  </script>
-  
+  <dialog id="help" aria-labelledby="help-title">
+    <h2 id="help-title">Shortcuts</h2>
+    <dl>
+      <dt><kbd>T</kbd></dt><dd>Switch paper and ink</dd>
+      <dt><kbd>J</kbd> <kbd>K</kbd></dt><dd>Next and previous chapter</dd>
+      <dt><kbd>B</kbd></dt><dd>Break the figure</dd>
+      <dt><kbd>M</kbd></dt><dd>Sound on or off</dd>
+      <dt><kbd>?</kbd></dt><dd>This help</dd>
+    </dl>
+    <button type="button" class="btn" id="help-close">Close</button>
+  </dialog>
 </body>
 </html>

@@ -1,0 +1,125 @@
+/* Paper & Signal: design tokens. Paper is the default, ink is night. */
+:root {
+  /* Color */
+  --paper: #f4efe6;
+  --paper-2: #ece5d8;
+  --ink: #1c1a17;
+  --ink-2: #5a554d;
+  --sakura: #d47589;
+  --sakura-text: #a8475c;
+  --rule: rgba(28, 26, 23, 0.16);
+  --rule-strong: rgba(28, 26, 23, 0.42);
+  --shadow: rgba(28, 26, 23, 0.14);
+  --paper-veil: rgba(244, 239, 230, 0.86);
+  --card-bg: rgba(236, 229, 216, 0.55);
+  --on-accent: #f4efe6;
+
+  /* Atmosphere */
+  --grain-opacity: 0.05;
+  --grain-img: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --star-opacity: 0;
+  --slot-stars: none;
+  --vignette: none;
+  color-scheme: light;
+
+  /* Type: families */
+  --font-display: "Instrument Serif", "Noto Serif Devanagari", "Noto Serif Gujarati", Georgia, serif;
+  --font-text: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type: scale 12/14/16/18/24/32/48/72 */
+  --fs-12: 0.75rem;
+  --fs-14: 0.875rem;
+  --fs-16: 1rem;
+  --fs-18: 1.125rem;
+  --fs-24: 1.5rem;
+  --fs-32: 2rem;
+  --fs-48: 3rem;
+  --fs-72: 4.5rem;
+  --fs-name: clamp(4rem, min(8vw + 2rem, 18svh), 10rem);
+  --fs-numeral: clamp(6rem, 12vw, 9rem);
+
+  /* Space */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2.5rem;
+  --space-7: 4rem;
+  --space-8: 6rem;
+  --space-9: 9rem;
+
+  /* Grid: 12 columns, 1440 max, fluid gutters */
+  --max: 90rem;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --col-gap: clamp(0.75rem, 1.6vw, 1.5rem);
+  --measure: 34rem;
+  --radius: 0.5rem;
+  --hairline: 1px;
+  --hit: 2.75rem;
+  --stage-mobile-h: 55svh;
+
+  /* Motion */
+  --dur-fast: 160ms;
+  --dur: 280ms;
+  --dur-slow: 600ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease: var(--ease-out);
+  --stagger: 40ms;
+
+  /* z-index scale */
+  --z-stage: 0;
+  --z-vignette: 1;
+  --z-content: 2;
+  --z-index-section: 3;
+  --z-slot: 4;
+  --z-stage-mobile: 5;
+  --z-labels: 6;
+  --z-rail: 15;
+  --z-topbar: 20;
+  --z-grain: 90;
+  --z-skip: 100;
+}
+
+:root[data-theme="ink"] {
+  --paper: #0e0f13;
+  --paper-2: #16181e;
+  --ink: #ece7de;
+  --ink-2: #a39d93;
+  --sakura: #f4a7b9;
+  --sakura-text: #f4a7b9;
+  --rule: rgba(236, 231, 222, 0.18);
+  --rule-strong: rgba(236, 231, 222, 0.46);
+  --shadow: rgba(0, 0, 0, 0.5);
+  --paper-veil: rgba(14, 15, 19, 0.82);
+  --card-bg: rgba(22, 24, 30, 0.6);
+  --on-accent: #0e0f13;
+  --grain-img: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --star-opacity: 0.85;
+  --slot-stars: var(--stars);
+  --vignette: radial-gradient(120% 95% at 50% 42%, transparent 52%, rgba(0, 0, 0, 0.55) 100%);
+  color-scheme: dark;
+}
+
+/* Same ink tokens when the system prefers dark and no theme is set (no JS). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --paper: #0e0f13;
+    --paper-2: #16181e;
+    --ink: #ece7de;
+    --ink-2: #a39d93;
+    --sakura: #f4a7b9;
+    --sakura-text: #f4a7b9;
+    --rule: rgba(236, 231, 222, 0.18);
+    --rule-strong: rgba(236, 231, 222, 0.46);
+    --shadow: rgba(0, 0, 0, 0.5);
+    --paper-veil: rgba(14, 15, 19, 0.82);
+    --card-bg: rgba(22, 24, 30, 0.6);
+    --on-accent: #0e0f13;
+    --star-opacity: 0.85;
+    --slot-stars: var(--stars);
+    --vignette: radial-gradient(120% 95% at 50% 42%, transparent 52%, rgba(0, 0, 0, 0.55) 100%);
+    color-scheme: dark;
+  }
+}

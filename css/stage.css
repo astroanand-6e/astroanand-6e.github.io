@@ -1,0 +1,134 @@
+/* Anatomy-plate callouts, projected from 3D anchors by js/stage/labels.js.
+   Ink-colored on paper; flips to paper-colored on ink via the theme tokens. */
+.stage-labels {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  overflow: hidden;
+  --label-fg: var(--ink, #1c1a17);
+  --label-halo: var(--paper, #f4efe6);
+  --label-accent: var(--sakura-text, #a8475c);
+  --leader-draw: 0.55s;
+  --leader-step: 35ms;
+  --label-fade: 0.4s;
+  --ease-draw: var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1));
+}
+
+.stage-labels__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Leader: drawn with stroke-dashoffset (pathLength is normalised to 1). */
+.stage-leader {
+  color: var(--label-fg);
+}
+
+.stage-leader polyline {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.75;
+  stroke-linejoin: round;
+  stroke-dasharray: 1.05;
+  stroke-dashoffset: 1.05;
+  opacity: 0.85;
+  transition: stroke-dashoffset 0.18s ease-in, opacity 0.18s ease-in;
+}
+
+.stage-leader circle {
+  fill: currentColor;
+  stroke: none;
+  opacity: 0;
+  transition: opacity 0.15s ease-in;
+}
+
+.stage-leader.is-on polyline {
+  stroke-dashoffset: 0;
+  transition:
+    stroke-dashoffset var(--leader-draw) var(--ease-draw) calc(var(--i, 0) * var(--leader-step)),
+    opacity 0.2s ease-out calc(var(--i, 0) * var(--leader-step));
+}
+
+.stage-leader.is-on circle {
+  opacity: 1;
+  transition: opacity 0.2s ease-out calc(var(--i, 0) * var(--leader-step) + var(--leader-draw) * 0.8);
+}
+
+.stage-leader.is-hot polyline {
+  stroke-width: 1.25;
+  opacity: 1;
+}
+
+/* Label: Geist Mono 11px caps with a small index number, sitting on its rule. */
+.stage-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.7em;
+  padding: 0 0 4px;
+  font-family: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--label-fg);
+  text-shadow:
+    0 0 3px var(--label-halo),
+    0 0 7px var(--label-halo);
+  opacity: 0;
+  filter: blur(1.5px);
+  transition: opacity 0.15s ease-in, filter 0.15s ease-in;
+  will-change: transform, opacity;
+}
+
+.stage-label__n {
+  font-size: 0.82em;
+  letter-spacing: 0.04em;
+  color: var(--label-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Labels fade up once their leader has been drawn (leader time + stagger). */
+.stage-label.is-on {
+  opacity: 1;
+  filter: none;
+  transition:
+    opacity var(--label-fade) var(--ease-draw) calc(var(--i, 0) * var(--leader-step) + var(--leader-draw) * 0.7),
+    filter var(--label-fade) var(--ease-draw) calc(var(--i, 0) * var(--leader-step) + var(--leader-draw) * 0.7);
+}
+
+.stage-label.is-hot {
+  text-shadow:
+    0 0 3px var(--label-halo),
+    0 0 7px var(--label-halo),
+    0 0 1px currentColor;
+}
+
+@media (max-width: 640px) {
+  .stage-label {
+    font-size: 10px;
+    gap: 0.55em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-label,
+  .stage-label.is-on,
+  .stage-leader polyline,
+  .stage-leader.is-on polyline,
+  .stage-leader circle,
+  .stage-leader.is-on circle {
+    transition: none;
+  }
+
+  .stage-label {
+    filter: none;
+  }
+}
