@@ -1,48 +1,47 @@
-// The desk: a light-oak desk with the four figures and Anand, on a specimen floor base (units: 1 = 10 cm).
+// The desk: four figures resting on a thin specimen plinth (units: 1 = 10 cm).
 import * as THREE from 'three';
 import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
 import { create as createFlx4 } from './ddj-flx4.js';
 import { create as createMacbook } from './macbook.js';
 import { create as createDualsense } from './dualsense.js';
 import { create as createMic } from './mic.js';
-import { create as createCharacter } from './character.js';
 
 const PLINTH_T = 0.15;
+const PLINTH_MARGIN = 0.55;
 const PLINTH_RADIUS = 0.6;
 const PLINTH_BEVEL = 0.03;
 const PLINTH_FLOAT = 0.2;
 const INSET_GAP = 0.3;
 const INSET_LIFT = 0.003;
 const PLINTH_COLORS = { paper: 0xece5d8, ink: 0x16181e };
-const OAK = { paper: 0xd9c4a3, ink: 0xa8906f };
-const LEG_COLOR = 0x2b2b30;
-const STOOL_COLOR = 0x3a3b42;
 const SHADOW_PAD = 1.1;
-const HALF_PI = Math.PI / 2;
-// Layout is authored in "content" space: floor at y = 0, desk long axis along x, camera side at +z.
-const LAYOUT_YAW = 0.5;
-const DESK = { x0: -3.4, x1: 8.6, z0: -2.8, z1: 2.8, top: 6.8, thick: 0.28, leg: 0.2, inset: 0.35, radius: 0.3, bevel: 0.04 };
-const STOOL = { x: -5.3, z: 0, seat: 3.98, radius: 1.5, seatThick: 0.3, pole: 0.18, base: 1.25 };
-const PLINTH_RECT = { x0: -7.4, x1: 9.5, z0: -5.5, z1: 3.8 };
+const SIDE_DEAD_ZONE = 0.05;
+const CABLE_R = 0.03;
+const CABLE_SEGMENTS = 56;
+const PLUG = { w: 0.14, h: 0.11, d: 0.14, y: 0.28 };
+const PORT_INSET = 0.75;
+// Half the FLX4 chassis depth (DEPTH 2.72 in ddj-flx4.js). Its bounding box also
+// holds the USB cable, which sticks out past the rear panel.
+const FLX4_HALF_DEPTH = 1.36;
 const PLACEMENTS = {
-  flx4: { x: 4.6, z: -0.1, yaw: Math.PI },
-  macbook: { x: -1.4, z: 0.2, yaw: -0.7 },
-  dualsense: { x: 1.3, z: 1.5, yaw: -0.3 },
-  mic: { x: 1.1, z: -1.9, yaw: 0 },
+  flx4: { x: 0, z: 0.9, yaw: 0 },
+  macbook: { x: -2.4, z: -1.65, yaw: 0.35 },
+  dualsense: { x: 3.9, z: 2.0, yaw: -0.44 },
+  mic: { x: 3.7, z: -1.2, yaw: 0 },
 };
-const SPOTS = {
-  seat: { x: -5.25, z: 0, yaw: HALF_PI },
-  stand: { x: 4.6, z: -3.75, yaw: 0.45 },
-  speak: { x: 1.1, z: -3.75, yaw: 0.35 },
-};
-const STAND_ENVELOPE = { w: 3.4, h: 16.4, d: 3.2 };
-const KEYS = { left: [-0.8, 0.14, -0.3], right: [0.8, 0.14, -0.3] };
-const JOG = [-1.54, 0.8, -0.19];
-const FADER = { x: 0.22, y: 0.75, z: 1.17 };
-const MIC_HEAD = [0, 2.3, 0.2];
-const CREASE = 0.7;
+const DESK_ANCHORS = [
+  'jog wheel',
+  '16 performance pads',
+  '3-band eq',
+  'crossfader',
+  'm5 pro · 14 in',
+  'game library / code',
+  'light bar',
+  'dynamic mic',
+];
 const SPREAD = 0.12;
 const EXPLODE_RATE = 7;
+const CREASE = 0.7;
 const FALLBACK = { dark: 0x2b2825, ink: 0x1c1a17, white: 0xfbfaf5, silver: 0xc7cacc, paper: 0xf4efe6, sakura: 0xd47589 };
 
 function makeExploder(parts) {
@@ -78,16 +77,27 @@ function makeKit(ctx) {
     if (typeof mats?.makeOutline === 'function') mats.makeOutline(mesh, deg);
     return mesh;
   };
+  const lines = (geometry) => {
+    if (!mats?.line) return null;
+    const segments = new THREE.LineSegments(geometry, mats.line);
+    segments.raycast = () => {};
+    segments.userData.isOutline = true;
+    return segments;
+  };
   const addPart = (parent, parts, obj, label, pos, explode) => {
     obj.position.copy(pos);
     const offset = Array.isArray(explode) ? explode : [pos.x * SPREAD, explode, pos.z * SPREAD];
-    if (mark) mark(obj, { explode: offset, label });
-    else Object.assign(obj.userData, { home: pos.clone(), explode: new THREE.Vector3(...offset), label });
+    if (mark) {
+      mark(obj, { explode: offset, label });
+    } else {
+      Object.assign(obj.userData, { home: pos.clone(), explode: new THREE.Vector3(...offset), label });
+    }
     parent.add(obj);
     parts.push(obj);
     return obj;
   };
-  return { owned, mat, outline, addPart, exploder: (parts) => (mark ? () => {} : makeExploder(parts)) };
+  const exploder = (parts) => (mark ? () => {} : makeExploder(parts));
+  return { owned, mat, outline, lines, addPart, exploder };
 }
 
 function disposeAll(group, owned) {
@@ -131,8 +141,9 @@ function slab(w, h, d, radius, bevel) {
   return smooth;
 }
 
+
 // Hairline frame inset from the plinth edge, like a specimen plate border.
-function buildInsetFrame(w, d, lineMaterial) {
+function buildInsetFrame(kit, w, d, lineMaterial) {
   if (!lineMaterial) return null;
   const outline = roundedRect(w - 2 * INSET_GAP, d - 2 * INSET_GAP, Math.max(PLINTH_RADIUS - INSET_GAP, 0.1));
   const points = outline.getPoints(10).map((p) => new THREE.Vector3(p.x, PLINTH_T + INSET_LIFT, p.y));
@@ -142,121 +153,103 @@ function buildInsetFrame(w, d, lineMaterial) {
   return frame;
 }
 
-// Slim oak top on four thin dark legs, plus a round stool; everything sits on the floor (y = 0).
-function buildFurniture(kit, oakMat) {
-  const furniture = new THREE.Group();
-  furniture.name = 'furniture';
-  const width = DESK.x1 - DESK.x0;
-  const depth = DESK.z1 - DESK.z0;
-  const top = new THREE.Mesh(slab(width, DESK.thick, depth, DESK.radius, DESK.bevel), oakMat);
-  top.position.set((DESK.x0 + DESK.x1) / 2, DESK.top - DESK.thick, (DESK.z0 + DESK.z1) / 2);
-  kit.outline(top);
-  furniture.add(top);
-  const legMat = kit.mat('ink', LEG_COLOR);
-  const legH = DESK.top - DESK.thick;
-  const legGeo = new THREE.BoxGeometry(DESK.leg, legH, DESK.leg);
-  [DESK.x0 + DESK.inset, DESK.x1 - DESK.inset].forEach((x) => {
-    [DESK.z0 + DESK.inset, DESK.z1 - DESK.inset].forEach((z) => {
-      const leg = new THREE.Mesh(legGeo, legMat);
-      leg.position.set(x, legH / 2, z);
-      kit.outline(leg);
-      furniture.add(leg);
-    });
-  });
-  const stoolMat = kit.mat('ink', STOOL_COLOR);
-  const stool = new THREE.Group();
-  stool.position.set(STOOL.x, 0, STOOL.z);
-  const parts = [
-    [new THREE.CylinderGeometry(STOOL.radius, STOOL.radius, STOOL.seatThick, 40), STOOL.seat - STOOL.seatThick / 2],
-    [new THREE.CylinderGeometry(STOOL.pole, STOOL.pole, STOOL.seat - STOOL.seatThick, 16), (STOOL.seat - STOOL.seatThick) / 2],
-    [new THREE.CylinderGeometry(STOOL.base, STOOL.base, 0.14, 40), 0.07],
-  ];
-  parts.forEach(([geo, y]) => {
-    const mesh = new THREE.Mesh(geo, stoolMat);
-    mesh.position.y = y;
-    kit.outline(mesh);
-    stool.add(mesh);
-  });
-  furniture.add(stool);
-  return furniture;
+function placeFigures(group, figures) {
+  const bounds = new THREE.Box3();
+  for (const [key, fig] of Object.entries(figures)) {
+    const { x, z, yaw } = PLACEMENTS[key];
+    fig.group.position.set(x, 0, z);
+    fig.group.rotation.y = yaw;
+    group.add(fig.group);
+  }
+  group.updateMatrixWorld(true);
+  for (const fig of Object.values(figures)) bounds.expandByObject(fig.group, true);
+  return bounds;
 }
 
-// Hand, gaze and seat targets for the character, in content space (the parent of every figure).
-function buildEnv(content, figures) {
-  const at = (fig, local) => new THREE.Vector3(...local).applyMatrix4(fig.group.matrix);
-  const screenPart = figures.macbook.parts.find((p) => p.userData.label === 'game library / code');
-  const screen = new THREE.Box3().setFromObject(screenPart).getCenter(new THREE.Vector3());
-  content.worldToLocal(screen);
-  return {
-    spots: SPOTS,
-    keys: { left: at(figures.macbook, KEYS.left), right: at(figures.macbook, KEYS.right) },
-    screen,
-    mic: at(figures.mic, MIC_HEAD),
-    mixer: {
-      jog: at(figures.flx4, JOG),
-      fader: (fade) => at(figures.flx4, [(fade - 0.5) * 2 * FADER.x, FADER.y, FADER.z]),
-    },
-    controller: figures.dualsense.group,
-  };
+function boxOf(fig) {
+  return new THREE.Box3().setFromObject(fig.group, true);
+}
+
+// XLR cable lying on the plinth from the mic base, curving behind the FLX4 into its rear panel.
+function buildCable(kit, matTop, flxBox, micBox) {
+  const portX = flxBox.max.x - PORT_INSET;
+  const back = Math.max(flxBox.min.z, PLACEMENTS.flx4.z - FLX4_HALF_DEPTH);
+  const micZ = (micBox.min.z + micBox.max.z) / 2;
+  const rest = matTop + CABLE_R;
+  const p = (x, y, z) => new THREE.Vector3(x, y, z);
+  const curve = new THREE.CatmullRomCurve3([
+    p(micBox.min.x + 0.06, matTop + 0.05, micZ),
+    p(micBox.min.x - 0.3, rest, micZ + 0.05),
+    p(micBox.min.x - 0.9, rest, micZ - 0.4),
+    p(portX + 0.5, rest, back - 0.75),
+    p(portX + 0.1, rest, back - 0.5),
+    p(portX, matTop + 0.14, back - 0.3),
+    p(portX, matTop + PLUG.y, back - 0.1),
+  ], false, 'centripetal');
+  const cable = new THREE.Group();
+  cable.add(new THREE.Mesh(new THREE.TubeGeometry(curve, CABLE_SEGMENTS, CABLE_R, 8), kit.mat('ink')));
+  const plug = new THREE.Mesh(new THREE.BoxGeometry(PLUG.w, PLUG.h, PLUG.d), kit.mat('silver'));
+  plug.position.set(portX, matTop + PLUG.y, back - PLUG.d / 2 + 0.005);
+  kit.outline(plug);
+  cable.add(plug);
+  return cable;
+}
+
+function pickAnchors(figures, rootGroup) {
+  const split = figures.flx4.group.position.x;
+  const wanted = new Map(DESK_ANCHORS.map((label, index) => [label, index]));
+  const found = Object.values(figures).flatMap((fig) => fig.anchors.filter((a) => wanted.has(a.label)));
+  found.sort((a, b) => wanted.get(a.label) - wanted.get(b.label));
+  rootGroup.updateMatrixWorld(true);
+  const world = new THREE.Vector3();
+  return found.map((anchor) => {
+    anchor.object3D.getWorldPosition(world);
+    return { ...anchor, side: world.x < split - SIDE_DEAD_ZONE ? 'left' : 'right' };
+  });
 }
 
 export function create(ctx) {
   const kit = makeKit(ctx);
   const group = new THREE.Group();
   group.name = 'desk';
-  const layout = new THREE.Group();
-  layout.rotation.y = LAYOUT_YAW;
-  const content = new THREE.Group();
-  const plinthW = PLINTH_RECT.x1 - PLINTH_RECT.x0;
-  const plinthD = PLINTH_RECT.z1 - PLINTH_RECT.z0;
-  content.position.set(-(PLINTH_RECT.x0 + PLINTH_RECT.x1) / 2, PLINTH_FLOAT + PLINTH_T, -(PLINTH_RECT.z0 + PLINTH_RECT.z1) / 2);
-  layout.add(content);
-  group.add(layout);
-
-  let theme = ctx?.materials?.theme === 'ink' ? 'ink' : 'paper';
-  const oakMat = kit.mat('paper', OAK[theme]);
-  content.add(buildFurniture(kit, oakMat));
-
+  const parts = [];
   const builders = { flx4: createFlx4, macbook: createMacbook, dualsense: createDualsense, mic: createMic };
   const figures = Object.fromEntries(Object.entries(builders).map(([key, build]) => [key, build(ctx)]));
-  for (const [key, fig] of Object.entries(figures)) {
-    const { x, z, yaw } = PLACEMENTS[key];
-    fig.group.position.set(x, DESK.top, z);
-    fig.group.rotation.y = yaw;
-    fig.group.updateMatrix();
-    content.add(fig.group);
+
+  const bounds = placeFigures(group, figures);
+  const center = bounds.getCenter(new THREE.Vector3());
+  const plinthW = bounds.max.x - bounds.min.x + 2 * PLINTH_MARGIN;
+  const plinthD = bounds.max.z - bounds.min.z + 2 * PLINTH_MARGIN;
+  const matTop = PLINTH_FLOAT + PLINTH_T;
+  for (const fig of Object.values(figures)) {
+    fig.group.position.set(fig.group.position.x - center.x, matTop, fig.group.position.z - center.z);
   }
   group.updateMatrixWorld(true);
 
-  const character = createCharacter(ctx, buildEnv(content, figures));
-  content.add(character.group);
-  // Invisible envelope of the tallest pose (standing), so the stage frames the character in every activity.
-  const envelope = new THREE.Mesh(new THREE.BoxGeometry(STAND_ENVELOPE.w, STAND_ENVELOPE.h, STAND_ENVELOPE.d));
-  envelope.visible = false;
-  envelope.raycast = () => {};
-  envelope.position.set(SPOTS.stand.x, STAND_ENVELOPE.h / 2, SPOTS.stand.z);
-  content.add(envelope);
-
-  const parts = [];
-  const plinth = new THREE.Mesh(slab(plinthW, PLINTH_T, plinthD, PLINTH_RADIUS, PLINTH_BEVEL), kit.mat('paper', PLINTH_COLORS[theme]));
+  let theme = ctx?.materials?.theme === 'ink' ? 'ink' : 'paper';
+  const plinthMat = kit.mat('paper', PLINTH_COLORS[theme]);
+  const plinth = new THREE.Mesh(slab(plinthW, PLINTH_T, plinthD, PLINTH_RADIUS, PLINTH_BEVEL), plinthMat);
   kit.outline(plinth);
-  const frame = buildInsetFrame(plinthW, plinthD, ctx?.materials?.line);
+  const frame = buildInsetFrame(kit, plinthW, plinthD, ctx?.materials?.line);
   if (frame) plinth.add(frame);
-  kit.addPart(layout, parts, plinth, 'specimen plinth', new THREE.Vector3(0, PLINTH_FLOAT, 0), [0, 0, 0]);
-  const deskParts = [plinth];
+  kit.addPart(group, parts, plinth, 'specimen plinth', new THREE.Vector3(0, PLINTH_FLOAT, 0), [0, 0, 0]);
+
+  const cable = buildCable(kit, matTop, boxOf(figures.flx4), boxOf(figures.mic));
+  kit.addPart(group, parts, cable, 'xlr cable', new THREE.Vector3(), [0, 0.6, 0]);
+
+  const deskParts = [plinth, cable];
   for (const fig of Object.values(figures)) parts.push(...fig.parts);
   parts.sort((a, b) => a.userData.explode.y - b.userData.explode.y);
+  const anchors = pickAnchors(figures, group);
   const explode = kit.exploder(deskParts);
 
   function update(dt, state) {
     for (const fig of Object.values(figures)) fig.update(dt, state);
-    if (OAK[state?.theme] && state.theme !== theme) {
+    if (PLINTH_COLORS[state?.theme] && state.theme !== theme) {
       theme = state.theme;
-      oakMat.color.setHex(OAK[theme]);
-      plinth.material.color.setHex(PLINTH_COLORS[theme]);
+      plinthMat.color.setHex(PLINTH_COLORS[theme]);
     }
     explode(dt, state);
-    character.update(dt, state);
   }
 
   function onPick(part) {
@@ -268,14 +261,12 @@ export function create(ctx) {
 
   function dispose() {
     for (const fig of Object.values(figures)) {
-      content.remove(fig.group);
+      group.remove(fig.group);
       fig.dispose();
     }
-    character.dispose();
-    envelope.geometry.dispose();
     disposeAll(group, kit.owned);
   }
 
   group.userData.shadowRadius = (Math.hypot(plinthW, plinthD) / 2) * SHADOW_PAD;
-  return { group, parts, anchors: [], figures, update, onPick, dispose };
+  return { group, parts, anchors, figures, update, onPick, dispose };
 }
