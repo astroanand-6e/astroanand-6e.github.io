@@ -20,9 +20,9 @@
   pointer-events: none;
 }
 .topbar::before {
-  content: ""; position: absolute; inset: 0 0 auto 0; height: 6rem; z-index: -1; pointer-events: none;
-  /* Solid behind the header row so captions scrolling under it don't ghost through. */
-  background: linear-gradient(to bottom, var(--paper) 0%, var(--paper) 40%, color-mix(in srgb, var(--paper) 70%, transparent) 70%, transparent);
+  content: ""; position: absolute; inset: 0 0 auto 0; height: calc(3.75rem + 1.5rem); z-index: -1; pointer-events: none;
+  /* Fully solid through the header row, then a 1.5rem fade so content never ghosts behind it. */
+  background: linear-gradient(to bottom, var(--paper) 0, var(--paper) 3.75rem, transparent 100%);
 }
 .topbar > *, .topbar nav > * { pointer-events: auto; }
 .topbar::after {
@@ -172,3 +172,20 @@ input[type="range"]::-moz-range-track { height: 2px; background: var(--ink-2); }
 input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 1.1rem; height: 1.6rem; margin-top: -0.8rem; border-radius: 2px; background: var(--paper); border: 2px solid var(--sakura-text); transition: transform var(--dur-fast) var(--ease-out); }
 input[type="range"]::-moz-range-thumb { width: 0.9rem; height: 1.4rem; border-radius: 2px; background: var(--paper); border: 2px solid var(--sakura-text); }
 input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.1); }
+
+/* Hero activity control */
+.activity { display: grid; gap: var(--space-1); }
+.activity-label { font-size: var(--fs-12); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.activity-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.seg { display: inline-flex; border: var(--hairline) solid var(--rule-strong); border-radius: 999px; overflow: hidden; }
+.seg [role="radio"], .seg-auto {
+  min-height: var(--hit); min-width: var(--hit); padding: 0 var(--space-4); background: transparent; color: var(--ink);
+  border: 0; font: 500 var(--fs-14)/1 var(--font-text); cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+.seg [role="radio"] + [role="radio"] { border-left: var(--hairline) solid var(--rule); }
+.seg [role="radio"]:hover { color: var(--sakura-text); }
+.seg [role="radio"][aria-checked="true"] { background: var(--sakura-text); color: var(--on-accent); }
+.seg-auto { border: var(--hairline) solid var(--rule-strong); border-radius: 999px; font: 500 var(--fs-12)/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.seg-auto[aria-pressed="true"] { border-color: var(--sakura-text); color: var(--sakura-text); }
+.seg [role="radio"]:focus-visible, .seg-auto:focus-visible { outline: 2px solid var(--sakura-text); outline-offset: -2px; }

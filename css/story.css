@@ -26,6 +26,8 @@ html[data-zone="index"] .stage-labels, html[data-zone="index"] .rail { opacity: 
   font-variant-numeric: tabular-nums;
 }
 
+html[data-zone="index"] [data-stage-slot]::after { opacity: 0; visibility: hidden; }
+
 /* Hero */
 .hero { position: relative; z-index: var(--z-content); display: flex; align-items: center; min-height: 100svh; padding: 4.75rem 0 var(--space-5); }
 .hero-grid { align-items: center; min-height: calc(100svh - 7.5rem); }

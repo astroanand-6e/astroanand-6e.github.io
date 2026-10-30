@@ -12,7 +12,7 @@ import { createLife } from './life.js';
 import { createDprGovernor } from './perf.js';
 import { createSlots, fitRect } from './slots.js';
 import { createStationLoader } from './station-loader.js';
-import { STATIONS, stationIndex, viewForChapter, readChapter } from './stations.js';
+import { STATIONS, stationIndex, viewForChapter, readChapter, hasLabels } from './stations.js';
 import { CriticalSpring, createDragTurn, YAW_LIMIT } from './motion.js';
 
 const MAX_DT = 0.05;
@@ -185,7 +185,7 @@ export function startStage({ canvas, theme = 'paper' }) {
     const view = slots.view();
     if (activeIndex >= 0 && (record || hasFramed)) {
       resolveFocus(record);
-      rig.setTarget(focus, fitRect(slot, view, labels.columnWidth()), size);
+      rig.setTarget(focus, fitRect(slot, view, labels.columnWidth(), hasLabels(STATIONS[activeIndex])), size);
       silhouetteRadius.target = rig.extent().halfW * rig.pixelsPerUnit();
       if (!hasFramed) silhouetteRadius.snap();
       hasFramed = true;
@@ -209,6 +209,15 @@ export function startStage({ canvas, theme = 'paper' }) {
     canvas.style.cursor = hoverPart ? 'pointer' : '';
   }
 
+  /** A station that missed an activity change (not loaded yet) gets it once on its first update. */
+  function replayActivity(record) {
+    if (record.def.id !== 'desk' || record.seenActivity === state.controls.activity) return;
+    record.seenActivity = state.controls.activity;
+    if (record.seenActivity !== undefined && !state.lastControl) {
+      state.lastControl = { action: 'activity', value: record.seenActivity };
+    }
+  }
+
   function updateStations(dt) {
     partSystem.beginFrame();
     records.forEach((record) => {
@@ -217,6 +226,7 @@ export function startStage({ canvas, theme = 'paper' }) {
       if (!record.wrapper.visible) return;
       record.floater.position.y = isActive ? life.bob(state.time, record.focus.radius * 2, state.reducedMotion) : 0;
       state.active = isActive;
+      replayActivity(record);
       record.obj.update(dt, state);
     });
     state.lastControl = null;

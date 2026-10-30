@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { STATIONS, importStation } from './stations.js';
+import { STATIONS, importStation, hasLabels } from './stations.js';
 
 const FOCUS_PADDING = 1.08;
 const FADE_INNER = 6;
@@ -57,7 +57,7 @@ export function createStationLoader({ scene, ctx, partSystem, labels, shadows, i
     partSystem.register(def.id, obj.parts || [], pivot, {
       exploded: partSystem.isExploded() || !isReduced(),
     });
-    labels.setStation(def.id, obj.anchors || []);
+    if (hasLabels(def)) labels.setStation(def.id, obj.anchors || []);
     const record = {
       def,
       index,

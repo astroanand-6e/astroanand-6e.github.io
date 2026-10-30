@@ -18,10 +18,13 @@ const OUTSIDE_SLOT_GLOW = 0.14;
 const SLOT_SOFT_EDGE = 0.12;
 const LEFT_RAMP_PX = 80;
 const THREAD_RENDER_ORDER = 1;
-// The thread starts under the desk's controller, slips out of the front-right
-// edge, then trails each station's front corner.
-const DESK_EXIT = [[0.4, 0.5], [1.9, 2.5], [5.2, 2.95], [9, 4.2]];
-const STATION_OFFSET = [2.7, 3.0];
+// The thread never enters geometry: it leaves the desk plinth's front-right
+// corner and passes each station along its front edge, entering and leaving
+// beside the footprint (all footprints sit within STATION_REACH of their
+// origin), so it reads as one signal flowing front-of-stage.
+const DESK_EXIT = [[2.2, 4.9], [6.4, 5.2]];
+const STATION_FRONT_Z = 3.4;
+const STATION_REACH_X = 4.0;
 const COLORS = {
   paper: { thread: 0xcf5472, pulse: 0xe5456c },
   ink: { thread: 0xe58ba0, pulse: 0xffe6ec },
@@ -117,14 +120,19 @@ const FRAGMENT = /* glsl */ `
 
 function buildThread() {
   const points = DESK_EXIT.map(([x, z]) => new THREE.Vector3(x, THREAD_LIFT, z));
+  const midIndex = [];
   STATIONS.slice(1).forEach((s) => {
-    points.push(new THREE.Vector3(s.position[0] + STATION_OFFSET[0], THREAD_LIFT, s.position[2] + STATION_OFFSET[1]));
+    const z = s.position[2] + STATION_FRONT_Z;
+    points.push(new THREE.Vector3(s.position[0] - STATION_REACH_X, THREAD_LIFT, z));
+    midIndex.push(points.length);
+    points.push(new THREE.Vector3(s.position[0], THREAD_LIFT, z));
+    points.push(new THREE.Vector3(s.position[0] + STATION_REACH_X, THREAD_LIFT, z));
   });
   const curve = new THREE.CatmullRomCurve3(points, false, 'centripetal');
   const samples = curve.getSpacedPoints(POINT_COUNT - 1);
   const stationT = STATIONS.map((s, i) => {
     if (i === 0) return 0.02;
-    const target = points[DESK_EXIT.length + i - 1];
+    const target = points[midIndex[i - 1]];
     let best = 0;
     samples.forEach((p, k) => {
       if (p.distanceToSquared(target) < samples[best].distanceToSquared(target)) best = k;

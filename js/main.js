@@ -4,6 +4,7 @@ import { initReveal } from './story/reveal.js';
 import { initRail } from './story/rail.js';
 import { initZone } from './story/zone.js';
 import { initSlotClip } from './story/slot-clip.js';
+import { initActivity } from './story/activity.js';
 
 const THEME_KEY = 'theme';
 const THEMES = Object.freeze({ PAPER: 'paper', INK: 'ink' });
@@ -228,6 +229,7 @@ function init() {
   initReveal();
   initZone();
   initSlotClip();
+  initActivity();
   const launch = () => whenIdle(startStage);
   if (document.readyState === 'complete') launch();
   else window.addEventListener('load', launch, { once: true });

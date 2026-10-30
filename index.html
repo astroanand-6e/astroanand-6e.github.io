@@ -92,7 +92,7 @@
             </figure>
             <h1 id="name" class="hero-name" style="--i:2"><span>Anand</span> <span>Thakkar</span></h1>
             <p class="hero-line" style="--i:3">I build things, then break them to see how they work.</p>
-            <p class="hero-sub" style="--i:4">MS in AI at Northeastern, in Boston. Audio, vision and on-device models.</p>
+            <p class="hero-sub" style="--i:4">MS in AI at Northeastern, in Boston. Audio, vision and on-device models. Off the clock I code, game on Steam and Epic, and practice mixing on a white DDJ-FLX4.</p>
             <p class="status" style="--i:5"><span class="dot" aria-hidden="true"></span>Open to applied AI/ML internships and co-ops</p>
             <ul class="link-row" aria-label="Links" style="--i:6">
               <li><a href="Anand_Resume.pdf">Résumé</a></li>
@@ -101,7 +101,19 @@
               <li><a href="https://www.linkedin.com/in/anand-thakkar" rel="noopener">LinkedIn</a></li>
               <li><a href="mailto:anandthakkar041@gmail.com">Email</a></li>
             </ul>
-            <div class="hero-actions" style="--i:7">
+            <div class="activity" style="--i:7">
+              <span class="activity-label mono" id="activity-label">At the desk</span>
+              <div class="activity-row">
+                <div class="seg" id="activity-group" role="radiogroup" aria-labelledby="activity-label">
+                  <button type="button" role="radio" aria-checked="true" tabindex="0" data-value="coding">Coding</button>
+                  <button type="button" role="radio" aria-checked="false" tabindex="-1" data-value="gaming">Gaming</button>
+                  <button type="button" role="radio" aria-checked="false" tabindex="-1" data-value="mixing">Mixing</button>
+                </div>
+                <button type="button" class="seg-auto mono" id="activity-auto" aria-pressed="true" title="Resume auto-cycling">Auto</button>
+              </div>
+              <p class="sr-only" id="activity-live" aria-live="polite"></p>
+            </div>
+            <div class="hero-actions" style="--i:8">
               <button type="button" id="break-btn" class="btn btn-primary" data-action="break"><svg class="icon-burst" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M8 1.5v13M1.5 8h13M3.4 3.4l9.2 9.2M12.6 3.4l-9.2 9.2"/></svg>Break it</button>
               <a class="cue" href="#heart"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7"/></svg>The story starts with a heartbeat</a>
             </div>

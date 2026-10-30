@@ -99,10 +99,10 @@ export function createSlots(canvas) {
  * The area the object's bounding sphere must fit: the slot minus edge padding,
  * the top bar, and a gutter for the callout columns. Canvas-local coordinates.
  */
-export function fitRect(slot, view, columnPx) {
+export function fitRect(slot, view, columnPx, hasGutter = true) {
   const isNarrow = slot.width < NARROW_SLOT_PX;
   const band = isNarrow ? (NARROW_BAND_ROWS - 1) * NARROW_ROW_PX + NARROW_BAND_GAP_PX : 0;
-  const gutter = isNarrow
+  const gutter = isNarrow || !hasGutter
     ? 0
     : Math.min(columnPx * LABEL_GUTTER_SHARE, slot.width * WIDE_GUTTER_MAX_SHARE);
   const left = slot.left + EDGE_PAD + gutter;

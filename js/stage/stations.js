@@ -1,13 +1,13 @@
 /**
  * Station table and the chapter -> station mapping. Stations sit along +x,
- * 15 units apart; a missing module keeps its slot so the others never shift.
+ * 15 units apart; `labels: false` means the object is self-explanatory: no callouts, no label DOM, no gutter; a missing module keeps its slot so the others never shift.
  */
 export const STATIONS = Object.freeze([
-  { id: 'desk', file: 'desk.js', position: [0, 0, 0] },
+  { id: 'desk', file: 'desk.js', position: [0, 0, 0], labels: false },
   { id: 'ecg-monitor', file: 'ecg-monitor.js', position: [15, 0, -7] },
   { id: 'c-arm', file: 'c-arm.js', position: [30, 0, 1] },
   { id: 'conveyor', file: 'conveyor.js', position: [45, 0, -7] },
-  { id: 'ddj-flx4', file: 'ddj-flx4.js', position: [60, 0, 1] },
+  { id: 'ddj-flx4', file: 'ddj-flx4.js', position: [60, 0, 1], labels: false },
   { id: 'calm-machine', file: 'calm-machine.js', position: [75, 0, -7] },
 ]);
 
@@ -55,4 +55,9 @@ export function readChapter() {
   const all = Array.from(document.querySelectorAll('[data-chapter]'));
   const active = document.querySelector('[data-chapter].is-active');
   return { id: active ? active.dataset.chapter : 'hero', index: Math.max(0, all.indexOf(active)) };
+}
+
+/** True unless the station opts out of callouts with `labels: false`. */
+export function hasLabels(def) {
+  return !def || def.labels !== false;
 }
