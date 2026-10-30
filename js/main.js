@@ -5,6 +5,7 @@ import { initRail } from './story/rail.js';
 import { initZone } from './story/zone.js';
 import { initSlotClip } from './story/slot-clip.js';
 import { initActivity } from './story/activity.js';
+import { resonate } from './story/resonance.js';
 
 const THEME_KEY = 'theme';
 const THEMES = Object.freeze({ PAPER: 'paper', INK: 'ink' });
@@ -55,6 +56,7 @@ const REVEAL_MS = Object.freeze({ ink: 600, paper: 480 });
 const SWITCHING_CLASS = 'theme-switching';
 const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 let themeTransition = null;
+let themeResonance = null;
 
 function revealOrigin() {
   const toggle = document.getElementById('theme-toggle');
@@ -64,12 +66,13 @@ function revealOrigin() {
 }
 
 function setRevealVars(theme) {
-  const { x, y } = revealOrigin();
-  const reach = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-  root.style.setProperty('--vt-x', `${Math.round(x)}px`);
-  root.style.setProperty('--vt-y', `${Math.round(y)}px`);
+  const origin = revealOrigin();
+  const reach = Math.hypot(Math.max(origin.x, window.innerWidth - origin.x), Math.max(origin.y, window.innerHeight - origin.y));
+  root.style.setProperty('--vt-x', `${Math.round(origin.x)}px`);
+  root.style.setProperty('--vt-y', `${Math.round(origin.y)}px`);
   root.style.setProperty('--vt-max', `${Math.ceil(reach)}px`);
   root.style.setProperty('--vt-dur', `${REVEAL_MS[theme]}ms`);
+  return { origin, reach, durationMs: REVEAL_MS[theme] };
 }
 
 function setTheme(next) {
@@ -80,10 +83,15 @@ function setTheme(next) {
   }
   // A second click mid-reveal jumps to the end instead of stacking reveals.
   if (themeTransition) themeTransition.skipTransition();
-  setRevealVars(next);
+  if (themeResonance) themeResonance.cancel();
+  const wave = setRevealVars(next);
   root.classList.add(SWITCHING_CLASS);
   const transition = document.startViewTransition(commit);
   themeTransition = transition;
+  // The new view is live once ready, so ripples and kicks show behind the front.
+  transition.ready.then(() => {
+    if (themeTransition === transition) themeResonance = resonate(wave);
+  }).catch(() => {});
   transition.finished.finally(() => {
     if (themeTransition !== transition) return;
     root.classList.remove(SWITCHING_CLASS);

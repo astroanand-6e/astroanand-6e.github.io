@@ -62,6 +62,12 @@ html.theme-switching[data-theme="paper"] body::before { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-new(root) { animation: none; -webkit-mask-image: none; mask-image: none; }
 }
+/* Ripples trailing the wavefront (js/story/resonance.js). */
+.theme-ripple { position: fixed; inset: 0; z-index: calc(var(--z-grain) - 1); overflow: hidden; pointer-events: none; }
+.theme-ripple i {
+  position: absolute; left: var(--rip-x); top: var(--rip-y); width: var(--rip-d); height: var(--rip-d);
+  border: 1.5px solid var(--sakura); border-radius: 50%; opacity: 0; will-change: transform, opacity;
+}
 
 body::after {
   content: "";

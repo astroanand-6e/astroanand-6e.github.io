@@ -6,6 +6,11 @@ const MAX_PITCH = THREE.MathUtils.degToRad(2);
 const PARALLAX_SMOOTH_SECONDS = 0.45;
 const FLOAT_FRACTION = 0.005;
 const FLOAT_RADIANS_PER_SECOND = 1.15;
+// Theme-switch resonance: a damped bounce when the wavefront reaches the stage.
+const KICK_FRACTION = 0.014;
+const KICK_RADIANS_PER_SECOND = 15;
+const KICK_DECAY_PER_SECOND = 5.5;
+const KICK_SECONDS = 1.2;
 
 /**
  * Idle life: pointer parallax (camera yaw +-4deg, pitch +-2deg through a
@@ -30,8 +35,20 @@ export function createLife() {
     pitch.target = 0;
   }
 
+  let kickAt = -Infinity;
+  function onWave(event) {
+    kickAt = performance.now() + ((event.detail && event.detail.delayMs) || 0);
+  }
+
+  function kickOffset(size) {
+    const since = (performance.now() - kickAt) / 1000;
+    if (since <= 0 || since >= KICK_SECONDS) return 0;
+    return -Math.sin(since * KICK_RADIANS_PER_SECOND) * Math.exp(-since * KICK_DECAY_PER_SECOND) * size * KICK_FRACTION;
+  }
+
   window.addEventListener('pointermove', onMove, { passive: true });
   document.documentElement.addEventListener('pointerleave', onLeave);
+  window.addEventListener('theme-wave', onWave);
 
   return {
     /** Returns { yaw, pitch } in radians (a reused object). */
@@ -49,9 +66,11 @@ export function createLife() {
     },
     /** Vertical bob offset (scene units) for an object of the given size. */
     bob(time, size, isReducedMotion) {
-      return isReducedMotion ? 0 : Math.sin(time * FLOAT_RADIANS_PER_SECOND) * size * FLOAT_FRACTION;
+      if (isReducedMotion) return 0;
+      return Math.sin(time * FLOAT_RADIANS_PER_SECOND) * size * FLOAT_FRACTION + kickOffset(size);
     },
     dispose() {
+      window.removeEventListener('theme-wave', onWave);
       window.removeEventListener('pointermove', onMove);
       document.documentElement.removeEventListener('pointerleave', onLeave);
     },
