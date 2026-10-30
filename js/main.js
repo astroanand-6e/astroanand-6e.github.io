@@ -50,9 +50,49 @@ function applyTheme(theme, { persist, notify }) {
   if (notify) emit('theme', { theme });
 }
 
+// Ink spreads out from the switch like ink into paper; paper returns a touch faster.
+const REVEAL_MS = Object.freeze({ ink: 600, paper: 480 });
+const SWITCHING_CLASS = 'theme-switching';
+const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+let themeTransition = null;
+
+function revealOrigin() {
+  const toggle = document.getElementById('theme-toggle');
+  if (!toggle) return { x: window.innerWidth, y: 0 };
+  const box = toggle.getBoundingClientRect();
+  return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+}
+
+function setRevealVars(theme) {
+  const { x, y } = revealOrigin();
+  const reach = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+  root.style.setProperty('--vt-x', `${Math.round(x)}px`);
+  root.style.setProperty('--vt-y', `${Math.round(y)}px`);
+  root.style.setProperty('--vt-max', `${Math.ceil(reach)}px`);
+  root.style.setProperty('--vt-dur', `${REVEAL_MS[theme]}ms`);
+}
+
+function setTheme(next) {
+  const commit = () => applyTheme(next, { persist: true, notify: true });
+  if (typeof document.startViewTransition !== 'function' || motionQuery.matches) {
+    commit();
+    return;
+  }
+  // A second click mid-reveal jumps to the end instead of stacking reveals.
+  if (themeTransition) themeTransition.skipTransition();
+  setRevealVars(next);
+  root.classList.add(SWITCHING_CLASS);
+  const transition = document.startViewTransition(commit);
+  themeTransition = transition;
+  transition.finished.finally(() => {
+    if (themeTransition !== transition) return;
+    root.classList.remove(SWITCHING_CLASS);
+    themeTransition = null;
+  });
+}
+
 function toggleTheme() {
-  const next = root.dataset.theme === THEMES.INK ? THEMES.PAPER : THEMES.INK;
-  applyTheme(next, { persist: true, notify: true });
+  setTheme(root.dataset.theme === THEMES.INK ? THEMES.PAPER : THEMES.INK);
 }
 
 function initTheme() {

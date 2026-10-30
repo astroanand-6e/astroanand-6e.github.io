@@ -54,8 +54,9 @@
 .fader { position: relative; display: inline-flex; align-items: center; width: 3rem; height: 1.5rem; padding: 0; border: var(--hairline) solid var(--rule-strong); border-radius: 3px; background: var(--paper-2); }
 .fader::after { content: ""; position: absolute; inset: -0.625rem -0.25rem; }
 .fader-ticks { position: absolute; inset: 0.3rem 0.4rem; background: repeating-linear-gradient(90deg, var(--rule) 0 1px, transparent 1px 0.5rem); }
-.fader-knob { position: absolute; top: 2px; bottom: 2px; left: 2px; width: 1rem; border-radius: 2px; background: var(--ink); transition: transform var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out); }
+.fader-knob { position: absolute; top: 2px; bottom: 2px; left: 2px; width: 1rem; border-radius: 2px; background: var(--ink); transition: transform var(--dur) var(--ease-out), scale var(--dur-fast) var(--ease-out), background-color var(--dur) var(--ease-out); }
 .fader:hover .fader-knob { background: var(--sakura-text); }
+.fader:active .fader-knob { scale: 0.9; }
 .fader[aria-checked="true"] .fader-knob { transform: translateX(1.5rem); background: var(--sakura); }
 
 /* Chapter rail (desktop) */

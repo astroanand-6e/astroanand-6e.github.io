@@ -44,6 +44,25 @@ body::before {
   opacity: var(--star-opacity);
   transition: opacity var(--dur) var(--ease-out);
 }
+
+/* Theme switch: the new theme spreads from the crossfader with a soft, inky edge.
+   js/main.js sets --vt-x/--vt-y (switch centre), --vt-max (farthest corner) and --vt-dur. */
+@property --vt-r { syntax: "<length>"; inherits: false; initial-value: 0px; }
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) {
+  -webkit-mask-image: radial-gradient(circle at var(--vt-x) var(--vt-y), #000 calc(var(--vt-r) * 0.86), transparent var(--vt-r));
+  mask-image: radial-gradient(circle at var(--vt-x) var(--vt-y), #000 calc(var(--vt-r) * 0.86), transparent var(--vt-r));
+  animation: theme-reveal var(--vt-dur, 560ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes theme-reveal { from { --vt-r: 0px; } to { --vt-r: calc(var(--vt-max, 150vmax) * 1.18); } }
+/* Lights out first, then the stars come out; going back to paper they vanish at once. */
+html.theme-switching[data-theme="ink"] body::before { transition: opacity 1100ms 300ms var(--ease-out); }
+html.theme-switching[data-theme="paper"] body::before { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root) { animation: none; -webkit-mask-image: none; mask-image: none; }
+}
+
 body::after {
   content: "";
   position: fixed;
