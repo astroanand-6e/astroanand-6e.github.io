@@ -7,8 +7,8 @@
  */
 
 // Must match the reveal in css/base.css: easing curve and final radius overshoot.
-const REVEAL_EASE = [0.22, 1, 0.36, 1];
-const FRONT_OVERSHOOT = 1.18;
+const REVEAL_EASE = [0.45, 0, 0.25, 1];
+const FRONT_OVERSHOOT = 1.45;
 const EASE_SAMPLES = 120;
 
 const RING_COUNT = 3;

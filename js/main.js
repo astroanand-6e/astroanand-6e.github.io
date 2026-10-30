@@ -52,7 +52,7 @@ function applyTheme(theme, { persist, notify }) {
 }
 
 // Ink spreads out from the switch like ink into paper; paper returns a touch faster.
-const REVEAL_MS = Object.freeze({ ink: 600, paper: 480 });
+const REVEAL_MS = Object.freeze({ ink: 1100, paper: 900 });
 const SWITCHING_CLASS = 'theme-switching';
 const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 let themeTransition = null;
