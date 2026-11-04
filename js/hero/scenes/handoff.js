@@ -15,8 +15,11 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   const burn = createBurn(qs(el, '[data-fx="burn"]'), { scale: opts.glScale, maxDpr: opts.maxDpr, seconds: BURN_FOR });
   track(tl, BURN_AT, BURN_FOR, burn.render, 'power1.inOut');
   beat(tl, beatEl, 3.8);
-  /* Lights back on: the burn layer fades and the hero returns to light (no-op in dark mode). */
+  /* Lights back on: the burn layer fades and the hero returns to light (no-op in dark mode).
+     The desk scene sits under the burn, so hide it once the flames have covered it. */
   const pin = el.closest('.hx-pin') || el;
+  const desk = pin.querySelector('[data-hx-scene="desk"]');
+  if (desk) tl.set(desk, { autoAlpha: 0 }, BURN_AT + BURN_FOR);
   tl.to(qs(el, '[data-fx="burn"]'), { opacity: 0, duration: LIGHTS_ON_FOR, ease: 'power2.inOut' }, LIGHTS_ON_AT);
   tl.fromTo(pin, { '--hx-night': 1 }, { '--hx-night': 0, duration: LIGHTS_ON_FOR, ease: 'power2.inOut', immediateRender: false }, LIGHTS_ON_AT);
   holdUntil(tl, DURATION);

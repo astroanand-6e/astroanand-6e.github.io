@@ -113,21 +113,27 @@ export function createHeroSound(button, cues) {
     return ctx.resume();
   };
 
+  const show = (on) => {
+    button.setAttribute('aria-pressed', String(on));
+    button.setAttribute('aria-label', on ? 'Hero sound on' : 'Hero sound off');
+    button.title = on ? 'Sound on' : 'Sound off';
+  };
+
   const setOn = async (next) => {
     isOn = next;
-    button.setAttribute('aria-pressed', String(isOn));
-    button.textContent = isOn ? 'Sound on' : 'Sound off';
+    show(isOn);
     writePref(isOn);
     if (!isOn) return;
     try { await ensureContext(); } catch (error) {
       console.warn('Hero sound unavailable:', error.message);
-      isOn = false; button.setAttribute('aria-pressed', 'false'); button.textContent = 'Sound off';
+      isOn = false; show(false);
     }
   };
 
   button.addEventListener('click', () => setOn(!isOn));
   /* A saved "on" still needs a gesture before audio can start, so it waits for a tap. */
-  if (readPref()) button.textContent = 'Sound off (tap to resume)';
+  show(false);
+  if (readPref()) button.title = 'Sound off (tap to resume)';
 
   return {
     update(time) {

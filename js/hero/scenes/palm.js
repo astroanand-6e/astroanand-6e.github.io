@@ -12,7 +12,10 @@ const ORBIT_ROLL = -0.2;
 const ORBIT_RADIUS = 22; /* in --u units (1u = about 1svh), so the ring stays the same size on screen */
 const ORBIT_LIFT = 12;
 const ORBIT_TURNS = 2.5;
-const PALM_SHIFT_Y_PCT = 4;
+/* The push frames face and palm together: it scales about the point halfway between his eyes and
+   the palm and nudges the frame down, so his hair stays in shot at every aspect ratio. */
+const PALM_SHIFT_Y_PCT = 12;
+const FRAME_Y_PCT = (EYE_Y_PCT + PALM_Y_PCT) / 2;
 const PORTAL_CENTER = Object.freeze({ x: 0.5, y: 0.55 });
 const TAU = Math.PI * 2;
 const EYE_FIRE_START = Object.freeze({ x: 0.5, y: 0.5 });
@@ -81,7 +84,7 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 1, ease: 'none' }, 0);
   track(tl, 0.8, 1.6, (p) => fire.render(1 - p), 'power2.in');
 
-  cam.style.transformOrigin = `${PALM_X_PCT}% ${PALM_Y_PCT}%`;
+  cam.style.transformOrigin = `${PALM_X_PCT}% ${FRAME_Y_PCT}%`;
   track(tl, 0, DURATION, (p) => {
     const t = p * DURATION;
     const shift = easeInOut(span(t, PUSH.at, PUSH.at + PUSH.for));

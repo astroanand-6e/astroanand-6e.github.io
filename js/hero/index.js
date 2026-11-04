@@ -135,14 +135,19 @@ function exposeDebug(master, scenes, st) {
   };
 }
 
-/* Sound toggle in the pinned frame; cues are placed at each scene's start on the master. */
+const SOUND_ICON = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h3l4-3.5v11L6 12H3z"/><path class="hx-wave" d="M13.5 7.2a4 4 0 0 1 0 5.6M15.8 5a7 7 0 0 1 0 10"/><path class="hx-mute" d="M13.5 7.5l4 5M17.5 7.5l-4 5"/></svg>';
+
+/* Sound toggle sits in the top bar; cues are placed at each scene's start on the master. */
 function mountSound(host, master, scenes) {
   const button = document.createElement('button');
   button.type = 'button';
-  button.className = 'hx-sound';
+  button.className = 'icon-btn hx-sound';
   button.setAttribute('aria-pressed', 'false');
-  button.textContent = 'Sound off';
-  host.querySelector('.hx-pin').append(button);
+  button.setAttribute('aria-label', 'Hero sound off');
+  button.innerHTML = SOUND_ICON;
+  const help = document.getElementById('help-btn');
+  if (help) help.before(button);
+  else host.querySelector('.hx-pin').append(button);
   const cues = scenes
     .flatMap((scene) => (CUES[scene.def.id] || []).map((cue) => ({ at: scene.start + cue.at, play: cue.play })))
     .sort((a, b) => a.at - b.at);

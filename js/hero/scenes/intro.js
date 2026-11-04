@@ -25,7 +25,7 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   const pin = el.closest('.hx-pin') || el;
   tl.fromTo(pin, { '--hx-night': 0 }, { '--hx-night': 1, duration: LIGHTS_OUT_FOR, ease: 'power2.inOut' }, LIGHTS_OUT_AT);
   tl.fromTo(fig, { scale: 1, transformOrigin: '50% 22%' }, { scale: PUSH_INTRO, duration: 9, ease: 'power1.inOut' }, 0);
-  tl.fromTo(name, { scale: 1, yPercent: 0 }, { scale: 1.1, yPercent: -7, duration: 9, ease: 'none' }, 0);
+  tl.fromTo(name, { scale: 1, yPercent: 0 }, { scale: 1.1, yPercent: -3, duration: 9, ease: 'none' }, 0);
   track(tl, 1.2, 3.6, fire.render, 'power2.out');
   fade(tl, cue, 0, 0.4, 1);
   tl.to(foot, { opacity: 0, y: -24, duration: 1.2, ease: 'power1.in' }, 7.4);

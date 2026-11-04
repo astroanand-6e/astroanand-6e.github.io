@@ -34,7 +34,7 @@ export const MOBILE_QUERY = '(max-width: 767.98px)';
 
 /* Camera moves. */
 export const PUSH_INTRO = 1.12;
-export const PUSH_PALM = 2.1;
+export const PUSH_PALM = 1.45;
 
 /* How far ahead of a scene (seconds of timeline) its WebGL context is created and kept. */
 export const WAKE_MARGIN_S = 2;

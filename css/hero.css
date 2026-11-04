@@ -18,14 +18,12 @@
 }
 html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
 
-.hx-sound {
-  position: absolute; z-index: 20; top: calc(var(--topbar-h, 4.25rem) + 0.5rem); right: var(--gutter);
-  min-height: var(--hit); padding: 0 0.9rem; border: var(--hairline) solid var(--rule-strong); border-radius: 999px;
-  background: transparent; color: var(--ink); font: 500 var(--fs-12) / 1 var(--font-mono); letter-spacing: 0.14em;
-  text-transform: uppercase; cursor: pointer; pointer-events: auto;
-}
+/* Sound toggle lives in the top bar beside the help button, so it never sits on hero content. */
+.hx-sound svg { width: 1.05rem; height: 1.05rem; }
+.hx-sound .hx-wave { opacity: 0; transition: opacity var(--dur-fast) ease; }
 .hx-sound[aria-pressed="true"] { border-color: var(--sakura); color: var(--sakura-text); }
-.hx-sound:focus-visible { outline: 2px solid var(--sakura); outline-offset: 3px; }
+.hx-sound[aria-pressed="true"] .hx-wave { opacity: 1; }
+.hx-sound[aria-pressed="true"] .hx-mute { opacity: 0; }
 .hx-scene { position: relative; min-height: 100svh; overflow: hidden; pointer-events: none; }
 .hx-live .hx-pin { height: 100svh; overflow: hidden; }
 .hx-live .hx-scene { position: absolute; inset: 0; min-height: 0; }
@@ -143,6 +141,35 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
   .hx-beat { right: var(--gutter); bottom: 7svh; }
   .nw { white-space: nowrap; }
 .hx-beat-line { font-size: clamp(1.9rem, 9vw, 2.8rem); }
+}
+
+/* Portrait screens (phones, tablets): the 4:3 plates would sit small in a tall frame, so the
+   close-up fades into the sky at its bottom edge and the desk fills the height, cropping the sides. */
+@media (orientation: portrait) {
+  .hx-portrait img {
+    -webkit-mask-image: linear-gradient(#000 66%, transparent 97%);
+    mask-image: linear-gradient(#000 66%, transparent 97%);
+  }
+  /* Fill the frame and crop toward the gear: he sits at ~40% of the shot, the monitor and
+     controller at 60-85%. object-position, because GSAP owns the img's transform. */
+  .hx-desk-plate img { max-width: none; width: 100vw; height: 100svh; aspect-ratio: auto; object-fit: cover; object-position: 62% 45%; }
+}
+/* Small phones: the top bar holds the seal, skip link, blog, sound, help and theme, so the skip
+   link shows only its arrow (its text stays as the accessible name). */
+@media (max-width: 480px) {
+  .topbar .skip-story { font-size: 0; gap: 0; min-width: var(--hit); justify-content: center; }
+  .topbar .skip-story svg { width: 0.9rem; height: 0.9rem; }
+}
+/* Phones show about a third of the desk shot: keep him and the controller, let the monitor crop. */
+@media (orientation: portrait) and (max-width: 600px) {
+  .hx-desk-plate img { object-position: 47% 45%; }
+}
+
+/* Portrait tablets: stack the name like phones so his head sits below it, not across it. */
+@media (orientation: portrait) and (min-width: 768px) {
+  .hx-name { font-size: min(21vw, 15svh); line-height: 0.86; white-space: normal; }
+  .hx-name span { display: block; }
+  .hx-intro .hx-figure { --fig-h: min(66svh, 112vw); }
 }
 
 /* Static layout: no scrubbed VFX. Same scenes, stacked, each fading in once. */
