@@ -43,7 +43,7 @@ html[data-zone="index"] [data-stage-slot]::after { opacity: 0; visibility: hidde
 .hero-line { max-width: 22ch; font: italic clamp(1.5rem, 2.1vw, var(--fs-32))/1.15 var(--font-display); }
 .hero-sub { max-width: 52ch; color: var(--ink-2); font-size: var(--fs-14); }
 .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-5); }
-.hero-slot { grid-column: 6 / -1; grid-row: 1; align-self: stretch; min-height: 60svh; animation: fade 1s var(--ease-out) 0.2s both; }
+.hero-slot { grid-column: 8 / -1; grid-row: 1; align-self: stretch; min-height: 60svh; animation: fade 1s var(--ease-out) 0.2s both; }
 
 /* Story: steps left, one sticky slot right */
 .story-grid { align-items: start; }

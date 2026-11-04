@@ -5,6 +5,7 @@ import { initRail } from './story/rail.js';
 import { initZone } from './story/zone.js';
 import { initSlotClip } from './story/slot-clip.js';
 import { initActivity } from './story/activity.js';
+import { initAvatar } from './story/avatar.js';
 import { initTheme, toggleTheme } from './theme.js';
 
 const GREETING_INTERVAL_MS = 2800;
@@ -182,6 +183,7 @@ function init() {
   initZone();
   initSlotClip();
   initActivity();
+  initAvatar();
   const launch = () => whenIdle(startStage);
   if (document.readyState === 'complete') launch();
   else window.addEventListener('load', launch, { once: true });
