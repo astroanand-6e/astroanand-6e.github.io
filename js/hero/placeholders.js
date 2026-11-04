@@ -72,6 +72,7 @@ export function hydrateImages(root) {
   root.querySelectorAll('img[data-hx-img]').forEach((img) => {
     const name = img.dataset.hxImg;
     img.src = imageUrl(name);
+    img.closest('.hx-figure')?.style.setProperty('--ar', String(ASPECT[name]));
     img.width = Math.round(1200 * Math.min(1, ASPECT[name]));
     img.height = Math.round(img.width / ASPECT[name]);
   });

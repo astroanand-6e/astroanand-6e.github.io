@@ -1,26 +1,26 @@
 /* Hero tuning. Everything a person may want to adjust after the real images land lives here. */
 
 /* Flip a key to true once its file exists in assets/hero/ (a 404 would log a console error). */
-export const REAL_IMAGES = Object.freeze({ stand: false, palm: false, eyes: false, desk: false });
+export const REAL_IMAGES = Object.freeze({ stand: true, palm: true, eyes: true, desk: false });
 
 export const IMAGE_PATH = 'assets/hero/';
 
 /* EYE POSITION on stand.webp, as a percentage of the image box (0,0 = top left). Tune these two. */
-export const EYE_X_PCT = 50;
-export const EYE_Y_PCT = 10.6;
+export const EYE_X_PCT = 48.2;
+export const EYE_Y_PCT = 13.7;
 
 /* Other positions that need the real art: the raised palm on palm.webp, the two eyes on eyes.webp. */
-export const PALM_X_PCT = 31;
-export const PALM_Y_PCT = 47;
-export const CLOSEUP_EYES = Object.freeze([{ x: 36.5, y: 45 }, { x: 63.5, y: 45 }]);
+export const PALM_X_PCT = 46.5;
+export const PALM_Y_PCT = 32.7;
+export const CLOSEUP_EYES = Object.freeze([{ x: 43.5, y: 34.9 }, { x: 56.2, y: 32.8 }]);
 
 /* Image aspect ratios (width / height). */
-export const ASPECT = Object.freeze({ stand: 2 / 3, palm: 2 / 3, eyes: 4 / 3, desk: 4 / 3 });
+export const ASPECT = Object.freeze({ stand: 3 / 4, palm: 3 / 4, eyes: 4 / 3, desk: 4 / 3 });
 
 /* Scenes in order. `overlap` is how many seconds the scene starts before the previous one ends. */
 export const SCENES = Object.freeze([
   { id: 'intro', duration: 10, overlap: 0 },
-  { id: 'palm', duration: 10, overlap: 1 },
+  { id: 'palm', duration: 13, overlap: 1 },
   { id: 'eyes', duration: 14, overlap: 1 },
   { id: 'desk', duration: 10, overlap: 5 },
   { id: 'handoff', duration: 8, overlap: 3 },

@@ -4,6 +4,7 @@
 export const clamp01 = (v) => Math.min(1, Math.max(0, v));
 export const lerp = (a, b, t) => a + (b - a) * t;
 export const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+export const easeIn = (t) => t * t;
 export const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
 /* Re-maps p inside [a, b] to 0..1. */

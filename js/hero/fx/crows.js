@@ -11,29 +11,31 @@ const SAMPLE_W = 96;
 const ALPHA_MIN = 140;
 const BIRTH_SPREAD = 0.14;
 const FLIGHT_START = 0.05;
-const FLAP_MIN = 9;
-const FLAP_MAX = 17;
-const BASE_SIZE_FRAC = 0.017;
-const RIM = 'rgba(255,42,31,0.5)';
+const FLAP_MIN = 8;
+const FLAP_MAX = 14;
+const BASE_SIZE_FRAC = 0.07;
 
-/* Crow outline in unit space, nose along +x. The wing is a curved blade that flaps about the shoulder. */
-function drawCrow(ctx, flap, reach) {
-  const lift = Math.sin(flap) * 1.5;
-  ctx.beginPath();
-  ctx.moveTo(1.15, -0.08);
-  ctx.lineTo(1.7, 0.02);
-  ctx.lineTo(1.1, 0.1);
-  ctx.quadraticCurveTo(0.2, 0.42, -1.2, 0.18);
-  ctx.lineTo(-1.9, 0.5);
-  ctx.lineTo(-1.8, -0.05);
-  ctx.lineTo(-1.95, -0.4);
-  ctx.lineTo(-1.1, -0.18);
-  ctx.quadraticCurveTo(0.2, -0.4, 0.9, -0.3);
-  ctx.closePath();
-  ctx.moveTo(0.35, -0.1);
-  ctx.quadraticCurveTo(0.2, -lift * 0.9, -0.55 * reach, -lift);
-  ctx.quadraticCurveTo(-0.2, -lift * 0.3, -0.85, 0.05);
-  ctx.closePath();
+/* Crow silhouette in a 100-unit box, nose along +x: body with a head and beak, a fanned tail,
+   and the wing in three poses. The flap cycle runs up, mid, down, mid. */
+const BODY = new Path2D('M-30 -6 Q0 -16 26 -11 Q30 -20 42 -17 L64 -10 L44 -6 Q38 -2 32 1 Q4 13 -26 7 L-54 16 L-47 1 L-54 -13 Z');
+const WING_POSES = [
+  new Path2D('M14 -8 Q4 -34 -22 -50 Q-26 -36 -34 -34 Q-30 -26 -40 -22 Q-22 -12 -24 -4 Z'),
+  new Path2D('M14 -8 Q-8 -20 -48 -20 Q-38 -14 -48 -10 Q-34 -8 -44 -3 Q-22 0 -22 2 Z'),
+  new Path2D('M14 -2 Q2 18 -26 36 Q-26 24 -34 22 Q-28 16 -38 10 Q-22 6 -22 2 Z'),
+];
+const FLAP_ORDER = [0, 1, 2, 1];
+const UNITS = 100;
+
+function drawCrow(ctx, cycle) {
+  const pose = WING_POSES[FLAP_ORDER[Math.floor((cycle - Math.floor(cycle)) * FLAP_ORDER.length)]];
+  ctx.fillStyle = '#000';
+  ctx.save();
+  ctx.translate(10, -2);
+  ctx.scale(0.86, 0.86);
+  ctx.fill(pose);
+  ctx.restore();
+  ctx.fill(BODY);
+  ctx.fill(pose);
 }
 
 /* Collects normalized canvas-space points from the opaque pixels of an image element. */
@@ -72,18 +74,18 @@ function buildTable(points, rng) {
   const rows = points.map((s) => {
     const dx = s.x - VANISH.x;
     const dy = s.y - VANISH.y;
-    const heading = Math.atan2(dy, dx) + (rng() - 0.5) * 0.9;
+    const heading = Math.atan2(dy * 0.3, dx || 0.001) + (rng() - 0.5) * 0.7;
     return {
       sx: s.x, sy: s.y, heading,
       birth: rng() * BIRTH_SPREAD,
       end: 0.7 + rng() * 0.3,
-      spread: 3 + rng() * 9,
-      grow: 5 + rng() * 20,
+      spread: 2.5 + rng() * 7,
+      grow: 2 + rng() * 11,
       curl: (rng() - 0.5) * 0.5,
       phase: rng() * TAU,
       rate: FLAP_MIN + rng() * (FLAP_MAX - FLAP_MIN),
-      size: 0.7 + rng() * 0.6,
-      reach: 0.9 + rng() * 0.4,
+      size: 0.45 + rng() * 0.9,
+      bob: rng() * TAU,
     };
   });
   return rows.sort((a, b) => a.grow - b.grow);
@@ -99,17 +101,13 @@ function drawRow(ctx, row, p, w, h) {
   const y = VANISH.y + (row.sy - VANISH.y) * k + Math.cos(row.heading) * perp;
   const scale = h * BASE_SIZE_FRAC * row.size * (1 + Math.pow(f, 2.4) * row.grow);
   if (x < -0.6 || x > 1.6 || y < -0.6 || y > 1.6) return;
+  const facesLeft = Math.cos(row.heading) < 0;
   ctx.save();
   ctx.globalAlpha = born;
-  ctx.translate(x * w, y * h);
-  ctx.rotate(row.heading);
-  ctx.scale(scale, scale);
-  drawCrow(ctx, row.phase + row.rate * p * TAU * 0.5, row.reach);
-  ctx.fillStyle = '#000';
-  ctx.fill('nonzero');
-  ctx.lineWidth = 1 / scale;
-  ctx.strokeStyle = RIM;
-  ctx.stroke();
+  ctx.translate(x * w, y * h + Math.sin(p * 40 + row.bob) * scale * 0.04);
+  ctx.rotate(facesLeft ? row.heading + Math.PI : row.heading);
+  ctx.scale(facesLeft ? -scale / UNITS : scale / UNITS, scale / UNITS);
+  drawCrow(ctx, row.phase + row.rate * p);
   ctx.restore();
 }
 

@@ -21,6 +21,7 @@
 .hx-figure {
   --fig-h: min(90svh, 150vw);
   --fig-w: calc(var(--fig-h) * var(--ar));
+  --u: min(1svh, 0.85vw);
   --eye-x: 50%; --eye-y: 10.6%; --palm-x: 31%; --palm-y: 47%; --rim: 0;
   position: absolute; z-index: 2; left: 0; right: 0; margin-inline: auto; bottom: 0;
   width: var(--fig-w); height: var(--fig-h); margin-block: 0; will-change: transform;
@@ -63,8 +64,9 @@
 
 /* Palm */
 .hx-orbit { position: absolute; z-index: 4; left: var(--palm-x); top: var(--palm-y); width: 0; height: 0; }
-.hx-icon {
-  position: absolute; left: 0; top: 0; width: calc(var(--fig-w) * 0.14); height: calc(var(--fig-w) * 0.14);
+.hx-figure .hx-icon {
+  max-width: none; max-height: none;
+  position: absolute; left: 0; top: 0; width: max(calc(var(--u) * 8), 44px); height: max(calc(var(--u) * 8), 44px);
   border-radius: 22%; opacity: 0; will-change: transform, opacity; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
 }
 .hx-halo {
@@ -104,6 +106,7 @@
 .hx-beat { position: absolute; z-index: 6; left: var(--gutter); bottom: 9svh; display: grid; gap: var(--space-3); justify-items: start; text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7); }
 .hx-live .hx-beat { opacity: 0; }
 .hx-beat-kicker { margin: 0; color: var(--sakura-text); font-size: var(--fs-12); letter-spacing: 0.2em; text-transform: uppercase; }
+.nw { white-space: nowrap; }
 .hx-beat-line { margin: 0; max-width: 11em; font: 400 clamp(2.1rem, 4.8vw, 5.6rem)/1.02 var(--font-display); letter-spacing: -0.02em; text-wrap: balance; }
 .hx-beat .cue { margin-top: var(--space-3); }
 
@@ -121,7 +124,8 @@
   .hx-intro-foot .link-row { justify-content: flex-start; max-width: none; gap: var(--space-1) var(--space-4); font-size: var(--fs-14); }
   .hx-cue { display: none; }
   .hx-beat { right: var(--gutter); bottom: 7svh; }
-  .hx-beat-line { font-size: clamp(1.9rem, 9vw, 2.8rem); }
+  .nw { white-space: nowrap; }
+.hx-beat-line { font-size: clamp(1.9rem, 9vw, 2.8rem); }
 }
 
 /* Static layout: no scrubbed VFX. Same scenes, stacked, each fading in once. */

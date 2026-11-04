@@ -51,20 +51,25 @@ function strokeBlades(ctx, x, y, open, spin, alpha) {
   });
 }
 
-function drawPoint(ctx, w, h, point, p) {
+/* Per-point strengths (all default to 1): glow, streak (length and alpha), thin (streak thickness), iris (alpha). */
+const STRENGTH = Object.freeze({ glow: 1, streak: 1, thin: 1, iris: 1 });
+
+function drawPoint(ctx, w, h, spec, p) {
+  const point = { ...STRENGTH, ...spec };
   const x = point.x * w;
   const y = point.y * h;
   const ignite = easeOut(span(p, 0, 0.45));
   const iris = easeOut(span(p, 0.2, 1));
   const radius = h * IRIS_RADIUS_FRAC * point.scale;
   const open = radius * (0.35 + 0.65 * iris);
-  glow(ctx, x, y, radius * (1.2 + 3 * ignite), 0.85 * ignite);
-  streak(ctx, x, y, w * STREAK_HALF_FRAC * ignite, STREAK_BAND_PX * point.scale, 0.28 * ignite);
-  streak(ctx, x, y, w * STREAK_HALF_FRAC * 0.7 * ignite, STREAK_CORE_PX * point.scale, 0.95 * ignite);
+  glow(ctx, x, y, radius * (1.2 + 3 * ignite), 0.85 * ignite * point.glow);
+  const len = w * STREAK_HALF_FRAC * point.streak * ignite;
+  streak(ctx, x, y, len, STREAK_BAND_PX * point.scale * point.thin, 0.28 * ignite * point.streak);
+  streak(ctx, x, y, len * 0.7, STREAK_CORE_PX * point.scale * point.thin, 0.95 * ignite * point.streak);
   if (iris <= 0) return;
-  strokeBlades(ctx, x, y, open, iris * IRIS_TURNS * TAU, iris);
+  strokeBlades(ctx, x, y, open, iris * IRIS_TURNS * TAU, iris * point.iris);
   ctx.lineWidth = 1;
-  ctx.strokeStyle = `rgba(${RED},${0.55 * iris})`;
+  ctx.strokeStyle = `rgba(${RED},${0.55 * iris * point.iris})`;
   ctx.beginPath();
   ctx.arc(x, y, open * 2.15, 0, TAU);
   ctx.stroke();

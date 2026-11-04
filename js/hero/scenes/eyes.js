@@ -7,7 +7,8 @@ import { createGenjutsu } from '../fx/genjutsu.js';
 import { DEFAULT_OPTS, beat, easeInOut, easeOut, fade, holdUntil, qs, setAnchor, span, track } from '../timeline-utils.js';
 
 export const DURATION = 14;
-const IRIS_SCALE = 1.5;
+/* Close-up: a faint glint on each iris only, so the face stays readable. */
+const EYE_LOOK = Object.freeze({ scale: 0.42, glow: 0.4, streak: 0.14, thin: 0.45, iris: 0.6 });
 const FX_WIDTH_PCT = 160; /* fx canvas width as % of the figure; its height is half of that */
 const FIGURE_ASPECT = 4 / 3;
 /* Where the sky floods out from, in screen uv (y up). Tune with the real portrait. */
@@ -19,7 +20,7 @@ function eyePoints(mid) {
   return CLOSEUP_EYES.map((eye) => ({
     x: 0.5 + (eye.x - mid.x) / FX_WIDTH_PCT,
     y: 0.5 + (eye.y - mid.y) / canvasH,
-    scale: IRIS_SCALE,
+    ...EYE_LOOK,
   }));
 }
 
