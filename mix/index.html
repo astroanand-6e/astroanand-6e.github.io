@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="lessons">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Try the decks | Anand Thakkar</title>
+  <meta name="description" content="Learn to mix on a virtual 2-deck controller. Short lessons, or free play with a crate of tracks.">
+  <meta name="author" content="Anand Thakkar">
+  <meta name="theme-color" content="#F4EFE6">
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var saved = null;
+      root.classList.add('js');
+      try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : (dark ? 'ink' : 'paper');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/mix.css">
+  <link rel="stylesheet" href="css/lessons.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body class="mix-page">
+  <a class="skip" href="#controller">Skip to the controller</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="Anand Thakkar, home"><span class="hanko hanko-sm" aria-hidden="true">AT</span></a>
+    <h1 class="mix-title">Try the decks</h1>
+    <div class="mode-tabs" role="group" aria-label="Mode">
+      <button type="button" data-mode="lessons" aria-pressed="true">Lessons</button>
+      <button type="button" data-mode="free" aria-pressed="false">Free play</button>
+    </div>
+    <button type="button" id="theme-toggle" class="fader" role="switch" aria-checked="false" aria-label="Night mode">
+      <span class="fader-ticks" aria-hidden="true"></span>
+      <span class="fader-knob" aria-hidden="true"></span>
+    </button>
+  </header>
+
+  <main id="main" class="mix-main">
+    <p id="mix-notice" class="mix-notice" role="status" hidden></p>
+    <noscript><p class="mix-notice">The decks need JavaScript. Turn it on for this page and reload.</p></noscript>
+    <section id="lesson" class="mix-lesson" aria-label="Lesson"></section>
+    <section id="screen" class="mix-screen" aria-label="Deck display"></section>
+    <section id="controller" class="mix-controller" aria-label="Controller"></section>
+    <section id="library" class="mix-library"></section>
+  </main>
+
+  <button type="button" id="gate" class="gate" hidden>Tap to start</button>
+</body>
+</html>

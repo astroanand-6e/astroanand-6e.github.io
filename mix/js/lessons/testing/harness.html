@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lessons harness</title>
+  <script>window.EventSource = class { close() {} }; /* dev only: no live reload while checking visuals */</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/mix/css/lessons.css">
+  <style>
+    .harness { display: grid; gap: 1rem; max-width: 90rem; margin: 0 auto; padding: 1rem var(--gutter); }
+    #stage { padding: 1rem; border: 1px dashed var(--rule-strong); border-radius: var(--radius); font: 500 var(--fs-12)/1.6 var(--font-mono); color: var(--ink-2); white-space: pre-wrap; }
+    @media (min-width: 1180px) { .harness { grid-template-columns: minmax(17rem, 21rem) minmax(0, 1fr); align-items: start; } .mix-lesson { position: sticky; top: var(--space-4); } }
+    .mix-lesson[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <main class="harness">
+    <section id="lesson" class="mix-lesson" aria-label="Lesson"></section>
+    <section id="stage" aria-label="Controller stand-in">Waiting for the first event.</section>
+  </main>
+  <script type="module">
+    import { createBus, on } from '/mix/js/controls.js';
+    import { createFakeEngine } from '/mix/js/lessons/testing/fake-engine.js';
+    import { mountLessons } from '/mix/js/lessons/runner.js';
+
+    const params = new URLSearchParams(location.search);
+    if (params.get('theme')) document.documentElement.dataset.theme = params.get('theme');
+
+    /* Virtual time: scripts step the clock and the animation frames by hand. */
+    const FRAME = 1 / 60;
+    let nowSeconds = 1000;
+    let pendingFrame = null;
+    const clock = { now: () => nowSeconds };
+    const frames = { request: (callback) => { pendingFrame = callback; return 1; }, cancel: () => { pendingFrame = null; } };
+    const advance = (seconds) => {
+      for (let elapsed = 0; elapsed < seconds - 1e-9; elapsed += FRAME) {
+        nowSeconds += FRAME;
+        const callback = pendingFrame;
+        pendingFrame = null;
+        if (callback) callback(nowSeconds * 1000);
+      }
+    };
+    const wait = (ms) => { advance(ms / 1000); return Promise.resolve(); };
+    const settle = async () => { for (let i = 0; i < 60; i += 1) await Promise.resolve(); };
+
+    const bus = createBus();
+    const engine = createFakeEngine({ bus, clock });
+    const stage = document.getElementById('stage');
+    const lines = { highlight: '[]', focus: '-', mode: 'lessons' };
+    const draw = () => { stage.textContent = `highlight ${lines.highlight}\nfocus     ${lines.focus}\nmode      ${lines.mode}`; };
+    on(bus, 'highlight', ({ ids }) => { lines.highlight = JSON.stringify(ids); draw(); });
+    on(bus, 'focus', ({ section }) => { lines.focus = section; draw(); });
+    on(bus, 'mode', ({ mode }) => { lines.mode = mode; document.getElementById('lesson').hidden = mode === 'free'; draw(); });
+    const lessons = mountLessons(document.getElementById('lesson'), { bus, engine, clock, wait, frames });
+    window.harness = { bus, engine, lessons, advance, settle, clock };
+  </script>
+</body>
+</html>

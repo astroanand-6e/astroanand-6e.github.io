@@ -1,0 +1,82 @@
+/* The room: page chrome over a full-viewport canvas. Tokens and base come from ../css. */
+@view-transition { navigation: auto; }
+
+/* Cross-document fade (arriving and leaving). The theme reveal in base.css still owns same-document switches. */
+@keyframes room-vt-out { to { opacity: 0; } }
+@keyframes room-vt-in { from { opacity: 0; } }
+:root:not(.theme-switching)::view-transition-old(root) { animation: room-vt-out 240ms ease-in both; }
+:root:not(.theme-switching)::view-transition-new(root) {
+  animation: room-vt-in 320ms ease-out both;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+html, body.room-page { height: 100%; }
+body.room-page { overflow: hidden; height: 100svh; overscroll-behavior: none; }
+
+#room {
+  position: fixed; inset: 0; z-index: var(--z-stage);
+  width: 100%; height: 100%;
+  touch-action: none; cursor: grab;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+#room.is-grabbing { cursor: grabbing; }
+#room.is-hot { cursor: pointer; }
+#room.is-locked { cursor: default; }
+
+/* The diorama floats; the bar stays clear instead of painting a strip over it. */
+.room-page .topbar::before, .room-page .topbar::after { display: none; }
+.room-page .skip-story:hover svg { transform: translateX(3px); }
+
+.room-hint {
+  position: fixed; left: 50%; bottom: max(1.1rem, env(safe-area-inset-bottom)); z-index: var(--z-labels);
+  margin: 0; padding: 0.55rem 0.9rem; max-width: calc(100vw - 2rem); text-align: center;
+  color: var(--ink-2); background: var(--paper-veil);
+  border: var(--hairline) solid var(--rule); border-radius: 999px;
+  pointer-events: none;
+  opacity: 0; transform: translate(-50%, 8px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.room-hint.is-in { opacity: 1; transform: translate(-50%, 0); }
+.room-hint.is-gone { opacity: 0; transform: translate(-50%, 4px); transition-duration: var(--dur); }
+
+.room-back {
+  position: fixed; top: 4.25rem; left: var(--gutter); z-index: var(--z-topbar);
+  display: inline-flex; align-items: center; gap: 0.5rem; min-height: var(--hit); padding: 0 1rem;
+  font: 500 var(--fs-12)/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink); background: var(--paper-veil);
+  border: var(--hairline) solid var(--rule-strong); border-radius: 999px;
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.room-back svg { width: 0.75rem; height: 0.75rem; }
+.room-back:hover { color: var(--sakura-text); border-color: var(--sakura-text); }
+
+/* Full-viewport veil used before leaving for another page. */
+.room-fade {
+  position: fixed; inset: 0; z-index: 60;
+  background: var(--paper); opacity: 0; pointer-events: none;
+  transition: opacity 340ms var(--ease-out);
+}
+.room-fade.is-on { opacity: 1; pointer-events: auto; }
+.room-fade[data-tone="screen"] { background: #0b0d16; }
+.room-fade.is-instant { transition: none; }
+
+/* Without WebGL: one line and three links. */
+.room-fallback {
+  position: fixed; inset: 0; z-index: var(--z-content);
+  display: grid; align-content: center; justify-items: center; gap: var(--space-5);
+  padding: 5rem var(--gutter) var(--space-6); text-align: center;
+}
+.room-fallback p { max-width: 30rem; font: italic var(--fs-24)/1.25 var(--font-display); color: var(--ink); }
+.room-fallback .link-row { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3) var(--space-5); }
+.room-fallback .link-row a {
+  font: 500 var(--fs-12)/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink); text-decoration-color: var(--sakura);
+}
+.no-webgl #room, .no-webgl .room-controls { display: none; }
+
+@media (max-width: 640px) {
+  .room-hint { width: max-content; font-size: 0.6875rem; padding: 0.5rem 0.75rem; }
+  .room-back { top: 3.9rem; }
+}

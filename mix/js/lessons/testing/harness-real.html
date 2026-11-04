@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lessons harness (real engine)</title>
+  <script>window.EventSource = class { close() {} }; /* dev only: no live reload while checking */</script>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+</head>
+<body style="padding: 2rem">
+  <button id="start" type="button" style="padding: 1rem 2rem; font-size: 1.25rem">Start audio</button>
+  <p id="status">Waiting for a click.</p>
+  <script type="module">
+    import { createBus } from '/mix/js/controls.js';
+    import { createEngine } from '/mix/js/audio/engine.js';
+    import { createSetupApi } from '/mix/js/lessons/setup.js';
+    import { createLessonRun } from '/mix/js/lessons/lesson-run.js';
+    import { LESSONS } from '/mix/js/lessons/curriculum.js';
+
+    const bus = createBus();
+    const engine = createEngine({ bus });
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    const api = createSetupApi({ bus, engine, wait });
+    window.harness = { bus, engine, api, wait, createLessonRun, LESSONS };
+    document.getElementById('start').addEventListener('click', async () => {
+      await engine.resume();
+      document.getElementById('status').textContent = 'Audio running.';
+    });
+  </script>
+</body>
+</html>

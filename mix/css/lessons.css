@@ -1,0 +1,187 @@
+/* Try the decks: the lessons panel. Paper & Signal. Every selector is scoped to #lesson. */
+#lesson {
+  --lz-ink: var(--ink, #1c1a17);
+  --lz-ink-2: var(--ink-2, #5a554d);
+  --lz-paper: var(--paper, #f4efe6);
+  --lz-card: var(--card-bg, rgba(236, 229, 216, 0.55));
+  --lz-rule: var(--rule, rgba(28, 26, 23, 0.16));
+  --lz-rule-strong: var(--rule-strong, rgba(28, 26, 23, 0.42));
+  --lz-sakura: var(--sakura, #d47589);
+  --lz-sakura-text: var(--sakura-text, #a8475c);
+  --lz-on-accent: var(--on-accent, #f4efe6);
+  --lz-shadow: var(--shadow, rgba(28, 26, 23, 0.14));
+  --lz-display: var(--font-display, "Instrument Serif", Georgia, serif);
+  --lz-sans: var(--font-text, "Geist", system-ui, sans-serif);
+  --lz-mono: var(--font-mono, "Geist Mono", ui-monospace, monospace);
+  --lz-ease: var(--ease-out, cubic-bezier(0.2, 0.7, 0.1, 1));
+  --lz-hit: var(--hit, 2.75rem);
+  --lz-radius: var(--radius, 0.5rem);
+}
+#lesson [hidden] { display: none !important; }
+
+/* Card */
+#lesson .lz {
+  container: lz / inline-size;
+  display: grid; gap: 0.75rem; align-content: start;
+  padding: 1rem;
+  border: 1px solid var(--lz-rule); border-radius: var(--lz-radius);
+  background: var(--lz-card); color: var(--lz-ink);
+  font: 400 1rem/1.55 var(--lz-sans); text-align: left;
+  box-shadow: 0 1px 0 var(--lz-rule), 0 24px 40px -28px var(--lz-shadow);
+  -webkit-font-smoothing: antialiased;
+}
+#lesson .lz:focus { outline: none; }
+#lesson .lz :focus-visible { outline: 2px solid var(--lz-sakura-text); outline-offset: 3px; border-radius: 2px; }
+#lesson .lz p, #lesson .lz h2, #lesson .lz h3, #lesson .lz ul, #lesson .lz ol, #lesson .lz dl, #lesson .lz dd { margin: 0; padding: 0; }
+#lesson .lz ul, #lesson .lz ol { list-style: none; }
+@media (min-width: 40rem) { #lesson .lz { padding: 1.25rem; } }
+@media (min-width: 1180px) { #lesson .lz { max-height: calc(100svh - 2rem); overflow-y: auto; scrollbar-width: thin; overscroll-behavior: contain; } }
+#lesson .lz-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Type */
+#lesson .lz-eyebrow, #lesson .lz-kicker, #lesson .lz-unit-no, #lesson .lz-progress-label, #lesson .lz-targets-label, #lesson .lz-hint-label, #lesson .lz-total-label {
+  font: 500 0.75rem/1.2 var(--lz-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--lz-ink-2);
+}
+#lesson .lz-heading { font: italic 400 clamp(1.75rem, 9cqi, 2.25rem)/1.02 var(--lz-display); letter-spacing: -0.015em; }
+#lesson .lz-title { font: italic 400 clamp(1.625rem, 8cqi, 2.125rem)/1.05 var(--lz-display); letter-spacing: -0.015em; }
+#lesson .lz-intro, #lesson .lz-note { font-size: 0.8125rem; line-height: 1.5; color: var(--lz-ink-2); }
+
+/* Buttons */
+#lesson .lz-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: var(--lz-hit); padding: 0 1.25rem;
+  border: 1px solid var(--lz-rule-strong); border-radius: 999px; background: transparent; color: var(--lz-ink);
+  font: 500 0.875rem/1 var(--lz-sans); letter-spacing: 0.01em; cursor: pointer;
+  transition: background-color 280ms var(--lz-ease), color 280ms var(--lz-ease), border-color 280ms var(--lz-ease), transform 160ms var(--lz-ease), opacity 160ms var(--lz-ease);
+}
+#lesson .lz-btn:hover { border-color: var(--lz-sakura-text); color: var(--lz-sakura-text); transform: translateY(-1px); }
+#lesson .lz-btn:active { transform: scale(0.98); }
+#lesson .lz-btn-primary { background: var(--lz-sakura-text); border-color: var(--lz-sakura-text); color: var(--lz-on-accent); }
+#lesson .lz-btn-primary:hover { background: var(--lz-ink); border-color: var(--lz-ink); color: var(--lz-paper); }
+#lesson .lz-btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
+#lesson .lz-btn[aria-disabled="true"]:hover { transform: none; background: var(--lz-sakura-text); border-color: var(--lz-sakura-text); color: var(--lz-on-accent); }
+#lesson .lz-link {
+  min-height: var(--lz-hit); padding: 0.25rem 0; border: 0; background: none; color: var(--lz-ink-2); cursor: pointer;
+  font: 500 0.75rem/1.2 var(--lz-mono); letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  transition: color 160ms var(--lz-ease);
+}
+#lesson .lz-link:hover { color: var(--lz-sakura-text); }
+
+/* Stars and the stamp */
+#lesson .lz-stars { display: inline-flex; gap: 0.125rem; vertical-align: middle; }
+#lesson .lz-star { width: 1.25rem; height: 1.25rem; fill: none; stroke: var(--lz-rule-strong); stroke-width: 1.5; stroke-linejoin: round; }
+#lesson .lz-star.is-on { fill: var(--lz-sakura); stroke: var(--lz-sakura-text); }
+#lesson .lz-stars-sm .lz-star { width: 0.9rem; height: 0.9rem; }
+#lesson .lz-stars-lg { gap: 0.25rem; }
+#lesson .lz-stars-lg .lz-star { width: 2.5rem; height: 2.5rem; }
+#lesson .lz-star.is-pop { transform-origin: 50% 55%; animation: lz-pop 420ms var(--lz-ease) both; animation-delay: calc(var(--i) * 170ms + 120ms); }
+@keyframes lz-pop { 0% { opacity: 0; transform: scale(0.3) rotate(-28deg); } 60% { opacity: 1; transform: scale(1.2) rotate(6deg); } 100% { opacity: 1; transform: none; } }
+#lesson .lz-stamp {
+  position: relative; display: inline-grid; place-items: center; width: 2.9rem; height: 2.9rem; flex: none;
+  border: 2px solid var(--lz-sakura-text); border-radius: 0.4rem; color: var(--lz-sakura-text);
+  background: var(--paper-veil, transparent); font: italic 1.05rem/1 var(--lz-display); letter-spacing: 0.02em;
+  transform: rotate(-7deg); animation: lz-stamp 520ms cubic-bezier(0.2, 0.9, 0.25, 1.2) 880ms both;
+}
+#lesson .lz-stamp::after { content: ""; position: absolute; inset: -2px; border: 2px solid var(--lz-sakura); border-radius: inherit; opacity: 0; animation: lz-ink 720ms ease-out 980ms both; }
+@keyframes lz-stamp { 0% { opacity: 0; transform: scale(2.1) rotate(-22deg); } 55% { opacity: 1; transform: scale(0.94) rotate(-5deg); } 78% { transform: scale(1.04) rotate(-8deg); } 100% { opacity: 1; transform: scale(1) rotate(-7deg); } }
+@keyframes lz-ink { 0% { opacity: 0.7; transform: scale(1); } 100% { opacity: 0; transform: scale(1.7); } }
+
+/* Home */
+#lesson .lz-home-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; }
+#lesson .lz-total, #lesson .lz-total-line { display: flex; align-items: baseline; gap: 0.375rem; font-family: var(--lz-mono); font-variant-numeric: tabular-nums; }
+#lesson .lz-total .lz-star, #lesson .lz-total-line .lz-star { align-self: center; width: 1.1rem; height: 1.1rem; }
+#lesson .lz-total-num { font-size: 1.875rem; font-weight: 500; line-height: 1; }
+#lesson .lz-total-of { font-size: 0.875rem; color: var(--lz-ink-2); }
+#lesson .lz-units { display: grid; gap: 0.75rem; }
+#lesson .lz-unit { display: grid; gap: 0.375rem; }
+#lesson .lz-unit-head { display: flex; align-items: baseline; gap: 0.625rem; padding-bottom: 0.375rem; border-bottom: 1px solid var(--lz-rule); }
+#lesson .lz-unit-title { flex: 1; font: italic 400 1.375rem/1.1 var(--lz-display); letter-spacing: -0.01em; }
+#lesson .lz-unit-score { font: 500 0.75rem/1 var(--lz-mono); color: var(--lz-ink-2); font-variant-numeric: tabular-nums; }
+#lesson .lz-cards { display: grid; gap: 0.375rem; }
+#lesson .lz-card { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; border: 1px solid var(--lz-rule-strong); border-radius: var(--lz-radius); background: var(--lz-paper); transition: border-color 160ms var(--lz-ease), transform 160ms var(--lz-ease); }
+#lesson .lz-card-main {
+  grid-column: 1 / -1; display: grid; grid-template-columns: 1.5rem minmax(0, 1fr) auto; align-items: center; gap: 0.5rem;
+  min-height: 2.5rem; padding: 0.25rem 0.75rem; width: 100%; border: 0; border-radius: inherit; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer;
+}
+#lesson .lz-card-no { font: 500 0.8125rem/1 var(--lz-mono); color: var(--lz-sakura-text); }
+#lesson .lz-card-title { font: italic 400 1.125rem/1.1 var(--lz-display); }
+#lesson .lz-card-blurb { display: none; }
+#lesson .lz-card.is-done .lz-card-no { color: var(--lz-ink-2); }
+#lesson .lz-lock { display: none; width: 1rem; height: 1rem; fill: none; stroke: var(--lz-ink-2); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#lesson .lz-card.is-locked { border-style: dashed; border-color: var(--lz-rule); }
+#lesson .lz-card.is-locked .lz-card-main { grid-column: 1; cursor: not-allowed; opacity: 0.6; }
+#lesson .lz-card-skip { margin-right: 0.25rem; padding: 0.25rem 0.5rem; border: 0; background: none; color: var(--lz-ink-2); cursor: pointer; font: 500 0.6875rem/1.2 var(--lz-mono); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; transition: color 160ms var(--lz-ease); }
+#lesson .lz-card-skip::after { content: ""; position: absolute; inset: 0 0 0 auto; width: 6rem; }
+#lesson .lz-card-skip:hover { color: var(--lz-sakura-text); text-decoration: underline; text-underline-offset: 0.25em; }
+@media (hover: hover) { #lesson .lz-card:not(.is-locked):hover { border-color: var(--lz-sakura-text); transform: translateY(-1px); } }
+#lesson .lz-home-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; padding-top: 0.5rem; border-top: 1px solid var(--lz-rule); }
+@container lz (min-width: 34rem) {
+  #lesson .lz-cards { grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 0.625rem; }
+  #lesson .lz-card { grid-template-columns: minmax(0, 1fr); align-content: start; }
+  #lesson .lz-card-main { grid-template-columns: 1fr auto; grid-template-areas: "no stars" "title title" "blurb blurb"; align-items: start; align-content: start; gap: 0.375rem; min-height: 7.5rem; padding: 0.875rem; }
+  #lesson .lz-card-no { grid-area: no; }
+  #lesson .lz-card-title { grid-area: title; font-size: 1.375rem; }
+  #lesson .lz-lock { display: block; }
+  #lesson .lz-card-blurb { grid-area: blurb; display: block; font-size: 0.8125rem; line-height: 1.4; color: var(--lz-ink-2); }
+  #lesson .lz-card-main > :last-child { grid-area: stars; justify-self: end; }
+  #lesson .lz-card.is-locked .lz-card-main { grid-column: 1; }
+  #lesson .lz-card-skip { justify-self: start; margin: 0 0 0.5rem 0.625rem; }
+  #lesson .lz-card-skip::after { inset: 0; width: auto; }
+}
+
+/* Step */
+#lesson .lz-step { display: flex; flex-direction: column; min-height: 18rem; }
+#lesson .lz-bar { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+#lesson .lz-progress { display: grid; gap: 0.375rem; }
+#lesson .lz-segments { display: flex; gap: 0.25rem; }
+#lesson .lz-segments li { flex: 1; height: 3px; border-radius: 2px; background: var(--lz-rule-strong); opacity: 0.55; transition: background-color 280ms var(--lz-ease), opacity 280ms var(--lz-ease); }
+#lesson .lz-segments li.is-done { background: var(--lz-sakura-text); opacity: 1; }
+#lesson .lz-segments li.is-current { background: var(--lz-ink); opacity: 1; }
+#lesson .lz-text { font-size: 1.0625rem; line-height: 1.5; max-width: 40rem; }
+#lesson .lz-step[data-status="busy"] .lz-text, #lesson .lz-step[data-status="paused"] .lz-text { color: var(--lz-ink-2); }
+#lesson .lz-targets { display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem 0.5rem; }
+#lesson .lz-chips { display: inline-flex; flex-wrap: wrap; gap: 0.375rem; }
+#lesson .lz-chip { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0 0.625rem; border: 1px solid var(--lz-sakura-text); border-radius: 999px; color: var(--lz-sakura-text); font: 500 0.75rem/1.7 var(--lz-mono); letter-spacing: 0.04em; }
+#lesson .lz-chip::before { content: ""; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--lz-sakura); animation: lz-ping 2.4s ease-out infinite; }
+@keyframes lz-ping { 0% { box-shadow: 0 0 0 0 var(--lz-sakura); } 70%, 100% { box-shadow: 0 0 0 0.5rem transparent; } }
+#lesson .lz-readout { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border: 1px solid var(--lz-rule); border-radius: 0.375rem; background: var(--lz-paper); }
+#lesson .lz-readout-text { display: flex; flex-wrap: wrap; gap: 0 1rem; min-width: 0; font: 500 0.8125rem/1.5 var(--lz-mono); letter-spacing: 0.01em; font-variant-numeric: tabular-nums; }
+#lesson .lz-readout-text span { min-width: 0; overflow-wrap: anywhere; }
+#lesson .lz-beats { display: inline-flex; gap: 0.375rem; flex: none; }
+#lesson .lz-beats i { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--lz-rule-strong); opacity: 0.5; transition: background-color 90ms linear, transform 90ms linear, opacity 90ms linear; }
+#lesson .lz-beats i.is-on { background: var(--lz-sakura-text); opacity: 1; transform: scale(1.5); }
+#lesson .lz-meter { height: 6px; border-radius: 3px; background: var(--lz-rule); overflow: hidden; }
+#lesson .lz-meter span { display: block; height: 100%; background: var(--lz-sakura-text); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); transition: transform 120ms linear; }
+#lesson .lz-hint { display: grid; gap: 0.125rem; padding: 0.25rem 0 0.25rem 0.75rem; border-left: 2px solid var(--lz-sakura); font-size: 0.875rem; color: var(--lz-ink-2); animation: lz-rise 280ms var(--lz-ease) both; }
+@keyframes lz-rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+#lesson .lz-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 1rem; margin-top: auto; padding-top: 0.5rem; }
+#lesson .lz-continue { margin-left: auto; }
+#lesson .lz-step[data-status="done"] .lz-continue { animation: lz-ready 1.8s ease-out 2; }
+@keyframes lz-ready { 0% { box-shadow: 0 0 0 0 var(--lz-sakura); } 80%, 100% { box-shadow: 0 0 0 0.6rem transparent; } }
+
+/* Result */
+#lesson .lz-result { gap: 0.875rem; }
+#lesson .lz-reward { display: flex; align-items: center; gap: 1rem; }
+#lesson .lz-star-note { font: 500 0.75rem/1.3 var(--lz-mono); letter-spacing: 0.04em; color: var(--lz-ink-2); }
+#lesson .lz-lines { display: grid; gap: 0.5rem; max-width: 36rem; }
+#lesson .lz-lines li { padding-left: 0.75rem; border-left: 2px solid var(--lz-sakura); line-height: 1.45; }
+#lesson .lz-rows { display: grid; }
+#lesson .lz-row { display: grid; gap: 0.125rem; padding: 0.5rem 0; border-top: 1px solid var(--lz-rule); font-size: 0.875rem; }
+#lesson .lz-row dt { color: var(--lz-ink-2); }
+#lesson .lz-row dd { font: 500 0.8125rem/1.3 var(--lz-mono); font-variant-numeric: tabular-nums; }
+@container lz (min-width: 26rem) {
+  #lesson .lz-row { grid-template-columns: minmax(0, 1fr) auto; gap: 0.75rem; align-items: baseline; }
+  #lesson .lz-row dd { text-align: right; }
+}
+#lesson .lz-row dd::before { content: ""; display: inline-block; width: 0.5rem; height: 0.5rem; margin-right: 0.5rem; border: 1.5px solid var(--lz-sakura-text); border-radius: 50%; vertical-align: 0.05em; }
+#lesson .lz-row.is-ok dd::before { background: var(--lz-sakura-text); }
+#lesson .lz-total-line { padding-top: 0.25rem; border-top: 1px solid var(--lz-rule); }
+#lesson .lz-total-line .lz-total-label { margin-right: auto; }
+#lesson .lz-result.is-final .lz-total-num { font-size: 2.75rem; }
+#lesson .lz-foot-result { margin-top: 0; }
+#lesson .lz-foot-result .lz-btn-primary { flex: 1 1 auto; }
+#lesson .lz-problem { gap: 1rem; justify-items: start; }
+
+@media (prefers-reduced-motion: reduce) {
+  #lesson .lz *, #lesson .lz *::before, #lesson .lz *::after { animation: none !important; transition: none !important; }
+}

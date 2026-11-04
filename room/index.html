@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The room | Anand Thakkar</title>
+  <meta name="description" content="Walk into Anand Thakkar's room. Mix on the decks, boot the game, flip the light.">
+  <meta name="author" content="Anand Thakkar">
+  <meta name="theme-color" content="#F4EFE6">
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var saved = null;
+      root.classList.add('js');
+      try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : (dark ? 'ink' : 'paper');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/room.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="js/room.js"></script>
+</head>
+<body class="room-page">
+  <canvas id="room" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../" data-route="home" aria-label="Anand Thakkar, back to the portfolio"><span class="hanko hanko-sm" aria-hidden="true">AT</span></a>
+    <nav aria-label="Page">
+      <a class="skip-story" href="../" data-route="home">Skip to portfolio<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 6h9M7 2.5 10.5 6 7 9.5"/></svg></a>
+      <button type="button" id="theme-toggle" class="fader" role="switch" aria-checked="false" aria-label="Night mode">
+        <span class="fader-ticks" aria-hidden="true"></span>
+        <span class="fader-knob" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="room-ui">
+    <h1 class="sr-only">Anand Thakkar's room</h1>
+    <div class="room-controls" role="group" aria-label="Things to try in the room">
+      <button type="button" class="sr-only" data-target="decks">Try the decks</button>
+      <button type="button" class="sr-only" data-target="game">Play the game on the laptop</button>
+      <button type="button" class="sr-only" data-target="controller">Pick up the controller</button>
+      <button type="button" class="sr-only" data-target="switch">Flip the light switch</button>
+      <button type="button" class="sr-only" data-target="lamp">Toggle the desk lamp</button>
+      <button type="button" class="sr-only" data-target="plant">Brush the plant</button>
+      <button type="button" class="sr-only" data-target="records">Slide out a record</button>
+    </div>
+    <p class="room-hint mono" id="room-hint" role="status" hidden></p>
+    <button type="button" class="room-back" id="room-back" hidden>
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 6h-9M5 2.5 1.5 6 5 9.5"/></svg>
+      Back to the room
+    </button>
+    <section class="room-fallback" id="room-fallback" hidden aria-labelledby="room-fallback-line">
+      <p id="room-fallback-line">The room needs WebGL, and this browser is not offering it. Everything inside is still a link away.</p>
+      <ul class="link-row">
+        <li><a href="../mix/" data-route="decks">Try the decks</a></li>
+        <li><a href="../play/" data-route="game">Play</a></li>
+        <li><a href="../" data-route="home">Portfolio</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <div class="room-fade" id="room-fade" aria-hidden="true"></div>
+</body>
+</html>
