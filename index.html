@@ -49,7 +49,7 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/stage.css">
-  <link rel="stylesheet" href="css/avatar.css">
+  <link rel="stylesheet" href="css/hero.css">
   <script type="importmap">
   {
     "imports": {
@@ -58,6 +58,8 @@
     }
   }
   </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous"></script>
   <script type="module" src="js/main.js"></script>
   <script type="module" src="js/analytics.js"></script>
 </head>
@@ -95,50 +97,86 @@
   <main id="main">
     <div id="story">
       <section class="hero" id="top" data-chapter="hero" aria-labelledby="name">
-        <div class="grid hero-grid">
-          <div class="hero-copy">
-            <p class="kicker mono" style="--i:0">
-              <span>AI engineer, Boston</span>
-            </p>
-            <h1 id="name" class="hero-name" style="--i:2"><span>Anand</span> <span>Thakkar</span></h1>
-            <p class="hero-line" style="--i:3">I build interactive interfaces, then break them to see how they work.</p>
-            <p class="hero-sub" style="--i:4">MS in AI at Northeastern, in Boston. Audio, vision and on-device models. Off the clock I code, game on Steam and Epic, and practice mixing on a white DDJ-FLX4.</p>
-            <p class="status" style="--i:5"><span class="dot" aria-hidden="true"></span>Open to AI engineering internships and co-ops</p>
-            <ul class="link-row" aria-label="Links" style="--i:6">
-              <li><a href="Anand_Resume.pdf">Résumé</a></li>
-              <li><a href="https://github.com/astroanand-6e" rel="noopener">GitHub</a></li>
-              <li><a href="https://huggingface.co/astroanand" rel="noopener">Hugging Face</a></li>
-              <li><a href="https://www.linkedin.com/in/anand-thakkar" rel="noopener">LinkedIn</a></li>
-              <li><a href="mailto:anandthakkar041@gmail.com">Email</a></li>
-            </ul>
-            <div class="activity" style="--i:7">
-              <span class="activity-label mono" id="activity-label">At the desk</span>
-              <div class="activity-row">
-                <div class="seg" id="activity-group" role="radiogroup" aria-labelledby="activity-label">
-                  <button type="button" role="radio" aria-checked="true" tabindex="0" data-value="coding">Coding</button>
-                  <button type="button" role="radio" aria-checked="false" tabindex="-1" data-value="gaming">Gaming</button>
-                  <button type="button" role="radio" aria-checked="false" tabindex="-1" data-value="mixing">Mixing</button>
-                </div>
-                <button type="button" class="seg-auto mono" id="activity-auto" aria-pressed="true" title="Resume auto-cycling">Auto</button>
-              </div>
-              <p class="sr-only" id="activity-live" aria-live="polite"></p>
+        <div class="hx-pin">
+          <div class="hx-scene hx-intro" data-hx-scene="intro">
+            <div class="hx-intro-top">
+              <p class="hx-kicker mono">AI engineer, Boston</p>
+              <h1 id="name" class="hx-name"><span>Anand</span> <span>Thakkar</span></h1>
             </div>
-            <div class="hero-actions" style="--i:8">
-              <button type="button" id="break-btn" class="btn btn-primary" data-action="break"><svg class="icon-burst" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M8 1.5v13M1.5 8h13M3.4 3.4l9.2 9.2M12.6 3.4l-9.2 9.2"/></svg>Break it</button>
+            <figure class="hx-figure" style="--ar: 0.6667">
+              <img data-hx-img="stand" alt="Anand Thakkar standing in a long black overcoat with a red lining" decoding="async" fetchpriority="high">
+              <canvas class="hx-eyefx" data-fx="eye-fire" width="1024" height="512" aria-hidden="true"></canvas>
+            </figure>
+            <div class="hx-intro-foot">
+              <div class="hx-foot-copy">
+                <p class="hx-line">I build interactive interfaces, then break them to see how they work.</p>
+                <p class="hx-sub">MS in AI at Northeastern, in Boston. Audio, vision and on-device models. Off the clock I code, game on Steam and Epic, and practice mixing on a white DDJ-FLX4.</p>
+                <p class="status"><span class="dot" aria-hidden="true"></span>Open to AI engineering internships and co-ops</p>
+              </div>
+              <ul class="link-row" aria-label="Links">
+                <li><a href="Anand_Resume.pdf">Résumé</a></li>
+                <li><a href="https://github.com/astroanand-6e" rel="noopener">GitHub</a></li>
+                <li><a href="https://huggingface.co/astroanand" rel="noopener">Hugging Face</a></li>
+                <li><a href="https://www.linkedin.com/in/anand-thakkar" rel="noopener">LinkedIn</a></li>
+                <li><a href="mailto:anandthakkar041@gmail.com">Email</a></li>
+              </ul>
+            </div>
+            <p class="hx-cue mono" aria-hidden="true"><span>Scroll</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7"/></svg></p>
+          </div>
+
+          <div class="hx-scene hx-palm" data-hx-scene="palm">
+            <figure class="hx-figure" style="--ar: 0.6667">
+              <div class="hx-cam">
+                <img class="hx-pose-stand" data-hx-img="stand" alt="" aria-hidden="true" decoding="async">
+                <img class="hx-pose-palm" data-hx-img="palm" alt="Anand with his right palm raised at chest height" decoding="async">
+                <canvas class="hx-eyefx" data-fx="eye-fire" width="1024" height="512" aria-hidden="true"></canvas>
+                <div class="hx-orbit" aria-hidden="true">
+                  <span class="hx-halo"></span><span class="hx-halo hx-halo-2"></span>
+                  <img class="hx-icon" src="assets/hero/icons/vscode.webp" alt="" width="128" height="128" loading="lazy">
+                  <img class="hx-icon" src="assets/hero/icons/claude.webp" alt="" width="128" height="128" loading="lazy">
+                  <img class="hx-icon" src="assets/hero/icons/codex.webp" alt="" width="128" height="128" loading="lazy">
+                  <img class="hx-icon" src="assets/hero/icons/hermes.webp" alt="" width="128" height="128" loading="lazy">
+                </div>
+              </div>
+            </figure>
+            <canvas class="hx-portal" data-fx="portal" aria-hidden="true"></canvas>
+            <div class="hx-beat">
+              <p class="hx-beat-kicker mono">Tools</p>
+              <p class="hx-beat-line">Four tools, one loop. Write it, ask it, check it, go again.</p>
+              <p class="sr-only">VS Code, Claude, Codex and Hermes.</p>
+            </div>
+          </div>
+
+          <div class="hx-scene hx-eyes" data-hx-scene="eyes">
+            <canvas class="hx-sky" data-fx="genjutsu" aria-hidden="true"></canvas>
+            <figure class="hx-figure hx-portrait" style="--ar: 1.3333">
+              <img data-hx-img="eyes" alt="Close-up of Anand's eyes, lit red" decoding="async">
+              <canvas class="hx-eyefx" data-fx="eye-fire" width="1024" height="512" aria-hidden="true"></canvas>
+            </figure>
+            <div class="hx-beat">
+              <p class="hx-beat-kicker mono">Vision</p>
+              <p class="hx-beat-line">I work on how machines see. X-rays, ECG traces, coronary scans.</p>
+            </div>
+          </div>
+
+          <div class="hx-scene hx-desk" data-hx-scene="desk">
+            <div class="hx-desk-plate"><img data-hx-img="desk" alt="Anand at his desk, working" decoding="async"></div>
+            <figure class="hx-figure hx-portrait hx-crow-src" style="--ar: 1.3333" aria-hidden="true"><img data-hx-img="eyes" alt=""></figure>
+            <canvas class="hx-crows" data-fx="crows" aria-hidden="true"></canvas>
+            <div class="hx-beat">
+              <p class="hx-beat-kicker mono">Build</p>
+              <p class="hx-beat-line">I build it, then I break it to see what holds.</p>
+            </div>
+          </div>
+
+          <div class="hx-scene hx-handoff" data-hx-scene="handoff">
+            <canvas class="hx-burn" data-fx="burn" aria-hidden="true"></canvas>
+            <div class="hx-beat">
+              <p class="hx-beat-kicker mono">Off the clock</p>
+              <p class="hx-beat-line">It is music. I mix on a DDJ-FLX4 and build things that listen.</p>
               <a class="cue" href="#heart"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7"/></svg>The story starts with a heartbeat</a>
             </div>
           </div>
-          <figure class="avatar" id="avatar">
-            <div class="avatar-body">
-              <div class="avatar-frame avatar-idle">
-                <img src="assets/img/avatar-idle-768.webp" srcset="assets/img/avatar-idle-480.webp 480w, assets/img/avatar-idle-768.webp 768w" sizes="(max-width: 767px) 52vw, 34rem" width="768" height="1024" alt="3D illustration of Anand Thakkar in a grey coat and navy scarf" fetchpriority="high" decoding="async">
-              </div>
-              <div class="avatar-frame avatar-wave" aria-hidden="true">
-                <img src="assets/img/avatar-wave-768.webp" srcset="assets/img/avatar-wave-480.webp 480w, assets/img/avatar-wave-768.webp 768w" sizes="(max-width: 767px) 52vw, 34rem" width="768" height="1024" alt="" decoding="async">
-              </div>
-            </div>
-          </figure>
-          <div class="hero-slot" data-stage-slot="hero" aria-hidden="true"></div>
         </div>
       </section>
 

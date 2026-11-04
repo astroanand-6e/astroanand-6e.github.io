@@ -16,6 +16,7 @@ import { STATIONS, stationIndex, viewForChapter, readChapter, hasLabels } from '
 import { CriticalSpring, createDragTurn, YAW_LIMIT } from './motion.js';
 
 const MAX_DT = 0.05;
+const HERO_PINNED = /(^| )hx-pinned( |$)/; // js/hero/index.js sets this while the hero covers the desk
 const GAMEPAD_TURN_SPEED = 1.4;
 const YAW_SMOOTH_SECONDS = 0.35;
 const SILHOUETTE_SMOOTH_SECONDS = 0.6;
@@ -262,6 +263,7 @@ export function startStage({ canvas, theme = 'paper' }) {
     const dt = Math.min(rawMs / 1000, MAX_DT);
     governor.track(rawMs);
     state.time += dt;
+    if (HERO_PINNED.test(document.documentElement.className)) return;
 
     const turn = gamepad.poll(dt);
     if (turn) setYawTarget(yaw.target + turn * GAMEPAD_TURN_SPEED * dt);

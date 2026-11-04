@@ -1,0 +1,139 @@
+/* Scroll-driven hero. Five pinned scenes (js/hero/scenes) stacked in one 100svh frame.
+   Default layout (no JS, reduced motion, or no GSAP) is a plain stack of the same scenes.
+   html.hx-live on #top switches to the pinned stage; the timeline owns all motion. */
+.hero { position: relative; z-index: var(--z-content); --gutter-h: var(--gutter); }
+
+/* The hero is always black with red, whatever theme the rest of the page uses. */
+.hx-pin {
+  --paper: #050505; --ink: #f2f0ec; --ink-2: #9a9893; --sakura: #e10600; --sakura-text: #ff2a1f;
+  --rule: rgba(242, 240, 236, 0.18); --rule-strong: rgba(242, 240, 236, 0.46);
+  position: relative; isolation: isolate; background: #050505; color: var(--ink);
+}
+.hx-scene { position: relative; min-height: 100svh; overflow: hidden; pointer-events: none; }
+.hx-live .hx-pin { height: 100svh; overflow: hidden; }
+.hx-live .hx-scene { position: absolute; inset: 0; min-height: 0; }
+.hx-live .hx-scene:not(.hx-intro) { opacity: 0; }
+.hx-scene a, .hx-scene .link-row a { pointer-events: auto; }
+.hx-scene:nth-child(1) { z-index: 1; } .hx-scene:nth-child(2) { z-index: 2; } .hx-scene:nth-child(3) { z-index: 3; }
+.hx-scene:nth-child(4) { z-index: 4; } .hx-scene:nth-child(5) { z-index: 5; }
+
+/* Figures: a box with the image's aspect ratio; scenes size it with --fig-h. */
+.hx-figure {
+  --fig-h: min(90svh, 150vw);
+  --fig-w: calc(var(--fig-h) * var(--ar));
+  --eye-x: 50%; --eye-y: 10.6%; --palm-x: 31%; --palm-y: 47%; --rim: 0;
+  position: absolute; z-index: 2; left: 0; right: 0; margin-inline: auto; bottom: 0;
+  width: var(--fig-w); height: var(--fig-h); margin-block: 0; will-change: transform;
+}
+.hx-figure img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
+.hx-cam { position: absolute; inset: 0; will-change: transform; }
+.hx-eyefx {
+  position: absolute; z-index: 3; left: var(--eye-x); top: var(--eye-y); pointer-events: none;
+  width: calc(var(--fig-w) * 2); height: var(--fig-w); transform: translate(-50%, -50%); mix-blend-mode: screen;
+}
+.hx-portrait { --fig-h: min(96svh, 75vw); bottom: auto; top: calc(50svh - var(--fig-h) / 2); }
+.hx-portrait .hx-eyefx { width: calc(var(--fig-w) * 1.6); height: calc(var(--fig-w) * 0.8); }
+.hx-live .hx-eyefx { display: block; }
+
+/* Intro */
+.hx-intro::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background: radial-gradient(38% 52% at 50% 60%, rgba(225, 6, 0, 0.17), transparent 72%);
+}
+.hx-intro-top { position: absolute; inset: 0; z-index: 1; display: grid; place-content: start center; justify-items: center; padding-top: 11svh; text-align: center; }
+.hx-kicker { z-index: 3; margin: 0 0 1.2svh; color: var(--sakura-text); font-size: var(--fs-12); letter-spacing: 0.22em; text-transform: uppercase; }
+.hx-name {
+  margin: 0; font: 400 min(17.2vw, 34svh)/0.84 var(--font-display); letter-spacing: -0.035em; white-space: nowrap;
+  color: var(--ink); will-change: transform;
+}
+.hx-name span { display: inline; }
+.hx-intro-foot {
+  position: absolute; z-index: 5; left: var(--gutter); right: var(--gutter); bottom: var(--space-5);
+  display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-5);
+}
+.hx-foot-copy { display: grid; gap: var(--space-3); max-width: 25rem; justify-items: start; }
+.hx-line { margin: 0; font: italic clamp(1.4rem, 2vw, var(--fs-32))/1.15 var(--font-display); }
+.hx-sub { margin: 0; color: var(--ink-2); font-size: var(--fs-14); }
+.hx-intro-foot .link-row { justify-content: flex-end; max-width: 22rem; row-gap: var(--space-2); }
+.hx-cue {
+  position: absolute; z-index: 5; left: 50%; bottom: var(--space-5); display: flex; align-items: center; gap: var(--space-2);
+  color: var(--ink-2); font-size: var(--fs-12); letter-spacing: 0.16em; text-transform: uppercase; translate: -50% 0;
+}
+.hx-cue svg { width: 0.75rem; height: 0.75rem; animation: cue 2.2s var(--ease-out) infinite; }
+
+/* Palm */
+.hx-orbit { position: absolute; z-index: 4; left: var(--palm-x); top: var(--palm-y); width: 0; height: 0; }
+.hx-icon {
+  position: absolute; left: 0; top: 0; width: calc(var(--fig-w) * 0.14); height: calc(var(--fig-w) * 0.14);
+  border-radius: 22%; opacity: 0; will-change: transform, opacity; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
+}
+.hx-halo {
+  position: absolute; z-index: 5; left: 0; top: 0; width: 0; height: 0; opacity: 0; border-radius: 50%;
+  border: 1px solid rgba(255, 42, 31, 0.85); box-shadow: 0 0 16px rgba(255, 42, 31, 0.5), inset 0 0 16px rgba(255, 42, 31, 0.3);
+  will-change: transform, opacity;
+}
+.hx-halo-2 { border-color: rgba(255, 42, 31, 0.45); box-shadow: none; }
+.hx-pose-palm {
+  opacity: 0; --wipe: 100;
+  -webkit-mask-image: linear-gradient(to top, #000 33%, transparent 66%); mask-image: linear-gradient(to top, #000 33%, transparent 66%);
+  -webkit-mask-size: 100% 300%; mask-size: 100% 300%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: 0 calc((100 - var(--wipe)) * 1%); mask-position: 0 calc((100 - var(--wipe)) * 1%);
+}
+.hx-portal, .hx-sky, .hx-crows, .hx-burn { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+.hx-portal { z-index: 4; }
+
+/* Eyes */
+.hx-sky { z-index: 0; background: #050505; }
+.hx-eyes .hx-figure { filter: drop-shadow(0 0 calc(var(--rim) * 30px) rgba(225, 6, 0, calc(var(--rim) * 0.55))); }
+
+/* Desk */
+.hx-desk-plate {
+  position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; will-change: transform, clip-path;
+  background: #050505; clip-path: circle(0% at 50% 50%);
+}
+.hx-desk-plate img {
+  display: block; width: min(150vw, 170svh); height: auto; aspect-ratio: 4 / 3;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%);
+}
+.hx-crow-src { visibility: hidden; z-index: -1; }
+.hx-crows { z-index: 3; }
+.hx-burn { z-index: 5; }
+
+/* Copy beats */
+.hx-beat { position: absolute; z-index: 6; left: var(--gutter); bottom: 9svh; display: grid; gap: var(--space-3); justify-items: start; text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7); }
+.hx-live .hx-beat { opacity: 0; }
+.hx-beat-kicker { margin: 0; color: var(--sakura-text); font-size: var(--fs-12); letter-spacing: 0.2em; text-transform: uppercase; }
+.hx-beat-line { margin: 0; max-width: 11em; font: 400 clamp(2.1rem, 4.8vw, 5.6rem)/1.02 var(--font-display); letter-spacing: -0.02em; text-wrap: balance; }
+.hx-beat .cue { margin-top: var(--space-3); }
+
+@media (max-width: 1100px) { .hx-sub { display: none; } }
+
+/* Phones: scenes stack the copy under the figure, effects stay cheap. */
+@media (max-width: 767.98px) {
+  .hx-figure { --fig-h: min(60svh, 120vw); bottom: 20svh; }
+  .hx-portrait { --fig-h: min(52svh, 112vw); bottom: auto; top: calc(40svh - var(--fig-h) / 2); }
+  .hx-intro-top { padding-top: 9svh; }
+  .hx-name { font-size: min(27vw, 16svh); line-height: 0.86; white-space: normal; }
+  .hx-name span { display: block; }
+  .hx-intro-foot { flex-direction: column; align-items: flex-start; gap: var(--space-3); bottom: var(--space-4); }
+  .hx-line { font-size: 1.25rem; }
+  .hx-intro-foot .link-row { justify-content: flex-start; max-width: none; gap: var(--space-1) var(--space-4); font-size: var(--fs-14); }
+  .hx-cue { display: none; }
+  .hx-beat { right: var(--gutter); bottom: 7svh; }
+  .hx-beat-line { font-size: clamp(1.9rem, 9vw, 2.8rem); }
+}
+
+/* Static layout: no scrubbed VFX. Same scenes, stacked, each fading in once. */
+.hx-static [data-fx], .hx-static .hx-orbit, .hx-static .hx-crow-src { display: none; }
+.hx-static .hx-pose-palm { opacity: 1; -webkit-mask: none; mask: none; }
+.hx-static .hx-scene:not(.hx-intro) { border-top: 1px solid var(--rule); }
+.hx-static .hx-fade { opacity: 0; transition: opacity 0.3s ease-out; }
+.hx-static .hx-fade.is-in { opacity: 1; }
+.hx-static .hx-eyes { background: linear-gradient(#5a0004, #e10600 85%); }
+.hx-static .hx-desk-plate { position: absolute; clip-path: none; }
+.hx-static .hx-beat { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hx-cue svg { animation: none; }
+  .hx-static .hx-fade { transition-duration: 0.2s; }
+}
