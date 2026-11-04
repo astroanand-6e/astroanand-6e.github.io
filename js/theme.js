@@ -7,7 +7,7 @@ import { resonate } from './story/resonance.js';
 
 const THEME_KEY = 'theme';
 const THEMES = Object.freeze({ PAPER: 'paper', INK: 'ink' });
-const THEME_COLORS = Object.freeze({ paper: '#F4EFE6', ink: '#0E0F13' });
+const THEME_COLORS = Object.freeze({ paper: '#F4F4F2', ink: '#050505' });
 // Ink spreads out from the switch like ink into paper; paper returns a touch faster.
 const REVEAL_MS = Object.freeze({ ink: 1100, paper: 900 });
 const SWITCHING_CLASS = 'theme-switching';
@@ -29,7 +29,7 @@ function readSavedTheme() {
 }
 
 function resolveTheme() {
-  return readSavedTheme() || (darkQuery.matches ? THEMES.INK : THEMES.PAPER);
+  return readSavedTheme() || THEMES.INK;
 }
 
 function applyTheme(theme, { persist, notify }) {

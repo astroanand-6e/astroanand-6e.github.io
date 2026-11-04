@@ -31,9 +31,9 @@
 @keyframes breathe { 50% { transform: scaleY(1.008) translateY(-0.2%); } }
 @keyframes avatar-in { from { opacity: 0; transform: translateY(24px); } }
 
-/* Night: his desk's teal LEDs rim-light the figure */
+/* Night: a red rim light, the site's accent */
 html[data-theme="ink"] .avatar-frame img {
-  filter: drop-shadow(-10px 0 18px rgba(33, 214, 207, 0.22)) drop-shadow(0 0 1px rgba(33, 214, 207, 0.5)) brightness(0.9);
+  filter: drop-shadow(-6px 0 10px rgba(225, 6, 0, 0.16)) drop-shadow(0 0 1px rgba(255, 42, 31, 0.45)) brightness(0.9);
 }
 
 .hero-name { position: relative; z-index: 2; }

@@ -8,7 +8,7 @@
   overflow: hidden;
   --label-fg: var(--ink, #1c1a17);
   --label-halo: var(--paper, #f4efe6);
-  --label-accent: var(--sakura-text, #a8475c);
+  --label-accent: var(--sakura-text, #c00000);
   --leader-draw: 0.55s;
   --leader-step: 35ms;
   --label-fade: 0.4s;

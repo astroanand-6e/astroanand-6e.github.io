@@ -17,7 +17,7 @@ const PALETTES = {
   paper: {
     paper: 0xf4efe6,
     ink: 0x1c1a17,
-    sakura: 0xd47589,
+    sakura: 0xd40000,
     white: 0xfbfaf5,
     dark: 0x2b2825,
     silver: 0xc9cccd,
@@ -27,7 +27,7 @@ const PALETTES = {
   ink: {
     paper: 0x35322d,
     ink: 0xe9e2d3,
-    sakura: 0xe98fa4,
+    sakura: 0xe10600,
     white: 0xd3d0c8,
     dark: 0x100f0d,
     silver: 0x8a8d90,

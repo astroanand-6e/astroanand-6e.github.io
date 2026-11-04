@@ -26,8 +26,8 @@ const DESK_EXIT = [[2.2, 4.9], [6.4, 5.2]];
 const STATION_FRONT_Z = 3.4;
 const STATION_REACH_X = 4.0;
 const COLORS = {
-  paper: { thread: 0xcf5472, pulse: 0xe5456c },
-  ink: { thread: 0xe58ba0, pulse: 0xffe6ec },
+  paper: { thread: 0xc00000, pulse: 0xe10600 },
+  ink: { thread: 0xe10600, pulse: 0xff6b5e },
 };
 
 // Waveform ids: 0 drift, 1 ECG, 2 grain, 3 pulses, 4 audio sine, 5 speech.

@@ -27,7 +27,7 @@
     ]
   }
   </script>
-  <meta name="theme-color" content="#F4EFE6">
+  <meta name="theme-color" content="#050505">
   <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
   <script>
     (function () {
@@ -36,14 +36,13 @@
       root.classList.add('js');
       try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
       var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : (dark ? 'ink' : 'paper');
+      root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : 'ink';
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari&display=swap&text=%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A5%87%20%E0%A4%95%E0%A4%B2%20%E0%A4%B9%E0%A5%88%20%E0%A4%AD%E0%A5%87%E0%A4%9C%20%E0%A4%A6%E0%A5%87%E0%A4%A8%E0%A4%BE">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati&display=swap&text=%E0%AA%95%E0%AB%87%E0%AA%AE%20%E0%AA%9B%E0%AB%8B">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/story.css">
@@ -99,8 +98,6 @@
         <div class="grid hero-grid">
           <div class="hero-copy">
             <p class="kicker mono" style="--i:0">
-              <span id="greeting" class="flap" data-words="Hello|नमस्ते|કેમ છો" data-langs="en|hi|gu" aria-label="Hello, नमस्ते, કેમ છો"><span class="flap-word" lang="en">Hello</span><span class="sep">·</span><span class="flap-word" lang="hi">नमस्ते</span><span class="sep">·</span><span class="flap-word" lang="gu">કેમ છો</span></span>
-              <span class="kicker-rule" aria-hidden="true"></span>
               <span>AI engineer, Boston</span>
             </p>
             <h1 id="name" class="hero-name" style="--i:2"><span>Anand</span> <span>Thakkar</span></h1>
