@@ -4,10 +4,11 @@ import { SEED_CROWS } from '../config.js';
 import { createCrows } from '../fx/crows.js';
 import { DEFAULT_OPTS, beat, holdUntil, qs, track } from '../timeline-utils.js';
 
-export const DURATION = 10;
-const CROW_SECONDS = 6.6;
-const REVEAL_AT = 2.4;
+export const DURATION = 12;
+const CROW_SECONDS = 5.2;
+const REVEAL_AT = 2.2;
 const REVEAL_FOR = 2.4;
+const HOLD_FROM = 5.2; /* crows are gone; the desk holds, pushing in gently, until the burn */
 
 export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   const plate = qs(el, '.hx-desk-plate');
@@ -19,9 +20,10 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   });
 
   tl.fromTo(plate, { clipPath: 'circle(0% at 50% 50%)', scale: 1.18 }, { clipPath: 'circle(80% at 50% 50%)', duration: REVEAL_FOR, ease: 'power2.in' }, REVEAL_AT);
-  tl.to(plate, { scale: 1, duration: 6, ease: 'power2.out' }, REVEAL_AT);
+  tl.to(plate, { scale: 1, duration: HOLD_FROM - REVEAL_AT, ease: 'power2.out' }, REVEAL_AT);
+  tl.to(plate, { scale: 1.07, duration: DURATION - HOLD_FROM, ease: 'none' }, HOLD_FROM);
   track(tl, 0, CROW_SECONDS, crows.render, 'none');
-  beat(tl, beatEl, 5.2);
+  beat(tl, beatEl, 5.4);
   holdUntil(tl, DURATION);
   return { fx: [crows], gl: [] };
 }

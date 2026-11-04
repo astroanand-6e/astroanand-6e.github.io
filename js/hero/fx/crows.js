@@ -11,6 +11,9 @@ const SAMPLE_W = 96;
 const ALPHA_MIN = 140;
 const BIRTH_SPREAD = 0.14;
 const FLIGHT_START = 0.05;
+const MIN_OFFSET = 0.1; /* keeps crows born at the vanishing point from staying on screen */
+const EXIT_FROM = 0.68; /* after this the flock accelerates past the camera and off frame */
+const EXIT_BOOST = 30;
 const FLAP_MIN = 8;
 const FLAP_MAX = 14;
 const BASE_SIZE_FRAC = 0.07;
@@ -72,11 +75,15 @@ function sampleSilhouette(img, canvas, count, rng) {
 
 function buildTable(points, rng) {
   const rows = points.map((s) => {
-    const dx = s.x - VANISH.x;
-    const dy = s.y - VANISH.y;
+    const rawX = s.x - VANISH.x;
+    const rawY = s.y - VANISH.y;
+    const len = Math.hypot(rawX, rawY) || 1;
+    const push = Math.max(len, MIN_OFFSET) / len;
+    const dx = rawX * push;
+    const dy = rawY * push;
     const heading = Math.atan2(dy * 0.3, dx || 0.001) + (rng() - 0.5) * 0.7;
     return {
-      sx: s.x, sy: s.y, heading,
+      sx: VANISH.x + dx, sy: VANISH.y + dy, heading,
       birth: rng() * BIRTH_SPREAD,
       end: 0.7 + rng() * 0.3,
       spread: 2.5 + rng() * 7,
@@ -95,7 +102,8 @@ function drawRow(ctx, row, p, w, h) {
   const born = clamp01((p - row.birth) / 0.05);
   if (born <= 0) return;
   const f = easeInOut(span(p, row.birth + FLIGHT_START, row.end));
-  const k = 1 + Math.pow(f, 2.2) * row.spread;
+  const exit = Math.pow(span(p, EXIT_FROM, 1), 2);
+  const k = (1 + Math.pow(f, 2.2) * row.spread) * (1 + exit * EXIT_BOOST);
   const perp = Math.sin(f * Math.PI) * row.curl;
   const x = VANISH.x + (row.sx - VANISH.x) * k + -Math.sin(row.heading) * perp;
   const y = VANISH.y + (row.sy - VANISH.y) * k + Math.cos(row.heading) * perp;

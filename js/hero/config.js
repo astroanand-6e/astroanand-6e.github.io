@@ -1,7 +1,7 @@
 /* Hero tuning. Everything a person may want to adjust after the real images land lives here. */
 
 /* Flip a key to true once its file exists in assets/hero/ (a 404 would log a console error). */
-export const REAL_IMAGES = Object.freeze({ stand: true, palm: true, eyes: true, desk: false });
+export const REAL_IMAGES = Object.freeze({ stand: true, palm: true, eyes: true, desk: true });
 
 export const IMAGE_PATH = 'assets/hero/';
 
@@ -22,8 +22,8 @@ export const SCENES = Object.freeze([
   { id: 'intro', duration: 10, overlap: 0 },
   { id: 'palm', duration: 13, overlap: 1 },
   { id: 'eyes', duration: 14, overlap: 1 },
-  { id: 'desk', duration: 10, overlap: 5 },
-  { id: 'handoff', duration: 8, overlap: 3 },
+  { id: 'desk', duration: 12, overlap: 5 },
+  { id: 'handoff', duration: 8, overlap: 2 },
 ]);
 
 /* Scroll length per second of timeline, in viewport heights (about 300vh per scene). */
