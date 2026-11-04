@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ten local models, one month | Anand Thakkar</title>
+  <meta name="description" content="Benchmarks and a qualitative skill map for this month's trending local models: Liquid AI LFM3, d1, Nemotron Bolt, DeepSeek V4.1 Flash and more.">
+  <meta name="author" content="Anand Thakkar">
+  <meta name="theme-color" content="#F4EFE6">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Ten local models, one month: what's actually worth running">
+  <meta property="og:description" content="Benchmarks and a qualitative skill map for this month's trending local models: Liquid AI LFM3, d1, Nemotron Bolt, DeepSeek V4.1 Flash and more.">
+  <meta property="article:published_time" content="2026-11-01">
+  <meta property="article:tag" content="Local LLMs">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon.svg">
+  <script>
+    (function () {
+      var root = document.documentElement, saved = null;
+      root.classList.add('js');
+      try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : (dark ? 'ink' : 'paper');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../blog.css">
+  <script type="module" src="../blog.js"></script>
+</head>
+<body class="blog-page">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../../" aria-label="Anand Thakkar, home"><span class="hanko hanko-sm" aria-hidden="true">AT</span></a>
+    <nav aria-label="Site">
+      <a class="nav-link" href="../../#index">Work</a>
+      <a class="nav-link" href="../">Blog</a>
+      <button type="button" id="theme-toggle" class="fader" role="switch" aria-checked="false" aria-label="Night mode">
+        <span class="fader-ticks" aria-hidden="true"></span>
+        <span class="fader-knob" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main" class="blog-main">
+    <article class="post">
+      <header class="post-head">
+        <p class="mono post-kicker">On air · Local Lab Tonight · Nov 2026</p>
+        <h1>Ten local models, one month: what's actually worth running</h1>
+        <p class="mono post-byline"><time datetime="2026-11-01">Nov 1, 2026</time><span>Local LLMs</span></p>
+        <p class="post-note">Benchmarks from the official Hugging Face model cards · skill ratings are my own qualitative read</p>
+      </header>
+
+      <p class="lede">Liquid AI shipped LFM3, and it pulled Hugging Face's trending page along with it. I took the ten models my local newsdesk surfaced this week and asked three questions: what do the published numbers say, where does each one sit in terms of skills, and what does r/LocalLLaMA actually think?</p>
+      <p>Ground rule: every number below comes from a model card I can link to. Where nothing is published, the table says so and doesn't guess. Vendor numbers are vendor numbers, so read them with a pinch of salt.</p>
+
+      <h2>The skill matrix</h2>
+      <p>A qualitative 1–5 read across six skills, based on the card numbers and each model's stated scope. "n/a" means the skill doesn't apply, as with an image generator and code.</p>
+      <div class="table-wrap wide" tabindex="0" role="region" aria-label="Skill matrix"><table>
+        <thead><tr><th>Model</th>{{SKILL_HEAD}}</tr></thead>
+        <tbody>{{SKILL_ROWS}}</tbody>
+      </table></div>
+
+      <h2>Where they land</h2>
+      <p>Edge-friendliness against breadth of capability (the mean of the other five skills). The upper-right corner is where you want to be on a laptop.</p>
+      <figure class="map wide">{{MAP}}</figure>
+
+      <h2>Published benchmarks</h2>
+      <div class="table-wrap wide" tabindex="0" role="region" aria-label="Published benchmarks"><table class="bench">
+        <thead><tr><th>Model</th><th>Size</th><th>Modality</th><th>Headline numbers (model card)</th></tr></thead>
+        <tbody>{{BENCH_ROWS}}</tbody>
+      </table></div>
+
+      <h2>Model by model</h2>
+      <div class="cards wide">{{CARDS}}</div>
+
+      <h2>Benchmarks vs. the crowd</h2>
+      <p>Where the numbers and r/LocalLLaMA agree: LFM3-1.7B and the 3D-Coder are the real deals of the month. Where they split: DeepSeek V4.1 Flash wins every chart, but the crowd says it feels about on par with Qwen 3.8 Flash Next and needs a server-class RAM budget. The d1 decision models confuse people who expect a chatbot. And the Omni and Audio models impress on speed while users keep reminding everyone that a 2B brain is a 2B brain.</p>
+
+      <h2>The takeaways</h2>
+      <ul class="bullets">
+        <li><b>Best daily driver under 2 GB:</b> LFM3-1.7B. The instruction-following and code scores are absurd for its size, but give it retrieval for facts.</li>
+        <li><b>One model for eyes and ears:</b> LFM3-Omni-2B. Pick Audio-2B instead if you only need voice.</li>
+        <li><b>Agent plumbing:</b> d1-2B as a millisecond router or classifier in front of a chat model.</li>
+        <li><b>Long-context RAG and chat:</b> Nemotron-3.5-Bolt-E4B.</li>
+        <li><b>Frontier at home:</b> DeepSeek V4.1 Flash at 2-bit holds its benchmark scores, if you have the disk for it.</li>
+      </ul>
+
+      <p class="callout">Data pulled 2026-11-01 from the linked Hugging Face cards and r/LocalLLaMA threads (comments paraphrased). The ratings are opinion, not measurement. Built with my local-LLM newsdesk, a Claude Code mod that tracks new releases.</p>
+
+      <footer class="post-end">
+        <span class="hanko" aria-hidden="true">AT</span>
+        <p class="post-end-who"><span class="post-end-name">Anand Thakkar</span><span class="mono">MS in AI at Northeastern · Boston</span></p>
+        <a class="btn" href="../"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 6h-9M5 2.5 1.5 6 5 9.5"/></svg>All posts</a>
+      </footer>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <a class="mono" href="../../">Back to the portfolio</a>
+    <p class="mono">© 2026 Anand Thakkar</p>
+  </footer>
+</body>
+</html>

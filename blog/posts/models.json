@@ -1,0 +1,272 @@
+{
+ "models": [
+  {
+   "id": "LiquidAI/LFM3-1.7B",
+   "params": "1.73B",
+   "modality": "text, 256K ctx",
+   "license": "LFM Open License v1.0",
+   "benchmarks": {
+    "IFEval": 96.66,
+    "GPQA-Diamond": 63.37,
+    "LiveCodeBench v6": 73.46,
+    "SWE-bench Verified": 43.4,
+    "BFCL V4": 71.39
+   },
+   "ratings": {
+    "reasoning": 3,
+    "coding": 3,
+    "instruction_following": 5,
+    "multimodal": 1,
+    "speed_edge": 5,
+    "creative_writing": 2
+   },
+   "take": "The headline act. A 1 GB-at-Q4 model with near-perfect IFEval and a LiveCodeBench score that embarrasses 9B models. Knowledge is the weak spot (MMLU ~41 per AtomicChat's eval), so pair it with RAG or tools.",
+   "reddit_summary": "Hype thread (~400 upvotes, 100+ comments): people are stunned by the jump and some think it finally beats Qwen3.5-4B. In a 'best small non-reasoning model' thread, users note the card itself warns no-think mode can be inconsistent, and some still prefer Qwen3.5-4B or Gemma E-series.",
+   "links": [
+    "https://huggingface.co/LiquidAI/LFM3-1.7B",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xgy8s3/",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xi5qxa/"
+   ]
+  },
+  {
+   "id": "AtomicChat/LFM3-1.7B-Uncensored-GGUF",
+   "params": "1.73B · Q4_K_M 1.1 GB",
+   "modality": "text",
+   "license": "LFM Open License v1.0",
+   "benchmarks": {
+    "Harmful refusals": "61.7% → 0%",
+    "XSTest false refusals": "5.2% → 0%",
+    "MMLU (2000q)": "41.0 → 41.0",
+    "ΔKLD": 0.019
+   },
+   "ratings": {
+    "reasoning": 3,
+    "coding": 3,
+    "instruction_following": 5,
+    "multimodal": 1,
+    "speed_edge": 5,
+    "creative_writing": 3
+   },
+   "take": "Same brain as LFM3-1.7B with refusals ablated out and, per the card, no measurable capability loss. Great for creative and roleplay work; you own the guardrails.",
+   "reddit_summary": "No dedicated thread yet. Community opinion is inherited from the base LFM3-1.7B launch thread, so treat this one as untested by the crowd.",
+   "links": [
+    "https://huggingface.co/AtomicChat/LFM3-1.7B-Uncensored-GGUF",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xgy8s3/"
+   ]
+  },
+  {
+   "id": "LiquidAI/LFM3-Omni-2B",
+   "params": "2.17B",
+   "modality": "text+image+video+audio → text/speech",
+   "license": "LFM Open License v1.0",
+   "benchmarks": {
+    "DocVQA": 92.47,
+    "OCRBench": 806,
+    "Daily-Omni": 70.09,
+    "Video-MME": 57.7,
+    "EN ASR WER": 6.36
+   },
+   "ratings": {
+    "reasoning": 2,
+    "coding": 1,
+    "instruction_following": 3,
+    "multimodal": 5,
+    "speed_edge": 4,
+    "creative_writing": 2
+   },
+   "take": "The Swiss-army knife: one 2B model that sees, hears, and talks. DocVQA 92 makes it a serious local OCR/document option.",
+   "reddit_summary": "Excited reception: native omni at 2B is the desktop assistant people wanted years ago. One early tester found it about 3x faster than Gemma 4 E4B and more accurate on video. The pushback: intelligence is still 2B-level, multilingual support is shallow, no voice cloning, and some dislike the LFM license.",
+   "links": [
+    "https://huggingface.co/LiquidAI/LFM3-Omni-2B",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xh1rwn/",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xlk2kb/"
+   ]
+  },
+  {
+   "id": "LiquidAI/LFM3-Audio-2B",
+   "params": "2B",
+   "modality": "text/audio → text/speech",
+   "license": "LFM Open License v1.0",
+   "benchmarks": {
+    "EN ASR WER": 6.23,
+    "Multilingual ASR WER": 6.03,
+    "TTS UTMOSv2": 3.83,
+    "VoiceBench": 73.13,
+    "MMAR": 50.6
+   },
+   "ratings": {
+    "reasoning": 2,
+    "coding": 1,
+    "instruction_following": 3,
+    "multimodal": 4,
+    "speed_edge": 5,
+    "creative_writing": 2
+   },
+   "take": "Audio specialist: better VoiceBench than the Omni model. A natural fit for a local voice assistant or dictation pipeline.",
+   "reddit_summary": "Well received as a fast, compact model that handles speech in both directions, and Liquid already upstreamed audio.cpp support. Critics call it 'braindead' on reasoning, ask for a bigger version, and question its edge over a classic STT → LLM → TTS cascade.",
+   "links": [
+    "https://huggingface.co/LiquidAI/LFM3-Audio-2B",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xh50at/"
+   ]
+  },
+  {
+   "id": "LiquidAI/d1-2B-GGUF",
+   "params": "1.92B · Q4_K_M 1.1 GB",
+   "modality": "text+image+video → typed decisions",
+   "license": "LFM Open License v1.0",
+   "benchmarks": {
+    "DecisionBench (Hanno)": 77.1,
+    "decisionbench.ai v4": 85.2,
+    "MMBench": 87.9,
+    "VisualWebBench": 96.2,
+    "Latency (H100)": "5.7 ms"
+   },
+   "ratings": {
+    "reasoning": 2,
+    "coding": 1,
+    "instruction_following": 3,
+    "multimodal": 4,
+    "speed_edge": 5,
+    "creative_writing": 1
+   },
+   "take": "Not a chatbot: a single-forward-pass decision model that returns typed answers with probabilities. Ideal as a router, classifier, or guard in an agent stack.",
+   "reddit_summary": "Mixed. A top comment doesn't see what's special about it, while defenders argue that modern decision models handle far longer context than BERT-style classifiers. llama.cpp PRs from Liquid-affiliated authors are already open.",
+   "links": [
+    "https://huggingface.co/LiquidAI/d1-2B-GGUF",
+    "https://huggingface.co/LiquidAI/d1-2B",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1x01zg6/"
+   ]
+  },
+  {
+   "id": "LiquidAI/d1-Omni-2B-GGUF",
+   "params": "2.17B · Q8_0 1.85 GB",
+   "modality": "text+image+video+audio → typed decisions",
+   "license": "LFM Open License v1.0",
+   "benchmarks": {
+    "DecisionBench (Hanno)": 76.4,
+    "MMBench": 85.2,
+    "POPE": 89.9,
+    "ESC-50": 84.5,
+    "Latency (M5 Pro)": "21.1 ms"
+   },
+   "ratings": {
+    "reasoning": 2,
+    "coding": 1,
+    "instruction_following": 3,
+    "multimodal": 4,
+    "speed_edge": 5,
+    "creative_writing": 1
+   },
+   "take": "d1 with ears. Slightly lower vision scores than d1-2B, but it can classify sounds and speech intents in milliseconds.",
+   "reddit_summary": "Discussed alongside d1 in the same thread. At least one builder was actively looking for an audio-native decision model and welcomed it. The skeptics' 'it's just a classifier' argument applies here too.",
+   "links": [
+    "https://huggingface.co/LiquidAI/d1-Omni-2B-GGUF",
+    "https://huggingface.co/LiquidAI/d1-Omni-2B",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1x01zg6/"
+   ]
+  },
+  {
+   "id": "nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB",
+   "params": "8B (4B eff.) · Q4_K_M 6.18 GB",
+   "modality": "text, 64K ctx",
+   "license": "OpenMDW-1.1",
+   "benchmarks": {
+    "IFBench": 64.0,
+    "BFCL-v3": 67.31,
+    "RULER 64K": 85.76,
+    "RoleBench": 71.21,
+    "RAGTruth": 77.88
+   },
+   "ratings": {
+    "reasoning": 3,
+    "coding": 2,
+    "instruction_following": 4,
+    "multimodal": 1,
+    "speed_edge": 4,
+    "creative_writing": 4
+   },
+   "take": "NVIDIA's post-train of Gemma-4-E4B, tuned for chat, tools and long-context RAG; ships with a speculative-decoding drafter. Note: the '4GB' repo ships a 6.18 GB file.",
+   "reddit_summary": "Positive: a 'solid little model'. One user swapped it in for Gemma 4 26B-A4B as their voice assistant, praising its instruction following, and another calls it the fastest coherent model at this size. A dissenter finds it more easily confused than stock Gemma E4B, with a DFlash drafter slower than Gemma's MTP on low-power hardware.",
+   "links": [
+    "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xkcdlz/"
+   ]
+  },
+  {
+   "id": "ccore/Qwen3.5-4B-3D-Coder",
+   "params": "4B · Q4_K_M 2.71 GB",
+   "modality": "text (+image via mmproj)",
+   "license": "Apache-2.0",
+   "benchmarks": {
+    "all": "n/p"
+   },
+   "ratings": {
+    "reasoning": 3,
+    "coding": 4,
+    "instruction_following": 3,
+    "multimodal": 2,
+    "speed_edge": 4,
+    "creative_writing": 2
+   },
+   "take": "A niche community fine-tune that writes Three.js scenes. No benchmarks yet (the card says 'early preview'), so the ratings are estimates.",
+   "reddit_summary": "Community darling: two threads with ~500 and ~600 upvotes, and people are amazed that a solo 4B fine-tune one-shots Three.js scenes. Commenters liken it to Roblox's internal tooling. The most common ask is for the dataset and training pipeline to be released.",
+   "links": [
+    "https://huggingface.co/ccore/Qwen3.5-4B-3D-Coder",
+    "https://huggingface.co/Qwen/Qwen3.5-4B",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xeuo7t/",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xgc7uv/"
+   ]
+  },
+  {
+   "id": "abenzerps/Qwen-Image-2.1-Uncensored-Quantized",
+   "params": "7B DiT + 8B encoder · Q4_K_M 4.6 GB",
+   "modality": "text→image, image edit",
+   "license": "Qwen Research License",
+   "benchmarks": {
+    "all": "n/p (card shows an image only)"
+   },
+   "ratings": {
+    "reasoning": null,
+    "coding": null,
+    "instruction_following": 4,
+    "multimodal": 5,
+    "speed_edge": 3,
+    "creative_writing": null
+   },
+   "take": "Local image generation and editing with RGBA output. Budget for the 9+ GB text encoder on top of the DiT.",
+   "reddit_summary": "No thread for this quant specifically. Around Qwen-Image 2.1 (the Turbo release thread), people are impressed but keep asking how it compares to Z-Image-Turbo. They lament the switch from Apache 2.0 to the Qwen Research license and warn that at 2K the VAE decode, not the 7B transformer, is what runs out of memory.",
+   "links": [
+    "https://huggingface.co/abenzerps/Qwen-Image-2.1-Uncensored-Quantized",
+    "https://huggingface.co/Qwen/Qwen-Image-2.1",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1x1lclx/"
+   ]
+  },
+  {
+   "id": "ISTA-DASLab/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF",
+   "params": "763B MoE · IQ2_XXS 249 GB",
+   "modality": "text+image",
+   "license": "MIT",
+   "benchmarks": {
+    "AIME25": 100.0,
+    "GPQA-D": 90.91,
+    "LiveCodeBench v6": 89.71,
+    "Avg (= base)": 93.54
+   },
+   "ratings": {
+    "reasoning": 5,
+    "coding": 5,
+    "instruction_following": 4,
+    "multimodal": 3,
+    "speed_edge": 1,
+    "creative_writing": 4
+   },
+   "take": "The frontier guest. ISTA's 2-bit quant matches the FP8 base on the card's benchmarks, but you need roughly 250 GB of disk. Local in theory, a lab project in practice.",
+   "reddit_summary": "Viral 'one 3090' post, roasted for burying the 192 GB of system RAM it needs, and many dismiss Q2 as lobotomized. Separately, heavy users rate 1017 roughly on par with Qwen 3.8 Flash Next in practice despite its benchmarks, and quip that anyone who can run it locally isn't the 'poor' audience.",
+   "links": [
+    "https://huggingface.co/ISTA-DASLab/DeepSeek-V4.1-Flash-1017-GSQ-RCO-GGUF",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xh9yf7/",
+    "https://www.reddit.com/r/LocalLLaMA/comments/1xdkvmi/"
+   ]
+  }
+ ]
+}

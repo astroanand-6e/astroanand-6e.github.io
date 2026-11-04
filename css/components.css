@@ -1,4 +1,4 @@
-/* Components: topbar, rail, seal, plate, flap, links, buttons, twins, theme fader */
+/* Components: topbar, nav links, rail, seal, plate, flap, links, buttons, twins, theme fader, footer */
 :root {
   --tick: var(--rule-strong);
   --crop-marks:
@@ -33,13 +33,14 @@
 .brand { display: inline-flex; text-decoration: none; }
 .brand .hanko { transition: transform var(--dur) var(--ease-out); }
 .brand:hover .hanko { transform: rotate(0deg) scale(1.08); }
-.skip-story {
+.skip-story, .nav-link {
   display: inline-flex; align-items: center; gap: 0.4rem; min-height: var(--hit);
   font: 500 var(--fs-12)/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase;
   text-decoration: none; color: var(--ink-2); transition: color var(--dur-fast) var(--ease-out);
 }
 .skip-story svg { width: 0.75rem; height: 0.75rem; transition: transform var(--dur) var(--ease-out); }
-.skip-story:hover { color: var(--sakura-text); }
+.skip-story:hover, .nav-link:hover { color: var(--sakura-text); }
+.nav-link[aria-current="page"] { color: var(--ink); text-decoration: underline var(--sakura) 2px; text-underline-offset: 0.6em; }
 .skip-story:hover svg { transform: translateY(3px); }
 .icon-btn {
   position: relative; width: 2rem; height: 2rem; padding: 0;
@@ -190,3 +191,13 @@ input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.1); }
 .seg-auto { border: var(--hairline) solid var(--rule-strong); border-radius: 999px; font: 500 var(--fs-12)/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
 .seg-auto[aria-pressed="true"] { border-color: var(--sakura-text); color: var(--sakura-text); }
 .seg [role="radio"]:focus-visible, .seg-auto:focus-visible { outline: 2px solid var(--sakura-text); outline-offset: -2px; }
+
+/* Footer (home and blog) */
+.site-footer {
+  position: relative; z-index: var(--z-index-section); background: var(--paper);
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3);
+  padding: var(--space-5) max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter))) var(--space-6);
+  border-top: var(--hairline) solid var(--rule);
+}
+.site-footer a { text-decoration: none; transition: color var(--dur-fast) var(--ease-out); }
+.site-footer a:hover { color: var(--sakura-text); }

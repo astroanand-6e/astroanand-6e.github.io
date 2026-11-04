@@ -1,4 +1,4 @@
-/* Index: editorial work grid, ledger rows, contact, footer, help dialog */
+/* Index: editorial work grid, ledger rows, contact, help dialog */
 .index {
   position: relative; z-index: var(--z-index-section); background: var(--paper);
   border-top: var(--hairline) solid var(--rule); padding-block: var(--space-9) var(--space-7);
@@ -83,13 +83,6 @@
   transition: color var(--dur-fast) var(--ease-out), background-size var(--dur-slow) var(--ease-out);
 }
 .contact-mail:hover { color: var(--sakura-text); background-size: 100% 2px; }
-
-.site-footer {
-  position: relative; z-index: var(--z-index-section); background: var(--paper);
-  display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3);
-  padding: var(--space-5) max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter))) var(--space-6);
-  border-top: var(--hairline) solid var(--rule);
-}
 
 /* Help dialog */
 dialog { max-width: min(28rem, calc(100vw - 2rem)); padding: var(--space-5); border: var(--hairline) solid var(--rule-strong); border-radius: var(--radius); background: var(--paper); color: var(--ink); }

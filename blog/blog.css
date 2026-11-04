@@ -1,0 +1,154 @@
+/* Blog: the post index and the posts. Built on tokens, base and components
+   (topbar, nav links, crossfader, hanko, buttons, footer). */
+.blog-page { --topbar-h: 3.75rem; display: flex; flex-direction: column; min-height: 100svh; }
+/* Above the ink vignette (body::after), like #main on the home page. */
+.blog-main { position: relative; z-index: var(--z-content); flex: 1; padding-block: calc(var(--topbar-h) + var(--space-7)) var(--space-8); }
+
+/* Index: a big title, then a ledger of posts grouped by year (like the home index rows) */
+.blog-wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+.blog-head {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: var(--space-3);
+  align-items: end; padding-bottom: var(--space-7);
+}
+.blog-head > * { grid-column: 1 / -1; }
+.blog-head h1 { font-size: clamp(5rem, 14vw, 10rem); line-height: 0.85; letter-spacing: -0.035em; }
+.blog-lede { max-width: 24ch; font: italic clamp(var(--fs-24), 2.4vw, var(--fs-32))/1.2 var(--font-display); color: var(--ink-2); }
+@media (min-width: 900px) {
+  .blog-head h1 { grid-column: 1 / span 7; }
+  .blog-lede { grid-column: 8 / -1; justify-self: end; padding-bottom: 0.5em; text-align: right; }
+}
+
+.year {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: var(--space-5);
+  padding-block: var(--space-6); border-top: var(--hairline) solid var(--rule);
+}
+.year-label, .post-list { grid-column: 1 / -1; }
+.year-label { font-size: clamp(var(--fs-32), 4vw, var(--fs-48)); line-height: 1; color: var(--ink-2); }
+@media (min-width: 900px) {
+  .year-label { grid-column: 1 / span 3; position: sticky; top: calc(var(--topbar-h) + var(--space-5)); align-self: start; }
+  .post-list { grid-column: 4 / -1; }
+}
+.post-item {
+  position: relative; display: grid; gap: var(--space-2);
+  padding: var(--space-5) 2.5rem var(--space-5) 0; border-top: var(--hairline) solid var(--rule);
+}
+.post-item:first-child { padding-top: 0; border-top: 0; }
+.post-item:last-child { padding-bottom: 0; }
+/* A signal bar lights up beside the row under the pointer or focus. */
+.post-item::before {
+  content: ""; position: absolute; left: calc(var(--space-4) * -1); top: var(--space-5); bottom: var(--space-5); width: 2px;
+  background: var(--sakura); transform: scaleY(0); transform-origin: 50% 0; transition: transform var(--dur) var(--ease-out);
+}
+.post-item:first-child::before { top: 0; }
+.post-item:last-child::before { bottom: 0; }
+.post-item-meta { order: -1; display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); }
+.post-item-meta > * + *::before { content: "·"; margin-right: var(--space-2); color: var(--ink-2); }
+.post-item-topic { color: var(--sakura-text); }
+.post-item-title { max-width: 32ch; font: italic clamp(var(--fs-24), 2.6vw, var(--fs-32))/1.1 var(--font-display); letter-spacing: -0.01em; }
+.post-item-title a { color: var(--ink); text-decoration: none; transition: color var(--dur-fast) var(--ease-out); }
+.post-item-title a::after { content: ""; position: absolute; inset: 0; }
+.post-item-summary { max-width: 62ch; color: var(--ink-2); }
+.post-arrow {
+  position: absolute; top: var(--space-5); right: 0; width: 1.25rem; height: 1.25rem; color: var(--sakura-text); pointer-events: none;
+  opacity: 0; transform: translate(-8px, 8px); transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+.post-item:first-child .post-arrow { top: 0; }
+.post-item:hover::before, .post-item:focus-within::before { transform: scaleY(1); }
+.post-item:hover .post-item-title a, .post-item:focus-within .post-item-title a { color: var(--sakura-text); }
+.post-item:hover .post-arrow, .post-item:focus-within .post-arrow { opacity: 1; transform: none; }
+@media (hover: none) { .post-arrow { opacity: 0.7; transform: none; } }
+.blog-empty { color: var(--ink-2); }
+
+/* Post: one reading column; .wide blocks (tables, charts, card grids) break out of it */
+.post { --read: 40rem; --wide: 60rem; counter-reset: section; font-size: var(--fs-16); line-height: 1.7; }
+@media (min-width: 768px) { .post { font-size: var(--fs-18); } }
+.post > * { width: min(var(--read), 100% - 2 * var(--gutter)); margin-inline: auto; }
+.post > .wide { width: min(var(--wide), 100% - 2 * var(--gutter)); }
+.post > * + * { margin-top: var(--space-4); }
+
+.post-head { display: grid; gap: var(--space-4); padding-bottom: var(--space-5); }
+.post-kicker { display: flex; align-items: center; gap: var(--space-3); color: var(--sakura-text); }
+.post-kicker::before { content: ""; flex: none; width: 1.75rem; height: 1px; background: currentColor; }
+.post-head h1 { font-size: clamp(2.75rem, 6vw, 4.75rem); line-height: 0.98; letter-spacing: -0.025em; text-wrap: balance; }
+.post-byline { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.post-byline > * + *::before { content: "·"; margin-right: var(--space-2); }
+.post-note { font-size: var(--fs-14); line-height: 1.5; color: var(--ink-2); }
+.post .lede { font-size: 1.125em; line-height: 1.6; }
+
+/* Sections: numbered, each opened by a hairline */
+.post > h2 {
+  counter-increment: section; margin-top: var(--space-7); padding-top: var(--space-5);
+  border-top: var(--hairline) solid var(--rule); font-size: clamp(var(--fs-32), 3.4vw, var(--fs-48));
+}
+.post > h2::before {
+  content: counter(section, decimal-leading-zero); display: block; margin-bottom: var(--space-3);
+  font: 500 var(--fs-12)/1 var(--font-mono); letter-spacing: 0.08em; color: var(--sakura-text);
+}
+.post b, .post strong { font-weight: 600; }
+.post .bullets { display: grid; gap: var(--space-3); }
+.post .bullets li { position: relative; padding-left: 1.4rem; }
+.post .bullets li::before { content: ""; position: absolute; left: 0.1rem; top: 0.85em; width: 0.6rem; height: 1px; background: var(--sakura-text); }
+.post > .callout { margin-top: var(--space-6); padding-top: var(--space-4); border-top: var(--hairline) solid var(--rule); font-size: var(--fs-14); line-height: 1.6; color: var(--ink-2); }
+
+/* Tables scroll sideways on small screens: the first column stays put and the right edge shades while there's more. */
+.table-wrap {
+  overflow-x: auto; overscroll-behavior-x: contain; border: var(--hairline) solid var(--rule); border-radius: var(--radius);
+  background:
+    linear-gradient(to left, var(--paper) 30%, transparent) 100% 0 / 2.5rem 100% no-repeat local,
+    radial-gradient(farthest-side at 100% 50%, var(--shadow), transparent) 100% 0 / 0.9rem 100% no-repeat scroll;
+}
+.post table { width: 100%; min-width: 40rem; border-collapse: separate; border-spacing: 0; font-size: var(--fs-14); line-height: 1.45; }
+.post th, .post td { padding: 0.7rem var(--space-3); text-align: left; vertical-align: top; border-bottom: var(--hairline) solid var(--rule); }
+.post tbody tr:last-child > * { border-bottom: 0; }
+.post thead th { font: 500 var(--fs-12)/1.3 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; }
+.post tr > :first-child { position: sticky; left: 0; z-index: 1; background: var(--paper); box-shadow: inset -1px 0 0 var(--rule); }
+.post tbody tr:hover > * { background-color: var(--paper-2); }
+.post td b { font: 500 var(--fs-14) var(--font-mono); }
+.post td.num { font-family: var(--font-mono); white-space: nowrap; }
+.post .bench th:last-child { width: 40%; }
+.post .dots { font-family: var(--font-mono); letter-spacing: 0.1em; color: var(--sakura-text); white-space: nowrap; }
+.post .np { color: var(--ink-2); }
+
+/* Skill map: scrolls sideways on phones rather than shrinking the labels away. The scroller
+   runs right to left so it opens on the right, where the small, fast models cluster. */
+.map { padding: var(--space-5); border: var(--hairline) solid var(--rule); border-radius: var(--radius); background: var(--card-bg); }
+.map-scroll { overflow-x: auto; overscroll-behavior-x: contain; direction: rtl; }
+.skill-map { direction: ltr; width: 100%; min-width: 30rem; max-width: 46rem; height: auto; margin-inline: auto; font: 500 13px var(--font-mono); }
+.skill-map line { stroke: var(--rule-strong); }
+.skill-map text { fill: var(--ink); }
+.skill-map .ax { fill: var(--ink-2); }
+.skill-map .pt { fill: var(--sakura-text); }
+.skill-map .n { fill: var(--on-accent); font-weight: 600; }
+.map-legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: var(--space-1) var(--space-4); margin-top: var(--space-4); font: 400 var(--fs-12)/1.6 var(--font-mono); color: var(--ink-2); }
+.map-legend b { display: inline-block; min-width: 1.5rem; color: var(--sakura-text); }
+
+/* Model cards: two up on wide screens */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr)); gap: var(--col-gap); }
+.post .card {
+  display: grid; align-content: start; gap: var(--space-3); padding: var(--space-5); scroll-margin-top: var(--space-5);
+  border: var(--hairline) solid var(--rule); border-radius: 0.25rem; background: var(--card-bg);
+  font-size: var(--fs-16); line-height: 1.6;
+  transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+/* Jumped here from the skill matrix: mark the card. */
+.post .card:target { border-color: var(--sakura); box-shadow: 0 20px 32px -24px var(--shadow); }
+.post .card h3 { font: 500 var(--fs-16)/1.35 var(--font-mono); letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.post .card .org { color: var(--ink-2); }
+.post .card .meta { font: 400 var(--fs-12)/1.5 var(--font-mono); color: var(--ink-2); }
+.post .quote { padding-left: var(--space-3); border-left: 2px solid var(--sakura); font-size: var(--fs-14); color: var(--ink-2); }
+.post .links { display: flex; flex-wrap: wrap; gap: 0 var(--space-3); font: 400 var(--fs-12)/1.6 var(--font-mono); }
+
+/* Sign-off: the seal, the name, the way back */
+.post > .post-end { margin-top: var(--space-7); }
+.post-end { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); padding-top: var(--space-6); border-top: var(--hairline) solid var(--rule); }
+.post-end .hanko { flex: none; width: 3.25rem; height: 3.25rem; font-size: 1.6rem; }
+.post-end-who { display: grid; gap: 0.2rem; margin-right: auto; line-height: 1.3; }
+.post-end-name { font: italic var(--fs-24)/1.1 var(--font-display); }
+.post-end .btn svg { width: 0.75rem; height: 0.75rem; transition: transform var(--dur) var(--ease-out); }
+.post-end .btn:hover svg { transform: translateX(-3px); }
+
+@media (max-width: 767.98px) {
+  .blog-main { padding-block: calc(var(--topbar-h) + var(--space-6)) var(--space-7); }
+  .blog-head { padding-bottom: var(--space-6); }
+  .map { padding: var(--space-3); }
+}

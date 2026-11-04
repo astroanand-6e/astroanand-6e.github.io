@@ -1,0 +1,11 @@
+# Work in progress, not part of the first draft
+mix/
+room/
+play/
+# Dev-only files
+.claude/
+*.test.js
+# Old Zen theme, replaced by the redesign
+css/zen-style.css
+js/zen-script.js
+fonts/

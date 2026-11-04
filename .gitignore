@@ -9,6 +9,9 @@ yarn-error.log
 package-lock.json
 yarn.lock
 
+# Python caches (blog generators)
+__pycache__/
+
 # Build files
 dist/
 build/

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog | Anand Thakkar</title>
+  <meta name="description" content="Notes on local LLMs, on-device AI and things I build.">
+  <meta name="author" content="Anand Thakkar">
+  <meta name="theme-color" content="#F4EFE6">
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+  <script>
+    (function () {
+      var root = document.documentElement, saved = null;
+      root.classList.add('js');
+      try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : (dark ? 'ink' : 'paper');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="blog.css">
+  <script type="module" src="blog.js"></script>
+</head>
+<body class="blog-page">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="Anand Thakkar, home"><span class="hanko hanko-sm" aria-hidden="true">AT</span></a>
+    <nav aria-label="Site">
+      <a class="nav-link" href="../#index">Work</a>
+      <a class="nav-link" href="./" aria-current="page">Blog</a>
+      <button type="button" id="theme-toggle" class="fader" role="switch" aria-checked="false" aria-label="Night mode">
+        <span class="fader-ticks" aria-hidden="true"></span>
+        <span class="fader-knob" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main" class="blog-main">
+    <div class="blog-wrap">
+      <header class="blog-head">
+        <p class="mono">Notes</p>
+        <h1>Blog</h1>
+        <p class="blog-lede">Local models, on-device AI, and whatever I broke this week.</p>
+      </header>
+
+      <!-- Generated from each post's <head>: add a post to blog/posts/, then run python3 blog/build_index.py -->
+      <!-- posts:start -->
+      <section class="year" aria-labelledby="y2026">
+        <h2 class="year-label" id="y2026">2026</h2>
+        <ol class="post-list">
+          <li class="post-item">
+            <h3 class="post-item-title"><a href="posts/local-llm-roundup-2026-11.html">Ten local models, one month: what&#x27;s actually worth running</a></h3>
+            <p class="mono post-item-meta"><time datetime="2026-11-01">Nov 1</time><span class="post-item-topic">Local LLMs</span><span>6 min read</span></p>
+            <p class="post-item-summary">Benchmarks and a qualitative skill map for this month&#x27;s trending local models: Liquid AI LFM3, d1, Nemotron Bolt, DeepSeek V4.1 Flash and more.</p>
+            <svg class="post-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg>
+          </li>
+        </ol>
+      </section>
+      <!-- posts:end -->
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <a class="mono" href="../">Back to the portfolio</a>
+    <p class="mono">© 2026 Anand Thakkar</p>
+  </footer>
+</body>
+</html>

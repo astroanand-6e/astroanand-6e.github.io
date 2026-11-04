@@ -35,7 +35,7 @@ html[data-zone="index"] [data-stage-slot]::after { opacity: 0; visibility: hidde
 .hero-copy > * { position: relative; animation: rise var(--dur-slow) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 60ms + 80ms); }
 .hero-copy > .plate { z-index: 1; }
 .hero-name {
-  z-index: 2; margin-top: calc(var(--fs-name) * -0.32);
+  z-index: 2; margin-top: calc(var(--fs-name) * -0.1);
   font-size: var(--fs-name); line-height: 0.82; letter-spacing: -0.03em;
   paint-order: stroke fill; -webkit-text-stroke: 0.045em var(--paper);
 }

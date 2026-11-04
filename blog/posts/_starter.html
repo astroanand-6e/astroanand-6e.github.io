@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- New post: copy this file to blog/posts/<slug>.html and replace every double-brace
+       placeholder (DATE is YYYY-MM-DD, DATE_LABEL reads like "Nov 1, 2026"). Write the
+       article, then run python3 blog/build_index.py to add it to the list. -->
+  <title>{{TITLE}} | Anand Thakkar</title>
+  <meta name="description" content="{{SUMMARY}}">
+  <meta name="author" content="Anand Thakkar">
+  <meta name="theme-color" content="#F4EFE6">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{SUMMARY}}">
+  <meta property="article:published_time" content="{{DATE}}">
+  <meta property="article:tag" content="{{TOPIC}}">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon.svg">
+  <script>
+    (function () {
+      var root = document.documentElement, saved = null;
+      root.classList.add('js');
+      try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : (dark ? 'ink' : 'paper');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../blog.css">
+  <script type="module" src="../blog.js"></script>
+</head>
+<body class="blog-page">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../../" aria-label="Anand Thakkar, home"><span class="hanko hanko-sm" aria-hidden="true">AT</span></a>
+    <nav aria-label="Site">
+      <a class="nav-link" href="../../#index">Work</a>
+      <a class="nav-link" href="../">Blog</a>
+      <button type="button" id="theme-toggle" class="fader" role="switch" aria-checked="false" aria-label="Night mode">
+        <span class="fader-ticks" aria-hidden="true"></span>
+        <span class="fader-knob" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main" class="blog-main">
+    <article class="post">
+      <header class="post-head">
+        <p class="mono post-kicker">{{KICKER}}</p>
+        <h1>{{TITLE}}</h1>
+        <p class="mono post-byline"><time datetime="{{DATE}}">{{DATE_LABEL}}</time><span>{{TOPIC}}</span></p>
+      </header>
+
+      <p class="lede">{{LEDE}}</p>
+      <!-- Paragraphs sit in the reading column, and each h2 gets a number and a rule.
+           Give anything that needs room (tables, charts, card grids) class="wide";
+           wrap tables in <div class="table-wrap wide" tabindex="0" role="region" aria-label="...">
+           so they scroll on phones and can be scrolled from the keyboard. -->
+      <h2>{{SECTION}}</h2>
+      <p>{{BODY}}</p>
+
+      <footer class="post-end">
+        <span class="hanko" aria-hidden="true">AT</span>
+        <p class="post-end-who"><span class="post-end-name">Anand Thakkar</span><span class="mono">MS in AI at Northeastern · Boston</span></p>
+        <a class="btn" href="../"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 6h-9M5 2.5 1.5 6 5 9.5"/></svg>All posts</a>
+      </footer>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <a class="mono" href="../../">Back to the portfolio</a>
+    <p class="mono">© 2026 Anand Thakkar</p>
+  </footer>
+</body>
+</html>
