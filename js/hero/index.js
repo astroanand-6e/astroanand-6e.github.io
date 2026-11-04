@@ -7,6 +7,7 @@ import {
   VH_PER_SECOND_DESKTOP, VH_PER_SECOND_MOBILE, WAKE_MARGIN_S,
 } from './config.js';
 import { hydrateImages } from './placeholders.js';
+import { CUES, createHeroSound } from './sound.js';
 import { initStaticHero } from './static-mode.js';
 
 const LOADERS = Object.freeze({
@@ -134,6 +135,21 @@ function exposeDebug(master, scenes, st) {
   };
 }
 
+/* Sound toggle in the pinned frame; cues are placed at each scene's start on the master. */
+function mountSound(host, master, scenes) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'hx-sound';
+  button.setAttribute('aria-pressed', 'false');
+  button.textContent = 'Sound off';
+  host.querySelector('.hx-pin').append(button);
+  const cues = scenes
+    .flatMap((scene) => (CUES[scene.def.id] || []).map((cue) => ({ at: scene.start + cue.at, play: cue.play })))
+    .sort((a, b) => a.at - b.at);
+  const sound = createHeroSound(button, cues);
+  master.eventCallback('onUpdate', () => sound.update(master.time()));
+}
+
 async function startLive(host) {
   const { gsap, ScrollTrigger } = window;
   gsap.registerPlugin(ScrollTrigger);
@@ -141,6 +157,7 @@ async function startLive(host) {
   const modules = await Promise.all(SCENES.map((def) => LOADERS[def.id]()));
   const { master, scenes } = buildMaster(gsap, modules, host, sceneOptions());
   const st = createScroller(ScrollTrigger, host, master, scenes);
+  mountSound(host, master, scenes);
   guardFocus(host, st, master, scenes);
   watchResize(scenes);
   exposeDebug(master, scenes, st);

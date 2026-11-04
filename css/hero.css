@@ -3,12 +3,29 @@
    html.hx-live on #top switches to the pinned stage; the timeline owns all motion. */
 .hero { position: relative; z-index: var(--z-content); --gutter-h: var(--gutter); }
 
-/* The hero is always black with red, whatever theme the rest of the page uses. */
+/* The animation plays in the dark. In dark mode the hero stays black; in light mode it opens light,
+   the intro scene tweens --hx-night 0 -> 1 as the visitor scrolls in, and the hand-off tweens it
+   back to 0 so the page below arrives light again. */
 .hx-pin {
-  --paper: #050505; --ink: #f2f0ec; --ink-2: #9a9893; --sakura: #e10600; --sakura-text: #ff2a1f;
-  --rule: rgba(242, 240, 236, 0.18); --rule-strong: rgba(242, 240, 236, 0.46);
-  position: relative; isolation: isolate; background: #050505; color: var(--ink);
+  --hx-night: 1;
+  --hx-pct: calc(max(var(--hx-night), var(--hx-ink, 1)) * 100%);
+  --paper: color-mix(in srgb, #050505 var(--hx-pct), #f4f4f2);
+  --ink: color-mix(in srgb, #f2f0ec var(--hx-pct), #0a0a0a);
+  --ink-2: color-mix(in srgb, #9a9893 var(--hx-pct), #55534f);
+  --sakura: #e10600; --sakura-text: color-mix(in srgb, #ff2a1f var(--hx-pct), #c00000);
+  --rule: color-mix(in srgb, var(--ink) 18%, transparent); --rule-strong: color-mix(in srgb, var(--ink) 46%, transparent);
+  position: relative; isolation: isolate; background: var(--paper); color: var(--ink);
 }
+html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
+
+.hx-sound {
+  position: absolute; z-index: 20; top: calc(var(--topbar-h, 4.25rem) + 0.5rem); right: var(--gutter);
+  min-height: var(--hit); padding: 0 0.9rem; border: var(--hairline) solid var(--rule-strong); border-radius: 999px;
+  background: transparent; color: var(--ink); font: 500 var(--fs-12) / 1 var(--font-mono); letter-spacing: 0.14em;
+  text-transform: uppercase; cursor: pointer; pointer-events: auto;
+}
+.hx-sound[aria-pressed="true"] { border-color: var(--sakura); color: var(--sakura-text); }
+.hx-sound:focus-visible { outline: 2px solid var(--sakura); outline-offset: 3px; }
 .hx-scene { position: relative; min-height: 100svh; overflow: hidden; pointer-events: none; }
 .hx-live .hx-pin { height: 100svh; overflow: hidden; }
 .hx-live .hx-scene { position: absolute; inset: 0; min-height: 0; }
