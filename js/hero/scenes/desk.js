@@ -9,6 +9,10 @@ const CROW_SECONDS = 5.2;
 const REVEAL_AT = 2.2;
 const REVEAL_FOR = 2.4;
 const HOLD_FROM = 5.2; /* crows are gone; the desk holds, pushing in gently, until the burn */
+/* The line leaves before the hand-off's flames reach it (the hand-off starts 2s before this
+   scene ends; see SCENES in config.js), so the burn never cuts through the letters. */
+const BEAT_IN = 5.4;
+const BEAT_OUT = 9.3;
 
 export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   const plate = qs(el, '.hx-desk-plate');
@@ -23,7 +27,7 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   tl.to(plate, { scale: 1, duration: HOLD_FROM - REVEAL_AT, ease: 'power2.out' }, REVEAL_AT);
   tl.to(plate, { scale: 1.07, duration: DURATION - HOLD_FROM, ease: 'none' }, HOLD_FROM);
   track(tl, 0, CROW_SECONDS, crows.render, 'none');
-  beat(tl, beatEl, 5.4);
+  beat(tl, beatEl, BEAT_IN, BEAT_OUT);
   holdUntil(tl, DURATION);
   return { fx: [crows], gl: [] };
 }

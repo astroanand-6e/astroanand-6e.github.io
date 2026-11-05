@@ -11,7 +11,7 @@ export const CUES = Object.freeze({
   palm: [{ at: 3.4, play: 'shimmer' }, { at: 9.2, play: 'boom' }],
   eyes: [{ at: 1.0, play: 'drone' }],
   desk: [{ at: 0.3, play: 'flutter' }],
-  handoff: [{ at: 0.5, play: 'crackle' }, { at: 6.2, play: 'rise' }],
+  handoff: [{ at: 0.5, play: 'crackle' }, { at: 4.8, play: 'rise' }], /* rise = LIGHTS_ON_AT in handoff.js */
 });
 
 function noiseBuffer(ctx, seconds) {

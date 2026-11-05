@@ -17,7 +17,7 @@ const LOADERS = Object.freeze({
   desk: () => import('./scenes/desk.js'),
   handoff: () => import('./scenes/handoff.js'),
 });
-const FOCUS_AT = Object.freeze({ intro: 0, handoff: 6 });
+const FOCUS_AT = Object.freeze({ intro: 0, handoff: 7 }); /* after the music line has risen in */
 const CROWS_DESKTOP = 150;
 const CROWS_MOBILE = 70;
 const RESIZE_DEBOUNCE_MS = 220;

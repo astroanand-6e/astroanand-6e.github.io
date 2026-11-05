@@ -118,7 +118,8 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
 .hx-burn { z-index: 5; }
 
 /* Copy beats */
-.hx-beat { position: absolute; z-index: 6; left: var(--gutter); bottom: 9svh; display: grid; gap: var(--space-3); justify-items: start; text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7); }
+.hx-beat { position: absolute; z-index: 6; left: var(--gutter); bottom: 9svh; display: grid; gap: var(--space-3); justify-items: start; text-shadow: 0 2px 24px color-mix(in srgb, rgba(0, 0, 0, 0.7) var(--hx-pct, 100%), transparent); }
+/* The shadow only helps light text on dark plates; it fades with the night so dark text on paper stays crisp. */
 .hx-live .hx-beat { opacity: 0; }
 .hx-beat-kicker { margin: 0; color: var(--sakura-text); font-size: var(--fs-12); letter-spacing: 0.2em; text-transform: uppercase; }
 .nw { white-space: nowrap; }
