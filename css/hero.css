@@ -19,11 +19,6 @@
 html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
 
 /* Sound toggle lives in the top bar beside the help button, so it never sits on hero content. */
-.hx-sound svg { width: 1.05rem; height: 1.05rem; }
-.hx-sound .hx-wave { opacity: 0; transition: opacity var(--dur-fast) ease; }
-.hx-sound[aria-pressed="true"] { border-color: var(--sakura); color: var(--sakura-text); }
-.hx-sound[aria-pressed="true"] .hx-wave { opacity: 1; }
-.hx-sound[aria-pressed="true"] .hx-mute { opacity: 0; }
 .hx-scene { position: relative; min-height: 100svh; overflow: hidden; pointer-events: none; }
 .hx-live .hx-pin { height: 100svh; overflow: hidden; }
 .hx-live .hx-scene { position: absolute; inset: 0; min-height: 0; }
@@ -155,7 +150,7 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
      controller at 60-85%. object-position, because GSAP owns the img's transform. */
   .hx-desk-plate img { max-width: none; width: 100vw; height: 100svh; aspect-ratio: auto; object-fit: cover; object-position: 62% 45%; }
 }
-/* Small phones: the top bar holds the seal, skip link, blog, sound, help and theme, so the skip
+/* Small phones: the top bar holds the seal, skip link, blog, help and theme, so the skip
    link shows only its arrow (its text stays as the accessible name). */
 @media (max-width: 480px) {
   .topbar .skip-story { font-size: 0; gap: 0; min-width: var(--hit); justify-content: center; }
