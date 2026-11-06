@@ -14,6 +14,8 @@ function gesture(p) {
   return Math.min(1, swing);
 }
 
+const DISSOLVE = Object.freeze([0.3, 0.7]);
+
 export function createPoseBlend(canvas, images) {
   const ctx = canvas.getContext('2d');
   let lastP = 0;
@@ -46,7 +48,11 @@ export function createPoseBlend(canvas, images) {
     if (lastP <= 0) return;
     const f = gesture(lastP) * (images.length - 1);
     const k = Math.min(images.length - 2, Math.floor(f));
-    const t = f - k;
+    /* Hold each drawing and dissolve only through the middle of each interval (animation on
+       holds), so two arms are never on screen together for long. */
+    const raw = f - k;
+    const u = Math.min(1, Math.max(0, (raw - DISSOLVE[0]) / (DISSOLVE[1] - DISSOLVE[0])));
+    const t = u * u * (3 - 2 * u);
     ctx.globalCompositeOperation = 'lighter';
     draw(images[k], 1 - t);
     draw(images[k + 1], t);

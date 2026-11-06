@@ -1,0 +1,42 @@
+/* Hero appear (design-to-motion skill, website context): the page opens plain, then each element
+   rises 6px and resolves from a 2px blur, in reading order, 50-70ms apart, done in about 1.2s.
+   The portrait is a photo: it resolves from blur(14px) saturate(0.6) after the headline.
+   Only children are animated, never the elements GSAP drives (.hx-name, .hx-intro-top/-foot get
+   transforms and opacity from the scroll timeline). Plays once on load (fill: backwards, so GSAP owns opacity afterwards; `translate` composes with transforms); CSS only, so it still
+   ends visible if JS fails. Reduced motion shows the final state. */
+@media (prefers-reduced-motion: no-preference) {
+  .topbar .brand, .topbar nav > *,
+  .hx-intro .hx-kicker, .hx-intro .hx-name > span,
+  .hx-intro .hx-line, .hx-intro .hx-sub, .hx-intro .status, .hx-intro .link-row > li, .hx-intro .hx-cue {
+    animation: hx-appear 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: var(--ad, 0ms);
+  }
+  .hx-intro .hx-name > span { display: inline-block; }
+  .hx-intro .hx-figure { animation: hx-photo 1.05s cubic-bezier(0.33, 1, 0.68, 1) 300ms backwards; }
+
+  .topbar .brand { --ad: 0ms; }
+  .topbar nav > :nth-child(1) { --ad: 50ms; } .topbar nav > :nth-child(2) { --ad: 100ms; }
+  .topbar nav > :nth-child(3) { --ad: 150ms; } .topbar nav > :nth-child(4) { --ad: 200ms; }
+  .hx-intro .hx-kicker { --ad: 120ms; }
+  .hx-intro .hx-name > span:first-child { --ad: 180ms; }
+  .hx-intro .hx-name > span:last-child { --ad: 240ms; }
+  .hx-intro .hx-line { --ad: 420ms; }
+  .hx-intro .hx-sub { --ad: 480ms; }
+  .hx-intro .status { --ad: 540ms; }
+  .hx-intro .link-row > li:nth-child(1) { --ad: 600ms; } .hx-intro .link-row > li:nth-child(2) { --ad: 650ms; }
+  .hx-intro .link-row > li:nth-child(3) { --ad: 700ms; } .hx-intro .link-row > li:nth-child(4) { --ad: 750ms; }
+  .hx-intro .link-row > li:nth-child(5) { --ad: 800ms; }
+  .hx-intro .hx-cue { --ad: 1000ms; animation-name: hx-appear-cue; } /* the cue is centred with translate: -50% 0 */
+}
+@keyframes hx-appear {
+  from { opacity: 0; translate: 0 6px; filter: blur(2px); }
+  to { opacity: 1; translate: 0 0; filter: none; }
+}
+@keyframes hx-appear-cue {
+  from { opacity: 0; translate: -50% 6px; filter: blur(2px); }
+  to { opacity: 1; translate: -50% 0; filter: none; }
+}
+@keyframes hx-photo {
+  from { opacity: 0; filter: blur(14px) saturate(0.6); }
+  to { opacity: 1; filter: none; }
+}
