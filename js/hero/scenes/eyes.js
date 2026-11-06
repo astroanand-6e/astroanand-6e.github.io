@@ -7,16 +7,23 @@ import { createGenjutsu } from '../fx/genjutsu.js';
 import { DEFAULT_OPTS, beat, easeInOut, easeOut, fade, holdUntil, qs, setAnchor, span, track } from '../timeline-utils.js';
 
 export const DURATION = 14;
-/* Close-up: a faint glint on each iris only, so the face stays readable. */
-const EYE_LOOK = Object.freeze({ scale: 0.42, glow: 0.4, streak: 0, thin: 0.45, iris: 0.6 }); /* no streak: it read as scratches on the lenses */
+/* Close-up: a faint glint on each iris only, so the face stays readable.
+   scale: 0.37 draws the iris circle at the radius actually measured off eyes.webp (see
+   docs/IRIS-ALIGNMENT.md) rather than an eyeballed constant. */
+const EYE_LOOK = Object.freeze({ scale: 0.37, glow: 0.4, streak: 0, thin: 0.45, iris: 0.6 }); /* no streak: it read as scratches on the lenses */
 const FX_WIDTH_PCT = 160; /* fx canvas width as % of the figure; its height is half of that */
 const FIGURE_ASPECT = 4 / 3;
 /* Where the sky floods out from, in screen uv (y up). Tune with the real portrait. */
 const SKY_CENTER = Object.freeze({ x: 0.5, y: 0.52 });
 
-/* Eye positions (% of the portrait) to points in the fx canvas, which is centred on the eyes' midpoint. */
+/* Eye positions (% of the portrait) to points in the fx canvas, which is centred on the eyes' midpoint.
+   canvasH is the fx canvas's own height expressed as % of the FIGURE's height. The canvas is sized in
+   CSS off the figure's WIDTH (width = fig-w * FX_WIDTH_PCT%, height = half of that), so converting that
+   width-based percentage to a height-based one needs FIGURE_ASPECT (fig-w / fig-h) as a multiplier, not
+   a divisor - dividing canted every y offset by FIGURE_ASPECT^2, pushing the drawn glint off the pupil
+   toward the brow on one eye and toward the cheek on the other. */
 function eyePoints(mid) {
-  const canvasH = FX_WIDTH_PCT / 2 / FIGURE_ASPECT; /* in % of figure height */
+  const canvasH = (FX_WIDTH_PCT / 2) * FIGURE_ASPECT; /* in % of figure height */
   return CLOSEUP_EYES.map((eye) => ({
     x: 0.5 + (eye.x - mid.x) / FX_WIDTH_PCT,
     y: 0.5 + (eye.y - mid.y) / canvasH,

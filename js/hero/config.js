@@ -15,7 +15,10 @@ export const EYE_Y_PCT = 13.7;
 /* Other positions that need the real art: the raised palm on palm.webp, the two eyes on eyes.webp. */
 export const PALM_X_PCT = 46.5;
 export const PALM_Y_PCT = 32.7;
-export const CLOSEUP_EYES = Object.freeze([{ x: 43.5, y: 34.9 }, { x: 56.2, y: 32.8 }]);
+/* Measured directly off assets/hero/eyes.webp (1024x768): cropped and grid-overlaid at 3x, read
+   the iris centre to the nearest pixel for each eye. His-right eye (screen-left) pixel (451, 264);
+   his-left eye (screen-right) pixel (577, 253). docs/IRIS-ALIGNMENT.md has the full method. */
+export const CLOSEUP_EYES = Object.freeze([{ x: 44.0, y: 34.4 }, { x: 56.4, y: 32.9 }]);
 
 /* Image aspect ratios (width / height). */
 export const ASPECT = Object.freeze({ stand: 3 / 4, palm: 3 / 4, eyes: 4 / 3, desk: 4 / 3, 'raise-1': 3 / 4, 'raise-1b': 3 / 4, 'raise-2': 3 / 4, 'raise-3': 3 / 4, dj: 1184 / 896 });

@@ -50,6 +50,28 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
 }
 .hx-portrait { --fig-h: min(106svh, 79.5vw); /* bleeds past the frame: no hard crop edges */ bottom: auto; top: calc(50svh - var(--fig-h) / 2); }
 .hx-portrait .hx-eyefx { width: calc(var(--fig-w) * 1.6); height: calc(var(--fig-w) * 0.8); }
+/* Depth: there is no separate lens layer in eyes.webp to composite under, and the lens sits at
+   almost the same camera depth as the eye behind it, so the depth maps can't tell glass from iris
+   either. Instead, mask the fx canvas down to the two eye openings it was measured against
+   (docs/IRIS-ALIGNMENT.md), so the glow can only ever paint inside the eye, never onto the lens,
+   frame, brow or cheek around it. Two radial-gradient layers (not a single clip-path shape, which
+   can only hold one region) with a soft 55-100% falloff so the edge reads as the eye's own glow
+   fading out, not a hard cut-out. */
+.hx-eyes .hx-eyefx {
+  /* The global `canvas { max-width: 100% }` reset (css/base.css) clamps this canvas's explicit
+     width back down to its positioned containing block (the figure) whenever that width is over
+     100% of the figure, which it always is by design here. That silently squashed this canvas to
+     roughly fig-w wide while its height stayed uncapped, stretching the circles the fx draws into
+     ovals and dragging each eye's drawn point inward toward the other. Scoped to the eyes scene
+     only: lifting the clamp on intro/palm's shared .hx-eyefx too reveals their anamorphic streak
+     at its full designed width, which reads as a wide bar across the name - a second, separate
+     problem outside this job's reported defect, so intro/palm keep the clamp for now. */
+  max-width: none;
+  -webkit-mask-image: radial-gradient(ellipse 3.2% 2.8% at 46.1% 50.7%, #000 55%, transparent 100%),
+    radial-gradient(ellipse 3.2% 2.8% at 53.9% 49.3%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 3.2% 2.8% at 46.1% 50.7%, #000 55%, transparent 100%),
+    radial-gradient(ellipse 3.2% 2.8% at 53.9% 49.3%, #000 55%, transparent 100%);
+}
 .hx-live .hx-eyefx { display: block; }
 
 /* Intro */

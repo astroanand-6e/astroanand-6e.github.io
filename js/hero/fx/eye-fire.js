@@ -11,7 +11,13 @@ const STREAK_CORE_PX = 2.2;
 const STREAK_BAND_PX = 16;
 const IRIS_RADIUS_FRAC = 0.05;
 const IRIS_TURNS = 0.75;
-const BLADE_REACH = 2.1;
+/* Measured against assets/hero/eyes.webp: a real iris there is about 3.9% of the portrait's
+   height across, which the close-up's own canvas geometry puts at a drawn radius of ~1.8% of
+   this canvas's height at scale 1 (docs/IRIS-ALIGNMENT.md has the conversion). BLADE_REACH and
+   the outer-ring radius below used to run the blades and ring out past 2x the drawn iris itself,
+   which is why they spilled off the iris onto the lens, frame and brow; both are now sized to
+   stay close to the iris edge instead. */
+const BLADE_REACH = 1.2;
 /* Dark: light added on black (canvas 'lighter', CSS screen). Paper: deep red ink laid over the
    art (source-over, CSS multiply in css/hero.css), since added light vanishes on a light page. */
 const NIGHT = Object.freeze({ red: '255,42,31', hot: '255,170,140', op: 'lighter', glow: 1 });
@@ -77,7 +83,7 @@ function drawPoint(ctx, w, h, spec, p) {
   ctx.lineWidth = 1;
   ctx.strokeStyle = `rgba(${RED},${0.55 * iris * point.iris})`;
   ctx.beginPath();
-  ctx.arc(x, y, open * 2.15, 0, TAU);
+  ctx.arc(x, y, open * 1.15, 0, TAU);
   ctx.stroke();
 }
 
