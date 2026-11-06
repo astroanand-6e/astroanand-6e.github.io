@@ -163,8 +163,9 @@ export function createDJ(host, imageUrl) {
       if (sw / sh >= 1) {
         const s = Math.max(sw / W, sh / H) * 1.04; /* landscape: cover, plus camera overscan */
         world.scale.set(s);
-        /* keep his hair crown in frame under the top bar: crop mostly from the table, not the head */
-        world.position.set((sw - W * s) / 2, (sh - H * s) * 0.12);
+        /* The deck (JOG, HAND) sits in the bottom 30% of the plate and is the point of the shot, so
+           anchor low enough to keep it in frame; a wide screen still trims a little hair crown. */
+        world.position.set((sw - W * s) / 2, (sh - H * s) * 0.54);
       } else {
         /* Portrait: a cover crop would be all coat. Frame head to decks in the top 3/4 and centre
            on his head; the black table carries on into the plate's black below. */
