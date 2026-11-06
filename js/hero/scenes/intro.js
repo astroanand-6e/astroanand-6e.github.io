@@ -9,7 +9,9 @@ export const DURATION = 10;
 /* No lights-out: dark mode is dark throughout and light mode stays light (css/hero.css). */
 const IRIS_SCALE = 1;
 /* The fx canvas is centred on the eye anchor (--eye-x/--eye-y), so the point is its middle. */
-const EYE_POINT = Object.freeze({ x: 0.5, y: 0.5, scale: IRIS_SCALE });
+/* streak: 0 — without it the anamorphic streak renders at full width, a red bar across the name
+   instead of a glint on the eyes (docs/PALM-EYES.md fixed the same default in palm.js). */
+const EYE_POINT = Object.freeze({ x: 0.5, y: 0.5, scale: IRIS_SCALE, streak: 0 });
 
 export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   const fig = qs(el, '.hx-figure');

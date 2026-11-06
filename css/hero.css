@@ -64,8 +64,9 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
      roughly fig-w wide while its height stayed uncapped, stretching the circles the fx draws into
      ovals and dragging each eye's drawn point inward toward the other. Scoped to the eyes scene
      only: lifting the clamp on intro/palm's shared .hx-eyefx too reveals their anamorphic streak
-     at its full designed width, which reads as a wide bar across the name - a second, separate
-     problem outside this job's reported defect, so intro/palm keep the clamp for now. */
+     at its full designed width, which reads as a wide bar across the name. Fixed separately for
+     palm (docs/PALM-EYES.md) and intro (docs/INTRO-STREAK.md), each with its own scene-scoped
+     max-width: none once its scene set streak: 0. */
   max-width: none;
   -webkit-mask-image: radial-gradient(ellipse 3.2% 2.8% at 46.1% 50.7%, #000 55%, transparent 100%),
     radial-gradient(ellipse 3.2% 2.8% at 53.9% 49.3%, #000 55%, transparent 100%);
@@ -79,6 +80,8 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
    also affect intro) is safe now that palm.js's single eye-fire point sets streak: 0, so there is no
    anamorphic streak left to grow wide when the clamp comes off. */
 .hx-palm .hx-eyefx { max-width: none; }
+/* Same clamp bug as .hx-palm above, now that intro.js's EYE_POINT also sets streak: 0. */
+.hx-intro .hx-eyefx { max-width: none; }
 .hx-live .hx-eyefx { display: block; }
 
 /* Intro */
