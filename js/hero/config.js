@@ -4,6 +4,9 @@
 export const REAL_IMAGES = Object.freeze({ stand: true, palm: true, eyes: true, desk: true });
 
 export const IMAGE_PATH = 'assets/hero/';
+/* assets/ is served immutable (vercel.json): bump this whenever a hero image file changes. */
+export const IMAGE_VERSION = 2;
+export const heroImage = (name) => `${IMAGE_PATH}${name}.webp?v=${IMAGE_VERSION}`;
 
 /* EYE POSITION on stand.webp, as a percentage of the image box (0,0 = top left). Tune these two. */
 export const EYE_X_PCT = 48.2;

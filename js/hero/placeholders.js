@@ -1,6 +1,6 @@
 /* Stand-in artwork, same sizes and aspect ratios as the real cutouts, until the files land in
    assets/hero/. Silhouettes only: dark bodies with a red rim light. */
-import { ASPECT, IMAGE_PATH, REAL_IMAGES } from './config.js';
+import { ASPECT, REAL_IMAGES, heroImage } from './config.js';
 
 const RIM = '#ff2a1f';
 const BODY = 'url(#b)';
@@ -65,7 +65,7 @@ export function placeholderUrl(name) {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(BUILDERS[name]())}`;
 }
 
-export const imageUrl = (name) => (REAL_IMAGES[name] ? `${IMAGE_PATH}${name}.webp` : placeholderUrl(name));
+export const imageUrl = (name) => (REAL_IMAGES[name] ? heroImage(name) : placeholderUrl(name));
 
 /* Sets src (and intrinsic size) on every <img data-hx-img="name"> under root. */
 export function hydrateImages(root) {

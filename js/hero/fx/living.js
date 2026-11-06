@@ -38,7 +38,7 @@ function weights(x, y) {
   return { hair, upper, coat };
 }
 
-export function createLiving(figure, img, imagePath) {
+export function createLiving(figure, img, imageUrl) {
   let app = null;
   let ready = null;
   let awake = false;
@@ -55,7 +55,7 @@ export function createLiving(figure, img, imagePath) {
     canvas.className = 'hx-living';
     canvas.setAttribute('aria-hidden', 'true');
     const [base, eyes] = await Promise.all([
-      Assets.load(`${imagePath}stand.webp`), Assets.load(`${imagePath}stand-blink-eyes.webp`),
+      Assets.load(imageUrl('stand')), Assets.load(imageUrl('stand-blink-eyes')),
     ]);
     const plane = new MeshPlane({ texture: base, verticesX: GRID_X, verticesY: GRID_Y });
     plane.autoResize = false;
