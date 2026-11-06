@@ -6,6 +6,7 @@ import {
   GL_MAX_DPR, GL_SCALE_DESKTOP, GL_SCALE_MOBILE, MOBILE_QUERY, SCENES, SCRUB_SECONDS, SEED_CROWS,
   VH_PER_SECOND_DESKTOP, VH_PER_SECOND_MOBILE, WAKE_MARGIN_S,
 } from './config.js';
+import { createCamera } from './camera.js';
 import { hydrateImages } from './placeholders.js';
 import { initStaticHero } from './static-mode.js';
 
@@ -66,7 +67,7 @@ function syncFx(scenes, time, isOn) {
   });
 }
 
-function createScroller(ScrollTrigger, host, master, scenes) {
+function createScroller(ScrollTrigger, host, master, scenes, onActive = () => {}) {
   const vhPerSecond = window.matchMedia(MOBILE_QUERY).matches ? VH_PER_SECOND_MOBILE : VH_PER_SECOND_DESKTOP;
   let isOn = true;
   const st = ScrollTrigger.create({
@@ -81,6 +82,7 @@ function createScroller(ScrollTrigger, host, master, scenes) {
     onUpdate: () => syncFx(scenes, master.time(), isOn),
     onToggle: (self) => {
       isOn = self.isActive;
+      onActive(isOn);
       document.documentElement.classList.toggle(PINNED_CLASS, isOn);
       syncFx(scenes, master.time(), isOn);
     },
@@ -148,7 +150,9 @@ async function startLive(host) {
   ScrollTrigger.config({ ignoreMobileResize: true });
   const modules = await Promise.all(SCENES.map((def) => LOADERS[def.id]()));
   const { master, scenes } = buildMaster(gsap, modules, host, sceneOptions());
-  const st = createScroller(ScrollTrigger, host, master, scenes);
+  const camera = createCamera(host);
+  const st = createScroller(ScrollTrigger, host, master, scenes, (on) => (on ? camera.start() : camera.stop()));
+  if (st.isActive) camera.start();
   guardFocus(host, st, master, scenes);
   watchResize(scenes);
   watchTheme(master, scenes);
