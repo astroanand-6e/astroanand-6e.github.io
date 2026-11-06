@@ -92,7 +92,7 @@ def read_post(path):
     except ValueError:
         raise SystemExit(f"{path.name}: article:published_time must be YYYY-MM-DD") from None
     return Post(
-        href=f"posts/{path.name}",
+        href=f"/blog/posts/{path.name}",
         title=reader.meta["og:title"],
         summary=reader.meta["description"],
         published=published,
