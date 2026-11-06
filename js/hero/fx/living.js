@@ -19,6 +19,39 @@ const BLINK_MS = 110;
 const BLINK_GAP_MS = [2600, 5800];
 const EYE_PATCH = Object.freeze({ x: 322, y: 114 });
 const ALIVE_CLASS = 'hx-alive';
+/* 2.5D camera: every vertex shifts by its depth (Depth Anything V2 map, near = white) against the
+   focal plane, so a sideways camera move turns the figure slightly instead of sliding a flat card.
+   Inputs: a slow arc across the intro's scroll, a faint handheld drift, and the pointer on desktop. */
+const FOCUS_DEPTH = 0.55;
+const PARALLAX_PX = Object.freeze({ x: 16, y: 7 });
+const ARC = Object.freeze({ from: -0.35, to: 0.8 }); /* camera x across the intro scroll */
+const INTRO_VH = 360; /* intro length in viewport heights (10 s x 36 vh, see config.js) */
+/* Dust motes in the key light, at random depths: they ride the same camera parallax (near ones
+   move more, and the nearest are large soft bokeh discs), so the move reads as a lens in a room. */
+const MOTES = 46;
+const MOTE_SEED = 7;
+
+function loadDepth(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = img.naturalWidth;
+      c.height = img.naturalHeight;
+      const ctx = c.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0);
+      const { data } = ctx.getImageData(0, 0, c.width, c.height);
+      resolve({ w: c.width, h: c.height, at: (x, y) => {
+        const ix = Math.min(c.width - 1, Math.max(0, Math.round((x / W) * c.width)));
+        const iy = Math.min(c.height - 1, Math.max(0, Math.round((y / H) * c.height)));
+        return data[(iy * c.width + ix) * 4] / 255;
+      } });
+    };
+    img.onerror = () => reject(new Error('depth map failed to load'));
+    img.src = url;
+  });
+}
 
 const smooth = (e0, e1, v) => {
   const t = Math.min(1, Math.max(0, (v - e0) / (e1 - e0)));
@@ -38,6 +71,51 @@ function weights(x, y) {
   return { hair, upper, coat };
 }
 
+function moteTexture(Texture) {
+  const c = document.createElement('canvas');
+  c.width = c.height = 64;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, 'rgba(255,244,230,1)');
+  g.addColorStop(0.35, 'rgba(255,236,214,0.45)');
+  g.addColorStop(1, 'rgba(255,230,200,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 64);
+  return Texture.from(c);
+}
+
+function buildMotes(Container, Sprite, Texture) {
+  let seed = MOTE_SEED;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const tex = moteTexture(Texture);
+  const layer = new Container();
+  const items = [];
+  for (let i = 0; i < MOTES; i += 1) {
+    const z = rnd();
+    const sp = new Sprite(tex);
+    sp.anchor.set(0.5);
+    sp.blendMode = 'add';
+    const bokeh = z > 0.9;
+    const size = bokeh ? 30 + rnd() * 26 : 3 + z * 7;
+    sp.width = sp.height = size;
+    const alpha = bokeh ? 0.07 + rnd() * 0.05 : 0.18 + z * 0.35;
+    items.push({ sp, z, x: rnd() * W, y: rnd() * H * 0.8, vx: (rnd() - 0.5) * 4, vy: -(2 + rnd() * 5), ph: rnd() * 6.28, alpha });
+    layer.addChild(sp);
+  }
+  return {
+    layer,
+    update(t, px, py) {
+      items.forEach((m) => {
+        const k = (m.z - FOCUS_DEPTH) * 2.2;
+        const y = ((m.y + m.vy * t) % (H * 0.85) + H * 0.85) % (H * 0.85);
+        m.sp.x = m.x + m.vx * t * 0.3 + Math.sin(t * 0.5 + m.ph) * 6 - k * px;
+        m.sp.y = y - k * py;
+        m.sp.alpha = m.alpha * (0.6 + 0.4 * Math.sin(t * 0.9 + m.ph));
+      });
+    },
+  };
+}
+
 export function createLiving(figure, img, imageUrl) {
   let app = null;
   let ready = null;
@@ -45,7 +123,7 @@ export function createLiving(figure, img, imageUrl) {
 
   async function build() {
     const PIXI = await import(PIXI_URL);
-    const { Application, Assets, Container, MeshPlane, Sprite } = PIXI;
+    const { Application, Assets, Container, MeshPlane, Sprite, Texture } = PIXI;
     const instance = new Application();
     await instance.init({
       resizeTo: figure, backgroundAlpha: 0, antialias: true, autoDensity: true,
@@ -54,8 +132,9 @@ export function createLiving(figure, img, imageUrl) {
     const canvas = instance.canvas;
     canvas.className = 'hx-living';
     canvas.setAttribute('aria-hidden', 'true');
-    const [base, eyes] = await Promise.all([
+    const [base, eyes, depthMap] = await Promise.all([
       Assets.load(imageUrl('stand')), Assets.load(imageUrl('stand-blink-eyes')),
+      loadDepth(imageUrl('stand-depth')).catch(() => null),
     ]);
     const plane = new MeshPlane({ texture: base, verticesX: GRID_X, verticesY: GRID_Y });
     plane.autoResize = false;
@@ -65,6 +144,9 @@ export function createLiving(figure, img, imageUrl) {
     const body = new Container();
     body.addChild(plane, lids);
     instance.stage.addChild(body);
+    const motes = buildMotes(Container, Sprite, Texture);
+    body.addChild(motes.layer);
+    const nameEl = figure.closest('.hx-scene')?.querySelector('.hx-name');
 
     const { buffer } = plane.geometry.getAttribute('aPosition');
     const rest = new Float32Array(buffer.data);
@@ -72,11 +154,21 @@ export function createLiving(figure, img, imageUrl) {
     const wHair = new Float32Array(n);
     const wUpper = new Float32Array(n);
     const wCoat = new Float32Array(n);
+    const depth = new Float32Array(n);
     for (let i = 0; i < n; i += 1) {
       const w = weights(rest[i * 2], rest[i * 2 + 1]);
       wHair[i] = w.hair;
       wUpper[i] = w.upper;
       wCoat[i] = w.coat;
+      depth[i] = depthMap ? depthMap.at(rest[i * 2], rest[i * 2 + 1]) - FOCUS_DEPTH : 0;
+    }
+    const lidDepth = depthMap ? depthMap.at(EYE_PATCH.x + 50, EYE_PATCH.y + 27) - FOCUS_DEPTH : 0;
+    const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      window.addEventListener('pointermove', (e) => {
+        pointer.tx = (e.clientX / window.innerWidth - 0.5) * 2;
+        pointer.ty = (e.clientY / window.innerHeight - 0.5) * 2;
+      }, { passive: true });
     }
     const lidUpper = weights(EYE_PATCH.x + 50, EYE_PATCH.y + 27).upper;
 
@@ -90,17 +182,28 @@ export function createLiving(figure, img, imageUrl) {
       const now = performance.now();
       const t = now / 1000;
       const breath = ((Math.sin((t / BREATH_S) * Math.PI * 2) + 1) / 2) * BREATH_PX;
+      const scrollP = Math.min(1, Math.max(0, window.scrollY / ((INTRO_VH / 100) * window.innerHeight)));
+      pointer.x += (pointer.tx - pointer.x) * 0.04;
+      pointer.y += (pointer.ty - pointer.y) * 0.04;
+      const ease = scrollP * scrollP * (3 - 2 * scrollP);
+      const camX = ARC.from + (ARC.to - ARC.from) * ease + Math.sin(t * 0.31) * 0.12 + Math.sin(t * 0.83) * 0.05 + pointer.x * 0.35;
+      const camY = Math.sin(t * 0.23 + 1.3) * 0.1 + pointer.y * 0.25 - ease * 0.3;
+      const px = camX * PARALLAX_PX.x;
+      const py = camY * PARALLAX_PX.y;
       const d = buffer.data;
       for (let i = 0; i < n; i += 1) {
         const x = rest[i * 2];
         const y = rest[i * 2 + 1];
         const h = wHair[i];
         d[i * 2] = x + h * (Math.sin(t * 1.1 + y * 0.03) * 2.4 + Math.sin(t * 2.6 + x * 0.06) * 0.9)
-          + wCoat[i] * Math.sin(t * 0.85 + y * 0.012) * 3.2;
-        d[i * 2 + 1] = y + h * Math.sin(t * 1.7 + x * 0.045) * 1.3 - wUpper[i] * breath;
+          + wCoat[i] * Math.sin(t * 0.85 + y * 0.012) * 3.2 - depth[i] * px;
+        d[i * 2 + 1] = y + h * Math.sin(t * 1.7 + x * 0.045) * 1.3 - wUpper[i] * breath - depth[i] * py;
       }
       buffer.update();
-      lids.y = EYE_PATCH.y - lidUpper * breath;
+      motes.update(t, px, py);
+      if (nameEl) nameEl.style.translate = `${(-camX * 10).toFixed(2)}px 0`; /* the name is far behind him */
+      lids.x = EYE_PATCH.x - lidDepth * px;
+      lids.y = EYE_PATCH.y - lidUpper * breath - lidDepth * py;
       if (now >= nextBlink) {
         lids.visible = true;
         blinkUntil = now + BLINK_MS;
