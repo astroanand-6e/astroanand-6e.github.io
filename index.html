@@ -73,7 +73,7 @@
   <header class="topbar">
     <a class="brand" href="#top" aria-label="Anand Thakkar, back to top"><span class="hanko hanko-sm" aria-hidden="true">AT</span></a>
     <nav aria-label="Page">
-      <a class="skip-story" href="#index">Skip the story<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7"/></svg></a>
+      <a class="skip-story" href="#index">Skip to the work<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7"/></svg></a>
       <a class="nav-link" href="blog/">Blog</a>
       <button type="button" id="help-btn" class="icon-btn" aria-label="Keyboard shortcuts">?</button>
       <button type="button" id="theme-toggle" class="fader" role="switch" aria-checked="false" aria-label="Night mode">
@@ -97,7 +97,7 @@
   </nav>
 
   <main id="main">
-    <div id="story">
+    <div id="film">
       <section class="hero" id="top" data-chapter="hero" aria-labelledby="name">
         <div class="hx-pin">
           <div class="hx-film" aria-hidden="true"></div>
@@ -183,12 +183,68 @@
             <div class="hx-beat">
               <p class="hx-beat-kicker mono">Off the clock</p>
               <p class="hx-beat-line">It is music. I mix on a DDJ-FLX4 and build things that listen.</p>
-              <a class="cue" href="#heart"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7"/></svg>The story starts with a heartbeat</a>
+              <a class="cue" href="#index"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7"/></svg>See the work</a>
             </div>
           </div>
         </div>
       </section>
+    </div>
 
+    <section class="index" id="index" data-chapter="index" tabindex="-1" aria-labelledby="h-index">
+      <div class="grid index-grid">
+        <header class="index-head" data-reveal-group>
+          <p class="mono">Index</p>
+          <h2 id="h-index">Selected work</h2>
+        </header>
+
+        <div class="work-grid" data-reveal-group>
+          <article class="work-card span-7">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">01</span><span>Ongoing research · CS 5100</span></p></div>
+            <h3>CALM: Conformer Audio-Language Model</h3>
+            <p>Frozen audio Conformer (305M) fused with a frozen text encoder (4.6B). ~4M trainable parameters. 83.9% on 16-genre FMA-Medium.</p>
+            <ul class="chips"><li>PyTorch</li><li>Gemma 4</li><li>Slurm</li><li>W&amp;B</li></ul>
+          </article>
+          <article class="work-card span-5">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">02</span><span>Ongoing research · v0.2.0-alpha</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
+            <h3>Astro: local-first code-switch dictation</h3>
+            <p>On-device Hinglish and Gujlish dictation for macOS. 4-bit Gemma 4 E4B (4.8 GB), 631-clip benchmark, 5 ASR backends ranked.</p>
+            <ul class="chips"><li>Rust</li><li>Tauri 2</li><li>Python</li><li>MLX</li></ul>
+            <a class="work-link" href="https://github.com/astroanand-6e" rel="noopener">GitHub profile</a>
+          </article>
+          <article class="work-card span-5">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">03</span><span>Live demo</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
+            <h3>CoronarySAM2: interactive coronary artery segmentation</h3>
+            <p>SAM2 fine-tuned with two PEFT approaches. 92.0% Dice. Upload an angiogram and refine the mask in the browser.</p>
+            <ul class="chips"><li>PyTorch</li><li>SAM2</li><li>Gradio</li><li>HF Spaces</li></ul>
+            <a class="work-link" href="https://huggingface.co/spaces/astroanand/CoronarySAM2_FT" rel="noopener">Open the demo</a>
+          </article>
+          <article class="work-card span-7">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">04</span><span>Team project · CS 5130</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
+            <h3>Failure-aware clinical decision support</h3>
+            <p>Proposer, Skeptic and Safety Harness agents on MIMIC-IV v3.1 (546K hospitalizations). AUROC 0.871, Brier 0.019, 28.5% of false negatives caught, 7.1% handed to clinicians.</p>
+            <ul class="chips"><li>PyTorch</li><li>scikit-learn</li><li>MIMIC-IV</li></ul>
+            <a class="work-link" href="https://github.com/Dhruv2422/Reliable-Clinical-Decision-Support-A-Failure-Aware-Multi-Agent-System" rel="noopener">Team repository</a>
+          </article>
+          <article class="work-card span-6">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">05</span><span>Paper · ICIOT'25</span></p></div>
+            <h3>ResFormer: atrial fibrillation detection from ECG</h3>
+            <p>ResNet plus Transformer encoder, compared against Bi-LSTM and attention variants. First author.</p>
+            <ul class="chips"><li>PyTorch</li><li>ECG</li><li>Transformers</li></ul>
+          </article>
+          <article class="work-card span-6">
+            <div class="work-head"><p class="mono work-kicker"><span class="work-no">06</span><span>Interactive graph</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
+            <h3>VentureViz</h3>
+            <p>D3.js network of AI startup and investor relationships, with timeline animation and filtering.</p>
+            <ul class="chips"><li>JavaScript</li><li>D3.js</li></ul>
+            <a class="work-link" href="https://astroanand-6e.github.io/A_web_of_AI_startups_and_investors/" rel="noopener">View the graph</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- The path: the project timeline (heartbeat to now). It used to sit between the hero film and
+         the work, which broke the film's continuity; it now reads as part of the work. -->
+    <div id="story" class="story-timeline">
       <div class="grid story-grid">
         <div class="story-slot" data-stage-slot="story" aria-hidden="true"></div>
         <div class="story-steps">
@@ -334,56 +390,8 @@
       </div>
     </div>
 
-    <section class="index" id="index" data-chapter="index" tabindex="-1" aria-labelledby="h-index">
+    <section class="index index-more" aria-label="Publications, experience, education, skills and contact">
       <div class="grid index-grid">
-        <header class="index-head" data-reveal-group>
-          <p class="mono">Index</p>
-          <h2 id="h-index">Selected work</h2>
-        </header>
-
-        <div class="work-grid" data-reveal-group>
-          <article class="work-card span-7">
-            <div class="work-head"><p class="mono work-kicker"><span class="work-no">01</span><span>Ongoing research · CS 5100</span></p></div>
-            <h3>CALM: Conformer Audio-Language Model</h3>
-            <p>Frozen audio Conformer (305M) fused with a frozen text encoder (4.6B). ~4M trainable parameters. 83.9% on 16-genre FMA-Medium.</p>
-            <ul class="chips"><li>PyTorch</li><li>Gemma 4</li><li>Slurm</li><li>W&amp;B</li></ul>
-          </article>
-          <article class="work-card span-5">
-            <div class="work-head"><p class="mono work-kicker"><span class="work-no">02</span><span>Ongoing research · v0.2.0-alpha</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
-            <h3>Astro: local-first code-switch dictation</h3>
-            <p>On-device Hinglish and Gujlish dictation for macOS. 4-bit Gemma 4 E4B (4.8 GB), 631-clip benchmark, 5 ASR backends ranked.</p>
-            <ul class="chips"><li>Rust</li><li>Tauri 2</li><li>Python</li><li>MLX</li></ul>
-            <a class="work-link" href="https://github.com/astroanand-6e" rel="noopener">GitHub profile</a>
-          </article>
-          <article class="work-card span-5">
-            <div class="work-head"><p class="mono work-kicker"><span class="work-no">03</span><span>Live demo</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
-            <h3>CoronarySAM2: interactive coronary artery segmentation</h3>
-            <p>SAM2 fine-tuned with two PEFT approaches. 92.0% Dice. Upload an angiogram and refine the mask in the browser.</p>
-            <ul class="chips"><li>PyTorch</li><li>SAM2</li><li>Gradio</li><li>HF Spaces</li></ul>
-            <a class="work-link" href="https://huggingface.co/spaces/astroanand/CoronarySAM2_FT" rel="noopener">Open the demo</a>
-          </article>
-          <article class="work-card span-7">
-            <div class="work-head"><p class="mono work-kicker"><span class="work-no">04</span><span>Team project · CS 5130</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
-            <h3>Failure-aware clinical decision support</h3>
-            <p>Proposer, Skeptic and Safety Harness agents on MIMIC-IV v3.1 (546K hospitalizations). AUROC 0.871, Brier 0.019, 28.5% of false negatives caught, 7.1% handed to clinicians.</p>
-            <ul class="chips"><li>PyTorch</li><li>scikit-learn</li><li>MIMIC-IV</li></ul>
-            <a class="work-link" href="https://github.com/Dhruv2422/Reliable-Clinical-Decision-Support-A-Failure-Aware-Multi-Agent-System" rel="noopener">Team repository</a>
-          </article>
-          <article class="work-card span-6">
-            <div class="work-head"><p class="mono work-kicker"><span class="work-no">05</span><span>Paper · ICIOT'25</span></p></div>
-            <h3>ResFormer: atrial fibrillation detection from ECG</h3>
-            <p>ResNet plus Transformer encoder, compared against Bi-LSTM and attention variants. First author.</p>
-            <ul class="chips"><li>PyTorch</li><li>ECG</li><li>Transformers</li></ul>
-          </article>
-          <article class="work-card span-6">
-            <div class="work-head"><p class="mono work-kicker"><span class="work-no">06</span><span>Interactive graph</span></p><svg class="work-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 15.5 15.5 4.5M7 4.5h8.5V13"/></svg></div>
-            <h3>VentureViz</h3>
-            <p>D3.js network of AI startup and investor relationships, with timeline animation and filtering.</p>
-            <ul class="chips"><li>JavaScript</li><li>D3.js</li></ul>
-            <a class="work-link" href="https://astroanand-6e.github.io/A_web_of_AI_startups_and_investors/" rel="noopener">View the graph</a>
-          </article>
-        </div>
-
         <div class="index-rows">
           <section class="row" data-reveal-group aria-labelledby="h-pubs">
             <div class="row-label"><h2 id="h-pubs">Publications</h2></div>
