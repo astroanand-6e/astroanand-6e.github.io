@@ -87,6 +87,9 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
   will-change: transform, opacity;
 }
 .hx-halo-2 { border-color: rgba(255, 42, 31, 0.45); box-shadow: none; }
+.hx-pose-src { visibility: hidden; }
+.hx-pose-blend { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hx-static .hx-pose-blend { display: none; }
 .hx-pose-palm {
   opacity: 0; --wipe: 100;
   -webkit-mask-image: linear-gradient(to top, #000 33%, transparent 66%); mask-image: linear-gradient(to top, #000 33%, transparent 66%);

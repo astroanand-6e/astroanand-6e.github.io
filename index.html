@@ -50,6 +50,7 @@
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/stage.css">
   <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/hero-film.css">
   <script type="importmap">
   {
     "imports": {
@@ -98,6 +99,7 @@
     <div id="story">
       <section class="hero" id="top" data-chapter="hero" aria-labelledby="name">
         <div class="hx-pin">
+          <div class="hx-film" aria-hidden="true"></div>
           <div class="hx-scene hx-intro" data-hx-scene="intro">
             <div class="hx-intro-top">
               <p class="hx-kicker mono">AI engineer, Boston</p>
@@ -129,6 +131,10 @@
               <div class="hx-cam">
                 <img class="hx-pose-stand" data-hx-img="stand" alt="" aria-hidden="true" decoding="async">
                 <img class="hx-pose-palm" data-hx-img="palm" alt="Anand with his right palm raised at chest height" decoding="async">
+                <img class="hx-pose-src" data-hx-img="raise-1" alt="" aria-hidden="true" decoding="async">
+                <img class="hx-pose-src" data-hx-img="raise-2" alt="" aria-hidden="true" decoding="async">
+                <img class="hx-pose-src" data-hx-img="raise-3" alt="" aria-hidden="true" decoding="async">
+                <canvas class="hx-pose-blend" data-fx="pose-blend" aria-hidden="true"></canvas>
                 <canvas class="hx-eyefx" data-fx="eye-fire" width="1024" height="512" aria-hidden="true"></canvas>
                 <div class="hx-orbit" aria-hidden="true">
                   <span class="hx-halo"></span><span class="hx-halo hx-halo-2"></span>

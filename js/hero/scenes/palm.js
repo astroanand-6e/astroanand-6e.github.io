@@ -1,9 +1,11 @@
-/* Palm: a slow push-in hides the pose change from stand to palm. Four tool icons rise out of
+/* Palm: during a slow push-in his right arm swings up from his side into the open palm (Qwen
+   in-betweens cross-dissolved on a canvas, fx/pose-blend.js). Four tool icons rise out of
    the palm and orbit in a tilted ring with a thin red halo, then a rift opens from the palm
    and swallows the frame. */
 import { EYE_X_PCT, EYE_Y_PCT, PALM_X_PCT, PALM_Y_PCT, PUSH_INTRO, PUSH_PALM } from '../config.js';
 import { createEyeFire } from '../fx/eye-fire.js';
 import { createPortal } from '../fx/portal.js';
+import { createPoseBlend } from '../fx/pose-blend.js';
 import { DEFAULT_OPTS, beat, easeInOut, easeIn, easeOut, fade, holdUntil, qs, qsa, setAnchor, span, track } from '../timeline-utils.js';
 
 export const DURATION = 13;
@@ -25,6 +27,8 @@ const RISE = Object.freeze({ at: 3.4, for: 2.4 });
 const SPIN = Object.freeze({ at: 3.4, for: 8 });
 const PORTAL = Object.freeze({ at: 9.2, for: 3.3 });
 const DIVE_SCALE = 1.5;
+/* The arm raise (stand -> in-betweens -> palm), finishing just as the icons rise out of the palm. */
+const RAISE = Object.freeze({ at: 1.9, for: 1.7 });
 
 /* Icons and halo are sized in screen units, divided by the camera scale they sit inside. */
 function createOrbit(el) {
@@ -71,6 +75,7 @@ function cameraScale(t) {
 export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   const fig = qs(el, '.hx-figure');
   const cam = qs(el, '.hx-cam');
+  const standImg = qs(el, '.hx-pose-stand');
   const palmImg = qs(el, '.hx-pose-palm');
   const beatEl = qs(el, '.hx-beat');
   setAnchor(fig, 'palm', PALM_X_PCT, PALM_Y_PCT);
@@ -79,6 +84,8 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   const fire = createEyeFire(qs(el, '[data-fx="eye-fire"]'), [{ ...EYE_FIRE_START, scale: 1 }]);
   const portal = createPortal(qs(el, '[data-fx="portal"]'), { scale: opts.glScale, maxDpr: opts.maxDpr, center: PORTAL_CENTER, seconds: PORTAL.for });
   const orbit = createOrbit(el);
+  const frames = [standImg, ...qsa(el, '.hx-pose-src'), palmImg];
+  const pose = createPoseBlend(qs(el, '[data-fx="pose-blend"]'), frames);
 
   tl.set(fig, { scale: PUSH_INTRO, transformOrigin: '50% 22%' }, 0);
   tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 1, ease: 'none' }, 0);
@@ -92,7 +99,11 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
     cam.style.transform = `translate(${((50 - PALM_X_PCT) * shift).toFixed(3)}%, ${(PALM_SHIFT_Y_PCT * shift).toFixed(3)}%) scale(${s.toFixed(4)})`;
     orbit.setScale(s * PUSH_INTRO);
   });
-  tl.fromTo(palmImg, { opacity: 0, '--wipe': 100 }, { opacity: 1, '--wipe': 0, duration: 1.3, ease: 'power1.inOut' }, 2.5);
+  /* The canvas draws every pose once the raise starts; the stand <img> covers p = 0. */
+  track(tl, RAISE.at, RAISE.for, (p) => {
+    pose.render(p);
+    standImg.style.opacity = p > 0 ? '0' : '1';
+  }, 'none');
 
   track(tl, RISE.at, RISE.for, orbit.setRise, 'power2.out');
   track(tl, SPIN.at, SPIN.for, orbit.setSpin, 'none');
@@ -101,5 +112,5 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   fade(tl, fig, 0, 11.6, 0.8);
   tl.set(el, { opacity: 0 }, DURATION);
   holdUntil(tl, DURATION);
-  return { fx: [fire, portal], gl: [portal] };
+  return { fx: [fire, portal, pose], gl: [portal] };
 }
