@@ -205,3 +205,12 @@ html[data-theme="paper"] .hx-static .hx-eyes { background: linear-gradient(#f9e6
   .hx-cue svg { animation: none; }
   .hx-static .hx-fade { transition-duration: 0.2s; }
 }
+/* Paper: the desk plate's black-on-black vignette became a tight dark oval on paper (on phones the
+   cover-fit image is narrow). Fade it out with a much wider ellipse so it reads as a full frame. */
+html[data-theme="paper"] .hx-desk-plate img {
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 48%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 72% at 50% 48%, #000 62%, transparent 100%);
+}
+/* Paper: the desk beat sits on the dark desk photo, so it flips to paper-white text there. */
+html[data-theme="paper"] .hx-desk .hx-beat-line { color: #f4f4f2; text-shadow: 0 2px 18px rgba(0, 0, 0, 0.65), 0 0 2px rgba(0, 0, 0, 0.5); }
+html[data-theme="paper"] .hx-desk .hx-beat-kicker { color: #ff3b30; }
