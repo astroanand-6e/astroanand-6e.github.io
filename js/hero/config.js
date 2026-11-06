@@ -1,7 +1,7 @@
 /* Hero tuning. Everything a person may want to adjust after the real images land lives here. */
 
 /* Flip a key to true once its file exists in assets/hero/ (a 404 would log a console error). */
-export const REAL_IMAGES = Object.freeze({ stand: true, palm: true, eyes: true, desk: true, 'raise-1': true, 'raise-1b': true, 'raise-2': true, 'raise-3': true });
+export const REAL_IMAGES = Object.freeze({ stand: true, palm: true, eyes: true, desk: true, 'raise-1': true, 'raise-1b': true, 'raise-2': true, 'raise-3': true, dj: true });
 
 export const IMAGE_PATH = 'assets/hero/';
 /* assets/ is served immutable (vercel.json): bump this whenever a hero image file changes. */
@@ -18,7 +18,7 @@ export const PALM_Y_PCT = 32.7;
 export const CLOSEUP_EYES = Object.freeze([{ x: 43.5, y: 34.9 }, { x: 56.2, y: 32.8 }]);
 
 /* Image aspect ratios (width / height). */
-export const ASPECT = Object.freeze({ stand: 3 / 4, palm: 3 / 4, eyes: 4 / 3, desk: 4 / 3, 'raise-1': 3 / 4, 'raise-1b': 3 / 4, 'raise-2': 3 / 4, 'raise-3': 3 / 4 });
+export const ASPECT = Object.freeze({ stand: 3 / 4, palm: 3 / 4, eyes: 4 / 3, desk: 4 / 3, 'raise-1': 3 / 4, 'raise-1b': 3 / 4, 'raise-2': 3 / 4, 'raise-3': 3 / 4, dj: 1184 / 896 });
 
 /* Scenes in order. `overlap` is how many seconds the scene starts before the previous one ends. */
 export const SCENES = Object.freeze([

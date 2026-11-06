@@ -4,7 +4,9 @@
    Order matters for a smooth exit: the desk line has already left (desk.js), the front climbs
    at a steady speed, the burn layer fades over an empty frame, and only then does the music
    line rise. */
+import { heroImage } from '../config.js';
 import { createBurn } from '../fx/burn.js';
+import { createDJ } from '../fx/dj.js';
 import { DEFAULT_OPTS, beat, holdUntil, qs, track } from '../timeline-utils.js';
 
 export const DURATION = 8;
@@ -31,7 +33,14 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   if (desk) tl.set(desk, { autoAlpha: 0 }, BURN_DONE);
   /* The burn layer fades onto the pin's own page colour, which it already matches. */
   tl.to(burnEl, { opacity: 0, duration: FADE_FOR, ease: 'power2.inOut' }, FADE_AT);
+  /* Out of the ash: the club. The DJ plate rises from black like stage lights coming up (and a slow
+     push-in), then the line lands over it. fx/dj.js animates him on a 124 BPM clock. */
+  const stage = qs(el, '.hx-dj');
+  const dj = createDJ(stage, heroImage);
+  tl.fromTo(stage, { opacity: 0, filter: 'brightness(0.2) blur(10px)', scale: 1.12 },
+    { opacity: 1, filter: 'brightness(1) blur(0px)', scale: 1, duration: 1.6, ease: 'power2.out' }, BURN_DONE - 0.4);
+  tl.to(stage, { scale: 1.05, duration: DURATION - BURN_DONE - 1.2, ease: 'none' }, BURN_DONE + 1.2);
   beat(tl, beatEl, LINE_IN_AT);
   holdUntil(tl, DURATION);
-  return { fx: [burn], gl: [burn] };
+  return { fx: [burn, dj], gl: [burn] };
 }
