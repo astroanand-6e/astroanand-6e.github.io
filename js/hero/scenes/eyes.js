@@ -44,7 +44,9 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
      the sky starts to flood: a half-faded face over the red sky read as a red smear on the mouth. */
   tl.fromTo(el, { clipPath: 'circle(0% at 50% 55%)' }, { clipPath: 'circle(78% at 50% 55%)', duration: 1.6, ease: 'power2.in' }, 0);
   tl.set(el, { clipPath: 'none' }, 1.61);
-  tl.fromTo(fig, { opacity: 0 }, { opacity: 1, duration: 0.9, ease: 'power1.out' }, 0.05);
+  /* power2.out, not power1.out: every other arrival in the film (fire, plate, dj stage) settles on
+     this curve, and the figure's own scale-in on the next line already uses it. */
+  tl.fromTo(fig, { opacity: 0 }, { opacity: 1, duration: 0.9, ease: 'power2.out' }, 0.05);
   tl.fromTo(fig, { scale: 1.14, transformOrigin: '50% 45%' }, { scale: 1, duration: 5.5, ease: 'power2.out' }, 0.05);
   tl.fromTo(fig, { '--rim': 0 }, { '--rim': 1, duration: 2.6, ease: 'power2.inOut' }, 1.6);
   track(tl, 0, DURATION, (p) => paintSky(sky, p * DURATION), 'none');

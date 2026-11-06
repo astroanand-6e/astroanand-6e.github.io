@@ -12,7 +12,9 @@
     animation-delay: var(--ad, 0ms);
   }
   .hx-intro .hx-name > span { display: inline-block; }
-  .hx-intro .hx-figure { animation: hx-photo 1.05s cubic-bezier(0.33, 1, 0.68, 1) 300ms backwards; }
+  /* Same curve as hx-appear (0.16, 1, 0.3, 1): the photo is resolving into view in the same
+     breath as the copy around it, just over a longer, heavier duration. */
+  .hx-intro .hx-figure { animation: hx-photo 1.05s cubic-bezier(0.16, 1, 0.3, 1) 300ms backwards; }
 
   .topbar .brand { --ad: 0ms; }
   .topbar nav > :nth-child(1) { --ad: 50ms; } .topbar nav > :nth-child(2) { --ad: 100ms; }
