@@ -1,6 +1,7 @@
 /* Desk: the portrait breaks into a flock of black crows that fly at the camera; as they pass,
    desk.webp opens up behind them from the centre. Crows are canvas particles with a fixed seed. */
 import { SEED_CROWS } from '../config.js';
+import { createCodeScreen } from '../fx/code-screen.js';
 import { createCrows } from '../fx/crows.js';
 import { DEFAULT_OPTS, beat, holdUntil, qs, track } from '../timeline-utils.js';
 
@@ -13,6 +14,8 @@ const HOLD_FROM = 5.2; /* crows are gone; the desk holds, pushing in gently, unt
    scene ends; see SCENES in config.js), so the burn never cuts through the letters. */
 const BEAT_IN = 5.4;
 const BEAT_OUT = 9.3;
+const CODE_AT = 3.4;
+const CODE_FOR = 6.2;
 
 export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   const plate = qs(el, '.hx-desk-plate');
@@ -27,6 +30,9 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   tl.to(plate, { scale: 1, duration: HOLD_FROM - REVEAL_AT, ease: 'power2.out' }, REVEAL_AT);
   tl.to(plate, { scale: 1.07, duration: DURATION - HOLD_FROM, ease: 'none' }, HOLD_FROM);
   track(tl, 0, CROW_SECONDS, crows.render, 'none');
+  /* He codes: the monitor types as you scroll, then the test breaks and holds (fx/code-screen.js). */
+  const code = createCodeScreen(plate);
+  track(tl, CODE_AT, CODE_FOR, code.render, 'none');
   beat(tl, beatEl, BEAT_IN, BEAT_OUT);
   holdUntil(tl, DURATION);
   return { fx: [crows], gl: [] };
