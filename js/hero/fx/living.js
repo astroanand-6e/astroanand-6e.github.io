@@ -6,7 +6,6 @@
    It is ambient, not scrubbed: wake() starts the ticker, release() stops it. If PixiJS fails to
    load, the plain <img> stays visible. Coordinates are stand.webp pixels (768x1024). */
 
-import { cameraState } from '../camera.js';
 import { isPaper } from '../timeline-utils.js';
 
 const PIXI_URL = 'https://cdn.jsdelivr.net/npm/pixi.js@8.6.6/dist/pixi.min.mjs';
@@ -204,18 +203,14 @@ export function createLiving(figure, img, imageUrl) {
       const camY = Math.sin(t * 0.23 + 1.3) * 0.1 + pointer.y * 0.25 - ease * 0.3;
       const px = camX * PARALLAX_PX.x;
       const py = camY * PARALLAX_PX.y;
-      /* Follow-through: loose parts trail the camera's spring (it lags the scroll), hair most. */
-      const drag = -cameraState.lag * 0.9;
-      const dragX = cameraState.lagV * 2.2;
       const d = buffer.data;
       for (let i = 0; i < n; i += 1) {
         const x = rest[i * 2];
         const y = rest[i * 2 + 1];
         const h = wHair[i];
         d[i * 2] = x + h * (Math.sin(t * 1.1 + y * 0.03) * 2.4 + Math.sin(t * 2.6 + x * 0.06) * 0.9)
-          + wCoat[i] * Math.sin(t * 0.85 + y * 0.012) * 3.2 - depth[i] * px + (h + wCoat[i] * 0.5) * dragX;
-        d[i * 2 + 1] = y + h * Math.sin(t * 1.7 + x * 0.045) * 1.3 - wUpper[i] * breath - depth[i] * py
-          + (h * 1 + wCoat[i] * 0.6) * drag;
+          + wCoat[i] * Math.sin(t * 0.85 + y * 0.012) * 3.2 - depth[i] * px;
+        d[i * 2 + 1] = y + h * Math.sin(t * 1.7 + x * 0.045) * 1.3 - wUpper[i] * breath - depth[i] * py; /* no scroll-driven hair motion (Anand) */
       }
       buffer.update();
       motes.update(t, px, py);

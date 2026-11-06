@@ -24,7 +24,7 @@ export const ASPECT = Object.freeze({ stand: 3 / 4, palm: 3 / 4, eyes: 4 / 3, de
 export const SCENES = Object.freeze([
   { id: 'intro', duration: 10, overlap: 0 },
   { id: 'palm', duration: 13, overlap: 1 },
-  { id: 'eyes', duration: 14, overlap: 1 },
+  { id: 'eyes', duration: 14, overlap: 2.2 }, /* the face rises inside the palm's rift */
   { id: 'desk', duration: 12, overlap: 5 },
   { id: 'handoff', duration: 8, overlap: 2 },
 ]);

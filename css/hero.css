@@ -48,7 +48,7 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
   position: absolute; z-index: 3; left: var(--eye-x); top: var(--eye-y); pointer-events: none;
   width: calc(var(--fig-w) * 2); height: var(--fig-w); transform: translate(-50%, -50%); mix-blend-mode: screen;
 }
-.hx-portrait { --fig-h: min(96svh, 75vw); bottom: auto; top: calc(50svh - var(--fig-h) / 2); }
+.hx-portrait { --fig-h: min(106svh, 79.5vw); /* bleeds past the frame: no hard crop edges */ bottom: auto; top: calc(50svh - var(--fig-h) / 2); }
 .hx-portrait .hx-eyefx { width: calc(var(--fig-w) * 1.6); height: calc(var(--fig-w) * 0.8); }
 .hx-live .hx-eyefx { display: block; }
 
