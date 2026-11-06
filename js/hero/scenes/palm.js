@@ -20,7 +20,10 @@ const PALM_SHIFT_Y_PCT = 12;
 const FRAME_Y_PCT = (EYE_Y_PCT + PALM_Y_PCT) / 2;
 const PORTAL_CENTER = Object.freeze({ x: 0.5, y: 0.55 });
 const TAU = Math.PI * 2;
-const EYE_FIRE_START = Object.freeze({ x: 0.5, y: 0.5 });
+/* streak: 0, as in eyes.js - the anamorphic streak is wide enough at this canvas's designed width
+   (2x fig-w, css/hero.css) to read as a bar across the whole face rather than a glint on the eyes
+   (docs/PALM-EYES.md). */
+const EYE_FIRE_START = Object.freeze({ x: 0.5, y: 0.5, streak: 0 });
 const PUSH = Object.freeze({ at: 1, for: 7 });
 const DIVE = Object.freeze({ at: 9.4, for: 3 });
 const RISE = Object.freeze({ at: 3.4, for: 2.4 });

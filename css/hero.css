@@ -72,6 +72,13 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
   mask-image: radial-gradient(ellipse 3.2% 2.8% at 46.1% 50.7%, #000 55%, transparent 100%),
     radial-gradient(ellipse 3.2% 2.8% at 53.9% 49.3%, #000 55%, transparent 100%);
 }
+/* The same clamp (see above) also squashes the palm scene's eye-fire canvas: its box is meant to be
+   2x fig-w wide and fig-w tall, but the clamp pins width back to 1x fig-w while height stays
+   uncapped, so the box ends up SQUARE instead of 2:1 - stretching the drawn iris/blades into a tall
+   vertical oval (docs/PALM-EYES.md). Lifting the clamp here (unlike the shared rule, which would
+   also affect intro) is safe now that palm.js's single eye-fire point sets streak: 0, so there is no
+   anamorphic streak left to grow wide when the clamp comes off. */
+.hx-palm .hx-eyefx { max-width: none; }
 .hx-live .hx-eyefx { display: block; }
 
 /* Intro */
