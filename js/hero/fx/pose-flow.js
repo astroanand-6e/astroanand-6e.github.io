@@ -33,8 +33,8 @@ void main() {
   gl_FragColor = a * (1.0 - u_w) + b * u_w;
 }`;
 const QUAD = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
-const ANTICIPATE = 0.035; /* how far the gesture dips back before it rises */
-const OVERSHOOT = 0.045; /* how far past the palm drawing it swings before settling */
+const ANTICIPATE = 0; /* off: Anand doesn't want springy motion */ // /* how far the gesture dips back before it rises */
+const OVERSHOOT = 0; // /* how far past the palm drawing it swings before settling */
 const DISSOLVE = Object.freeze([0.3, 0.7]);
 const HANDOVER = Object.freeze([0.38, 0.62]);
 

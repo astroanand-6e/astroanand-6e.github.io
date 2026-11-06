@@ -6,7 +6,6 @@ import {
   GL_MAX_DPR, GL_SCALE_DESKTOP, GL_SCALE_MOBILE, MOBILE_QUERY, SCENES, SCRUB_SECONDS, SEED_CROWS,
   VH_PER_SECOND_DESKTOP, VH_PER_SECOND_MOBILE, WAKE_MARGIN_S,
 } from './config.js';
-import { createCamera } from './camera.js';
 import { hydrateImages } from './placeholders.js';
 import { initStaticHero } from './static-mode.js';
 
@@ -150,9 +149,7 @@ async function startLive(host) {
   ScrollTrigger.config({ ignoreMobileResize: true });
   const modules = await Promise.all(SCENES.map((def) => LOADERS[def.id]()));
   const { master, scenes } = buildMaster(gsap, modules, host, sceneOptions());
-  const camera = createCamera(host);
-  const st = createScroller(ScrollTrigger, host, master, scenes, (on) => (on ? camera.start() : camera.stop()));
-  if (st.isActive) camera.start();
+  const st = createScroller(ScrollTrigger, host, master, scenes);
   guardFocus(host, st, master, scenes);
   watchResize(scenes);
   watchTheme(master, scenes);

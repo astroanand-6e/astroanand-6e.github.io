@@ -25,10 +25,10 @@ const LIGHTS = Object.freeze([
   { x: 988, y: 470, color: 0x19e6d2, size: 260, beat: 0.25 },
 ]);
 const JOG = Object.freeze({ x: 860, y: 708, rx: 112, ry: 26 });
-const NOD_PX = 7;
-const NOD_DEG = 1.6;
+const NOD_PX = 0; /* no bouncing (Anand) */
+const NOD_DEG = 0;
 const SCRATCH_PX = 5;
-const DEPTH_PX = 12;
+const DEPTH_PX = 0;
 const FOCUS = 0.5;
 
 const gauss = (dx, dy, r) => Math.exp(-(dx * dx + dy * dy) / (2 * r * r));
