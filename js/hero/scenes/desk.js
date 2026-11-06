@@ -2,6 +2,7 @@
    desk.webp opens up behind them from the centre. Crows are canvas particles with a fixed seed. */
 import { SEED_CROWS } from '../config.js';
 import { createCodeScreen } from '../fx/code-screen.js';
+import { createAnimeCodeScreen } from '../fx/code-screen-anime.js';
 import { createCrows } from '../fx/crows.js';
 import { DEFAULT_OPTS, beat, holdUntil, qs, track } from '../timeline-utils.js';
 
@@ -31,7 +32,9 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   tl.to(plate, { scale: 1.07, duration: DURATION - HOLD_FROM, ease: 'none' }, HOLD_FROM);
   track(tl, 0, CROW_SECONDS, crows.render, 'none');
   /* He codes: the monitor types as you scroll, then the test breaks and holds (fx/code-screen.js). */
-  const code = createCodeScreen(plate);
+  /* Draft: anime.js build/break/hold. ?code=gsap shows the earlier typing + test-output version. */
+  const useAnime = new URLSearchParams(location.search).get('code') !== 'gsap';
+  const code = useAnime ? createAnimeCodeScreen(plate) : createCodeScreen(plate);
   track(tl, CODE_AT, CODE_FOR, code.render, 'none');
   beat(tl, beatEl, BEAT_IN, BEAT_OUT);
   holdUntil(tl, DURATION);

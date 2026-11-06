@@ -258,3 +258,12 @@ html[data-theme="paper"] .hx-handoff .cue { color: #d8d6d0; }
 .hx-code[data-state="fail"] { box-shadow: 0 0 50px rgba(225, 6, 0, 0.35), inset 0 0 60px rgba(0, 0, 0, 0.5); }
 .hx-code[data-state="pass"] .hx-code-term span:last-child { color: #3fdc8a; }
 @media (prefers-reduced-motion: reduce) { .hx-code-caret { animation: none; } }
+
+/* anime.js draft of the monitor (fx/code-screen-anime.js) */
+.hx-code-anime { grid-template-rows: auto 1fr; }
+.hx-code-anime .hx-code-pre { overflow: visible; }
+.hx-code-line { height: 1.5em; border-radius: 2px; }
+.hx-ch { display: inline-block; white-space: pre; will-change: transform, opacity; color: var(--tk, #c9d1d9); }
+.hx-ch.tk-k { --tk: #ff5c57; } .hx-ch.tk-t { --tk: #ffd479; } .hx-ch.tk-f { --tk: #5ce1d6; } .hx-ch.tk-n { --tk: #f0a35e; } .hx-ch.tk-c { --tk: #6e7681; }
+.hx-ch.tk-p { --tk: #c9d1d9; }
+.hx-code-flash { position: absolute; inset: 0; background: #e10600; opacity: 0; mix-blend-mode: screen; pointer-events: none; }

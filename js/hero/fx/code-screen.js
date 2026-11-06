@@ -5,11 +5,11 @@
    un-types it. DOM text, not canvas, so it stays sharp at any zoom. */
 
 /* Screen corners in desk.webp pixels (1184x896): TL, TR, BR, BL, just inside the bezel. */
-const IMG = Object.freeze({ w: 1184, h: 896 });
-const QUAD = Object.freeze([[690, 233], [1000, 235], [998, 438], [680, 431]]);
-const BOX = Object.freeze({ w: 620, h: 410 }); /* the editor's own layout size, in CSS px */
+export const IMG = Object.freeze({ w: 1184, h: 896 });
+export const QUAD = Object.freeze([[690, 233], [1000, 235], [998, 438], [680, 431]]);
+export const BOX = Object.freeze({ w: 620, h: 410 }); /* the editor's own layout size, in CSS px */
 
-const CODE = [
+export const CODE = [
   ['k', 'class'], [' '], ['t', 'Listener'], ['p', '(nn.Module):'], ['\n'],
   ['    '], ['k', 'def'], [' '], ['f', '__init__'], ['p', '(self, audio, text):'], ['\n'],
   ['        '], ['p', 'super().__init__()'], ['\n'],
@@ -27,7 +27,7 @@ const FAIL_AT = 0.7;
 const PASS_AT = 0.86;
 
 /* Map the unit square to a quad: the 3x3 projective matrix, as CSS matrix3d. */
-function homography(w, h, q) {
+export function homography(w, h, q) {
   const [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = q;
   const dx1 = x1 - x2, dx2 = x3 - x2, dy1 = y1 - y2, dy2 = y3 - y2;
   const sx = x0 - x1 + x2 - x3, sy = y0 - y1 + y2 - y3;
