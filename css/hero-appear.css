@@ -3,10 +3,13 @@
    The portrait is a photo: it resolves from blur(14px) saturate(0.6) after the headline.
    Only children are animated, never the elements GSAP drives (.hx-name, .hx-intro-top/-foot get
    transforms and opacity from the scroll timeline). Plays once on load (fill: backwards, so GSAP owns opacity afterwards; `translate` composes with transforms); CSS only, so it still
-   ends visible if JS fails. Reduced motion shows the final state. */
+   ends visible if JS fails. Reduced motion shows the final state.
+   .hx-name's own spans are excluded on purpose: this is the page's largest/LCP text, and gating
+   it behind a delayed fade held it off-screen for over a second. It now paints at full opacity
+   immediately; the kicker, line, sub, status, link row and cue still carry the entrance around it. */
 @media (prefers-reduced-motion: no-preference) {
   .topbar .brand, .topbar nav > *,
-  .hx-intro .hx-kicker, .hx-intro .hx-name > span,
+  .hx-intro .hx-kicker,
   .hx-intro .hx-line, .hx-intro .hx-sub, .hx-intro .status, .hx-intro .link-row > li, .hx-intro .hx-cue {
     animation: hx-appear 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
     animation-delay: var(--ad, 0ms);
@@ -20,8 +23,6 @@
   .topbar nav > :nth-child(1) { --ad: 50ms; } .topbar nav > :nth-child(2) { --ad: 100ms; }
   .topbar nav > :nth-child(3) { --ad: 150ms; } .topbar nav > :nth-child(4) { --ad: 200ms; }
   .hx-intro .hx-kicker { --ad: 120ms; }
-  .hx-intro .hx-name > span:first-child { --ad: 180ms; }
-  .hx-intro .hx-name > span:last-child { --ad: 240ms; }
   .hx-intro .hx-line { --ad: 420ms; }
   .hx-intro .hx-sub { --ad: 480ms; }
   .hx-intro .status { --ad: 540ms; }

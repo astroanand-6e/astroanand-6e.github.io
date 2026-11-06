@@ -43,6 +43,12 @@
       try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
       var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : 'ink';
+      /* Assume the hero film will go live (it does on every normal load) and ask for its pinned,
+         one-screen layout before first paint, so the browser never has to paint the fallback's
+         five-scene flowing stack and then collapse it once js/hero/index.js catches up — that
+         collapse was the page's dominant layout shift. js/hero/index.js removes this class again
+         on the rare path where GSAP fails to load or the hero can't start. */
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('hx-live');
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -165,12 +165,14 @@ export function initHero() {
   const hasGsap = Boolean(window.gsap && window.ScrollTrigger);
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!hasGsap || reduced) {
+    document.documentElement.classList.remove(LIVE_CLASS);
     initStaticHero(host);
     return;
   }
   host.classList.add(LIVE_CLASS);
   idle(() => startLive(host).catch((error) => {
     console.warn(`hero: falling back to the static layout (${error.message})`);
+    document.documentElement.classList.remove(LIVE_CLASS);
     host.classList.remove(LIVE_CLASS);
     initStaticHero(host);
   }));
