@@ -50,4 +50,8 @@ export function setAnchor(el, name, xPct, yPct) {
   el.style.setProperty(`--${name}-y`, `${yPct}%`);
 }
 
+/* Light (paper) theme: the hero stays light for the whole film and each effect draws its light
+   variant. Read live on every paint, so a theme switch mid-scroll repaints correctly. */
+export const isPaper = () => typeof document !== 'undefined' && document.documentElement.dataset.theme === 'paper';
+
 export const DEFAULT_OPTS = Object.freeze({ glScale: 0.7, maxDpr: 1.5, crowCount: 150, seed: 0x1d3a });

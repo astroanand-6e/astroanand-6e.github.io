@@ -2,7 +2,7 @@
    The streak is the closed-form tent gradient from the HyperFrames vfx-anamorphic-flare block
    (Apache-2.0), retinted red. The iris is original: three tangent blades turning around a glowing
    opening. Every frame is a pure function of p (0..1), so it renders identically on any seek. */
-import { clamp01, easeOut, span } from '../timeline-utils.js';
+import { clamp01, easeOut, isPaper, span } from '../timeline-utils.js';
 
 const TAU = Math.PI * 2;
 const BLADE_COUNT = 3;
@@ -12,8 +12,14 @@ const STREAK_BAND_PX = 16;
 const IRIS_RADIUS_FRAC = 0.05;
 const IRIS_TURNS = 0.75;
 const BLADE_REACH = 2.1;
-const RED = '255,42,31';
-const HOT = '255,170,140';
+/* Dark: light added on black (canvas 'lighter', CSS screen). Paper: deep red ink laid over the
+   art (source-over, CSS multiply in css/hero.css), since added light vanishes on a light page. */
+const NIGHT = Object.freeze({ red: '255,42,31', hot: '255,170,140', op: 'lighter', glow: 1 });
+/* On paper the soft glow reads as a red stain on his face, so it is nearly off: streak and iris carry it. */
+const PAPER = Object.freeze({ red: '176,0,0', hot: '225,6,0', op: 'source-over', glow: 0.12 });
+let RED = NIGHT.red;
+let HOT = NIGHT.hot;
+let GLOW = NIGHT.glow;
 
 function glow(ctx, x, y, radius, alpha) {
   const g = ctx.createRadialGradient(x, y, 0, x, y, radius);
@@ -62,7 +68,7 @@ function drawPoint(ctx, w, h, spec, p) {
   const iris = easeOut(span(p, 0.2, 1));
   const radius = h * IRIS_RADIUS_FRAC * point.scale;
   const open = radius * (0.35 + 0.65 * iris);
-  glow(ctx, x, y, radius * (1.2 + 3 * ignite), 0.85 * ignite * point.glow);
+  glow(ctx, x, y, radius * (1.2 + 3 * ignite * GLOW), 0.85 * ignite * point.glow * GLOW);
   const len = w * STREAK_HALF_FRAC * point.streak * ignite;
   streak(ctx, x, y, len, STREAK_BAND_PX * point.scale * point.thin, 0.28 * ignite * point.streak);
   streak(ctx, x, y, len * 0.7, STREAK_CORE_PX * point.scale * point.thin, 0.95 * ignite * point.streak);
@@ -87,8 +93,12 @@ export function createEyeFire(canvas, points) {
     ctx.globalCompositeOperation = 'source-over';
     ctx.clearRect(0, 0, w, h);
     if (lastP <= 0.001) return;
-    ctx.globalCompositeOperation = 'lighter';
+    const look = isPaper() ? PAPER : NIGHT;
+    RED = look.red;
+    HOT = look.hot;
+    GLOW = look.glow;
+    ctx.globalCompositeOperation = look.op;
     points.forEach((point) => drawPoint(ctx, w, h, point, lastP));
   }
-  return { render, wake() { render(lastP); }, release() {} };
+  return { render, wake() { render(lastP); }, repaint() { render(lastP); }, release() {} };
 }

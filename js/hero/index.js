@@ -101,6 +101,14 @@ function guardFocus(host, st, master, scenes) {
   });
 }
 
+/* A theme switch changes how the canvases draw (fx read isPaper() on paint): repaint in place. */
+function watchTheme(master, scenes) {
+  const repaint = () => scenes.filter((s) => s.isAwake).forEach((s) => {
+    s.handle.fx.forEach((fx) => fx.repaint && fx.repaint());
+  });
+  new MutationObserver(repaint).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+}
+
 function watchResize(scenes) {
   let timer = 0;
   window.addEventListener('resize', () => {
@@ -143,6 +151,7 @@ async function startLive(host) {
   const st = createScroller(ScrollTrigger, host, master, scenes);
   guardFocus(host, st, master, scenes);
   watchResize(scenes);
+  watchTheme(master, scenes);
   exposeDebug(master, scenes, st);
   syncFx(scenes, master.time(), st.isActive);
   host.classList.add('hx-ready');

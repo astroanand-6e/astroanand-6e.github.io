@@ -1,8 +1,11 @@
 /* Domain-expansion rift. Ported from the HyperFrames vfx-portal block (Apache-2.0): a
    noise-modulated circular edge, a glow ring with colour cycling and edge sparks. Here the
    inside is a black void with a red swirl instead of a second texture, so it can swallow
-   the live page. Output is premultiplied. p: 0 closed, 1 fills the frame. */
+   the live page. Output is premultiplied. p: 0 closed, 1 fills the frame.
+   u_light (paper theme): the rift opens onto paper instead of a void, with a pale red swirl, a
+   deep red ink ring and dark sparks, so the next scene can begin on paper. */
 import { createShaderFx, GLSL_NOISE } from '../gl.js';
+import { isPaper } from '../timeline-utils.js';
 
 const FRAG = `
 #ifdef GL_FRAGMENT_PRECISION_HIGH
@@ -15,7 +18,9 @@ uniform vec2 u_res;
 uniform float u_p;
 uniform float u_time;
 uniform vec2 u_center;
+uniform float u_light;
 ${GLSL_NOISE}
+vec4 over(vec4 src, vec4 dst){ return src + dst * (1.0 - src.a); }
 void main(){
   vec2 aspect = vec2(u_res.x / u_res.y, 1.0);
   vec2 c = (v_uv - u_center) * aspect;
@@ -38,6 +43,19 @@ void main(){
   voidCol *= 0.55 + 0.45 * smoothstep(0.0, edge + 0.001, dist) * fade + 0.45 * (1.0 - fade);
   vec3 col = voidCol * inside + ringCol * ring * 1.9 + ringCol * halo + vec3(1.0, 0.85, 0.7) * spark;
   float a = clamp(inside + ring + halo * 0.6 + spark * 0.4, 0.0, 1.0);
+  if (u_light > 0.5) {
+    vec3 paper = vec3(0.957, 0.957, 0.949);
+    float rim = smoothstep(0.3, 0.0, edge - dist) * inside * fade;
+    vec3 inner = mix(paper, vec3(0.95, 0.74, 0.71), smoothstep(0.35, 0.8, swirl) * 0.55 * fade);
+    inner = mix(inner, vec3(0.9, 0.42, 0.38), rim * 0.35);
+    vec3 ink = mix(vec3(0.69, 0.0, 0.0), vec3(0.88, 0.03, 0.0), sin(phase * 6.2832) * 0.5 + 0.5);
+    vec4 acc = vec4(inner * inside, inside);
+    acc = over(vec4(ink, 1.0) * halo * 0.5, acc);
+    acc = over(vec4(ink, 1.0) * clamp(ring, 0.0, 1.0), acc);
+    acc = over(vec4(0.22, 0.0, 0.0, 1.0) * clamp(spark * 0.8, 0.0, 1.0), acc);
+    gl_FragColor = acc;
+    return;
+  }
   gl_FragColor = vec4(min(col, vec3(1.0)), a);
 }`;
 
@@ -50,6 +68,7 @@ export function createPortal(canvas, { scale, maxDpr, center, seconds }) {
       uniform('u_p', p);
       uniform('u_time', p * seconds);
       uniform('u_center', center.x, center.y);
+      uniform('u_light', isPaper() ? 1 : 0);
     },
   });
 }

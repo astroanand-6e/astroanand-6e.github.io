@@ -6,9 +6,7 @@ import { createLiving } from '../fx/living.js';
 import { DEFAULT_OPTS, holdUntil, qs, setAnchor, track } from '../timeline-utils.js';
 
 export const DURATION = 10;
-/* Light mode: the hero fades from light to dark over the first stretch of scroll. */
-const LIGHTS_OUT_AT = 0.15;
-const LIGHTS_OUT_FOR = 1.1;
+/* No lights-out: dark mode is dark throughout and light mode stays light (css/hero.css). */
 const IRIS_SCALE = 1;
 /* The fx canvas is centred on the eye anchor (--eye-x/--eye-y), so the point is its middle. */
 const EYE_POINT = Object.freeze({ x: 0.5, y: 0.5, scale: IRIS_SCALE });
@@ -25,8 +23,6 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   /* Ambient life on the real art only (the SVG stand-in has no hair or eyes to move). */
   const living = REAL_IMAGES.stand ? [createLiving(fig, qs(fig, 'img'), heroImage)] : [];
 
-  const pin = el.closest('.hx-pin') || el;
-  tl.fromTo(pin, { '--hx-night': 0 }, { '--hx-night': 1, duration: LIGHTS_OUT_FOR, ease: 'power2.inOut' }, LIGHTS_OUT_AT);
   tl.fromTo(fig, { scale: 1, transformOrigin: '50% 22%' }, { scale: PUSH_INTRO, duration: 9, ease: 'power1.inOut' }, 0);
   tl.fromTo(name, { scale: 1, yPercent: 0 }, { scale: 1.1, yPercent: -3, duration: 9, ease: 'none' }, 0);
   track(tl, 1.2, 3.6, fire.render, 'power2.out');

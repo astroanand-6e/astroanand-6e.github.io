@@ -108,6 +108,10 @@ export function createShaderFx(canvas, options) {
       node.replaceWith(fresh);
       node = fresh;
     },
+    /* Redraw the last frame (after a theme switch). */
+    repaint() {
+      if (isActive) paint();
+    },
     get isActive() { return isActive; },
   };
 }

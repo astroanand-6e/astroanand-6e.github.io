@@ -6,6 +6,8 @@
    It is ambient, not scrubbed: wake() starts the ticker, release() stops it. If PixiJS fails to
    load, the plain <img> stays visible. Coordinates are stand.webp pixels (768x1024). */
 
+import { isPaper } from '../timeline-utils.js';
+
 const PIXI_URL = 'https://cdn.jsdelivr.net/npm/pixi.js@8.6.6/dist/pixi.min.mjs';
 const W = 768;
 const H = 1024;
@@ -104,13 +106,24 @@ function buildMotes(Container, Sprite, Texture) {
   }
   return {
     layer,
+    paper: null,
     update(t, px, py) {
+      /* Added light vanishes on paper: there the motes are faint warm dust, drawn normally. */
+      const paper = isPaper();
+      if (paper !== this.paper) {
+        this.paper = paper;
+        items.forEach((m) => {
+          m.sp.blendMode = paper ? 'normal' : 'add';
+          m.sp.tint = paper ? 0x9a7656 : 0xffffff;
+        });
+      }
+      const fade = paper ? 0.55 : 1;
       items.forEach((m) => {
         const k = (m.z - FOCUS_DEPTH) * 2.2;
         const y = ((m.y + m.vy * t) % (H * 0.85) + H * 0.85) % (H * 0.85);
         m.sp.x = m.x + m.vx * t * 0.3 + Math.sin(t * 0.5 + m.ph) * 6 - k * px;
         m.sp.y = y - k * py;
-        m.sp.alpha = m.alpha * (0.6 + 0.4 * Math.sin(t * 0.9 + m.ph));
+        m.sp.alpha = m.alpha * fade * (0.6 + 0.4 * Math.sin(t * 0.9 + m.ph));
       });
     },
   };
