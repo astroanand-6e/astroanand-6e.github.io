@@ -49,3 +49,15 @@ export const GL_MAX_DPR = 1.5;
 
 /* Seeds for the deterministic effects. */
 export const SEED_CROWS = 0x1d3a;
+
+/* Optical-flow in-betweens for the palm arm raise (avatar-studio/tools/flow.py). One pair per
+   consecutive key drawing; range is the max displacement in px of the 768x1024 drawings. */
+export const RAISE_FLOW = Object.freeze({
+  width: 768,
+  height: 1024,
+  pairs: [71, 91, 52, 47].map((range, i) => ({
+    f01: `${IMAGE_PATH}flow/flow-${i}-f.png?v=${IMAGE_VERSION}`,
+    f10: `${IMAGE_PATH}flow/flow-${i}-b.png?v=${IMAGE_VERSION}`,
+    range,
+  })),
+});

@@ -1,11 +1,11 @@
 /* Palm: during a slow push-in his right arm swings up from his side into the open palm (Qwen
-   in-betweens cross-dissolved on a canvas, fx/pose-blend.js). Four tool icons rise out of
+   in-betweens warped by optical flow, fx/pose-flow.js). Four tool icons rise out of
    the palm and orbit in a tilted ring with a thin red halo, then a rift opens from the palm
    and swallows the frame. */
-import { EYE_X_PCT, EYE_Y_PCT, PALM_X_PCT, PALM_Y_PCT, PUSH_INTRO, PUSH_PALM } from '../config.js';
+import { EYE_X_PCT, EYE_Y_PCT, PALM_X_PCT, PALM_Y_PCT, PUSH_INTRO, PUSH_PALM, RAISE_FLOW } from '../config.js';
 import { createEyeFire } from '../fx/eye-fire.js';
 import { createPortal } from '../fx/portal.js';
-import { createPoseBlend } from '../fx/pose-blend.js';
+import { createPoseFlow } from '../fx/pose-flow.js';
 import { DEFAULT_OPTS, beat, easeInOut, easeIn, easeOut, fade, holdUntil, qs, qsa, setAnchor, span, track } from '../timeline-utils.js';
 
 export const DURATION = 13;
@@ -85,7 +85,7 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   const portal = createPortal(qs(el, '[data-fx="portal"]'), { scale: opts.glScale, maxDpr: opts.maxDpr, center: PORTAL_CENTER, seconds: PORTAL.for });
   const orbit = createOrbit(el);
   const frames = [standImg, ...qsa(el, '.hx-pose-src'), palmImg];
-  const pose = createPoseBlend(qs(el, '[data-fx="pose-blend"]'), frames);
+  const pose = createPoseFlow(qs(el, '[data-fx="pose-blend"]'), frames, RAISE_FLOW);
 
   tl.set(fig, { scale: PUSH_INTRO, transformOrigin: '50% 22%' }, 0);
   tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 1, ease: 'none' }, 0);
