@@ -1,7 +1,8 @@
-/* Intro: him standing in front of his name. Scrolling ignites his eyes (flare plus iris),
-   while the camera pushes in slowly. buildScene(tl, el) only adds tweens to tl. */
-import { EYE_X_PCT, EYE_Y_PCT, PUSH_INTRO } from '../config.js';
+/* Intro: him standing in front of his name, alive (hair, breath, coat, blinks: fx/living.js).
+   Scrolling ignites his eyes (flare plus iris), while the camera pushes in slowly. buildScene(tl, el) only adds tweens to tl. */
+import { EYE_X_PCT, EYE_Y_PCT, IMAGE_PATH, PUSH_INTRO, REAL_IMAGES } from '../config.js';
 import { createEyeFire } from '../fx/eye-fire.js';
+import { createLiving } from '../fx/living.js';
 import { DEFAULT_OPTS, fade, holdUntil, qs, setAnchor, track } from '../timeline-utils.js';
 
 export const DURATION = 10;
@@ -21,6 +22,8 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   setAnchor(fig, 'eye', EYE_X_PCT, EYE_Y_PCT);
 
   const fire = createEyeFire(qs(el, '[data-fx="eye-fire"]'), [EYE_POINT]);
+  /* Ambient life on the real art only (the SVG stand-in has no hair or eyes to move). */
+  const living = REAL_IMAGES.stand ? [createLiving(fig, qs(fig, 'img'), IMAGE_PATH)] : [];
 
   const pin = el.closest('.hx-pin') || el;
   tl.fromTo(pin, { '--hx-night': 0 }, { '--hx-night': 1, duration: LIGHTS_OUT_FOR, ease: 'power2.inOut' }, LIGHTS_OUT_AT);
@@ -32,5 +35,5 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
   tl.to(top, { opacity: 0, duration: 1.2, ease: 'power1.in' }, 8.2);
   tl.set(el, { opacity: 0 }, DURATION);
   holdUntil(tl, DURATION);
-  return { fx: [fire], gl: [] };
+  return { fx: [fire, ...living], gl: [] };
 }
