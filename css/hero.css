@@ -25,8 +25,11 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
 .hx-live .hx-scene { position: absolute; inset: 0; min-height: 0; }
 .hx-live .hx-scene:not(.hx-intro) { opacity: 0; }
 .hx-scene a, .hx-scene .link-row a { pointer-events: auto; }
-.hx-scene:nth-child(1) { z-index: 1; } .hx-scene:nth-child(2) { z-index: 2; } .hx-scene:nth-child(3) { z-index: 3; }
-.hx-scene:nth-child(4) { z-index: 4; } .hx-scene:nth-child(5) { z-index: 5; }
+/* Scene stacking by name, not position: a sibling added to .hx-pin (the film layer) once shifted
+   nth-child and dropped the hand-off (burn) under the desk. */
+.hx-scene[data-hx-scene="intro"] { z-index: 1; } .hx-scene[data-hx-scene="palm"] { z-index: 2; }
+.hx-scene[data-hx-scene="eyes"] { z-index: 3; } .hx-scene[data-hx-scene="desk"] { z-index: 4; }
+.hx-scene[data-hx-scene="handoff"] { z-index: 5; }
 
 /* Figures: a box with the image's aspect ratio; scenes size it with --fig-h. */
 .hx-figure {
