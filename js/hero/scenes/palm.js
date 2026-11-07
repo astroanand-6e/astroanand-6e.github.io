@@ -9,10 +9,10 @@ import { createPoseFlow } from '../fx/pose-flow.js';
 import { DEFAULT_OPTS, beat, easeInOut, easeIn, easeOut, fade, holdUntil, qs, qsa, setAnchor, span, track } from '../timeline-utils.js';
 
 export const DURATION = 13;
-const ORBIT_TILT = 0.32;
+const ORBIT_TILT = 0.22;
 const ORBIT_ROLL = -0.2;
-const ORBIT_RADIUS = 22; /* in --u units (1u = about 1svh), so the ring stays the same size on screen */
-const ORBIT_LIFT = 12;
+const ORBIT_RADIUS = 32; /* in --u units (1u = about 1svh); scales with the camera push (see unit() below) */
+const ORBIT_LIFT = 30;
 const ORBIT_TURNS = 2.5;
 /* The push frames face and palm together: it scales about the point halfway between his eyes and
    the palm and nudges the frame down, so his hair stays in shot at every aspect ratio. */
@@ -38,7 +38,11 @@ function createOrbit(el) {
   const icons = qsa(el, '.hx-icon');
   const halos = qsa(el, '.hx-halo');
   const state = { rise: 0, spin: 0, scale: PUSH_INTRO };
-  const unit = (n) => `calc(var(--u) * ${(n / state.scale).toFixed(4)})`;
+  /* Position/radius, NOT divided by the camera scale: the camera's own scale() transform (a parent
+     of .hx-orbit) multiplies this back in, so the ring's radius and lift grow with the push-in just
+     like the figure underneath it does, instead of staying a fixed screen size while the hand grows
+     to meet it (docs/ORBIT-FRAMING.md - that mismatch is what let icons land on the hand/coat). */
+  const unit = (n) => `calc(var(--u) * ${n.toFixed(4)})`;
   const rotate = (x, y) => ({ x: x * Math.cos(ORBIT_ROLL) - y * Math.sin(ORBIT_ROLL), y: x * Math.sin(ORBIT_ROLL) + y * Math.cos(ORBIT_ROLL) });
   function paint() {
     const rise = easeOut(state.rise);
