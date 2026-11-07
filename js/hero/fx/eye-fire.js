@@ -21,8 +21,10 @@ const BLADE_REACH = 1.2;
 /* Dark: light added on black (canvas 'lighter', CSS screen). Paper: deep red ink laid over the
    art (source-over, CSS multiply in css/hero.css), since added light vanishes on a light page. */
 const NIGHT = Object.freeze({ red: '255,42,31', hot: '255,170,140', op: 'lighter', glow: 1 });
-/* On paper the soft glow reads as a red stain on his face, so it is nearly off: streak and iris carry it. */
-const PAPER = Object.freeze({ red: '176,0,0', hot: '225,6,0', op: 'source-over', glow: 0.12 });
+/* On paper the soft glow reads as a red stain on his face if pushed too far, so it stays modest here;
+   most of the paper glow comes from the layered drop-shadow in css/hero.css, which can blur well past
+   this canvas's own edges without muddying the skin under it. */
+const PAPER = Object.freeze({ red: '176,0,0', hot: '225,6,0', op: 'source-over', glow: 0.22 });
 let RED = NIGHT.red;
 let HOT = NIGHT.hot;
 let GLOW = NIGHT.glow;

@@ -50,15 +50,22 @@ void main(){
   vec3 col = mix(vec3(0.02), world, reach) + vec3(1.0, 0.25, 0.15) * glint * 0.9;
   if (u_light > 0.5) {
     vec3 paper = vec3(0.957, 0.957, 0.949);
-    vec3 wash = mix(vec3(0.975, 0.9, 0.88), vec3(0.9, 0.16, 0.09), pow(1.0 - h, 1.7));
-    wash = mix(wash, vec3(0.93, 0.33, 0.24), smoothstep(0.3, 0.0, h) * 0.25);
+    /* A pale vermilion wash that stayed close to peach/pink across most of the frame read as a
+       sweet pastel gradient instead of ink bleeding into paper. Holding near-paper longer (a
+       steeper exponent) and anchoring the wash itself closer to a warm ivory - not pink - keeps
+       the upper frame calm so only the lower reach (near the figure and horizon) carries real
+       color, the way sumi-e washes work from the bottom of the stroke. */
+    vec3 wash = mix(vec3(0.96, 0.935, 0.91), vec3(0.88, 0.14, 0.08), pow(1.0 - h, 2.6));
+    wash = mix(wash, vec3(0.9, 0.3, 0.21), smoothstep(0.3, 0.0, h) * 0.25);
     float grainy = fbm(w * vec2(14.0, 30.0)) - 0.5;
     wash += grainy * 0.035;
-    vec3 lit = mix(wash, vec3(0.82, 0.04, 0.02), corona * 0.9);
-    vec3 inkCol = vec3(0.06, 0.035, 0.035);
-    lit = mix(lit, inkCol, clamp(cloud * 0.82 + moon, 0.0, 1.0));
+    vec3 lit = mix(wash, vec3(0.78, 0.04, 0.02), corona * 0.9);
+    vec3 inkCol = vec3(0.045, 0.028, 0.028);
+    /* Push the cloud mask toward fully opaque ink more often (1.1 instead of 0.82) so the bands
+       read as solid sumi-e brushstrokes instead of a half-mixed gray smear over the wash. */
+    lit = mix(lit, inkCol, clamp(cloud * 1.1 + moon, 0.0, 1.0));
     col = mix(paper, lit, reach);
-    col = mix(col, vec3(0.75, 0.0, 0.0), glint * 0.85);
+    col = mix(col, vec3(0.72, 0.0, 0.0), glint * 0.85);
   }
   gl_FragColor = vec4(col, 1.0);
 }`;

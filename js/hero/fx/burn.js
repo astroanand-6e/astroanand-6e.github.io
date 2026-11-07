@@ -43,8 +43,12 @@ void main(){
   if (u_light > 0.5) {
     vec3 paper = vec3(0.957, 0.957, 0.949);
     float wash = smoothstep(0.02, 0.2, t - field + (tongue - 0.5) * 0.12);
-    vec3 char = mix(vec3(0.07, 0.02, 0.02), vec3(0.38, 0.12, 0.08), smoothstep(0.0, 0.6, wash));
-    vec3 ash = mix(char, paper, wash);
+    /* Real char and ash are achromatic (near-black cooling to gray), not brown - a warm brown
+       mid-tone across most of the burnt area read as a dirty stain rather than fire damage. Swap
+       the mid-tone for a neutral warm gray and let it reach paper faster (0.3-0.85 instead of a
+       bare wash) so the brown-ish transition band stays thin instead of dominating the frame. */
+    vec3 char = mix(vec3(0.05, 0.02, 0.02), vec3(0.58, 0.55, 0.52), smoothstep(0.0, 0.6, wash));
+    vec3 ash = mix(char, paper, smoothstep(0.3, 0.85, wash));
     col = ash * burnt + red * (rim * 1.1 + halo * 0.12) * (1.0 - wash) + vec3(0.85, 0.05, 0.0) * ember;
   }
   gl_FragColor = vec4(min(col, vec3(1.0)), alpha);

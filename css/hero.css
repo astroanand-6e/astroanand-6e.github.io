@@ -158,10 +158,13 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
    Multiply alone reads as a flat, dull mark with no glow (a glow needs to brighten, and anything
    that brightens white paper just vanishes). A drop-shadow bleeds a soft red halo past the
    streak/iris mask's own alpha before the blend mode runs, so the ink mark still reads with the
-   warmth of a glow instead of a dead flat line. */
+   warmth of a glow instead of a dead flat line. Three layers (tight, mid, wide) instead of two: the
+   first pass only softened the mark's own hard edge, which still read as a scar at normal viewing
+   size; the wide outer layer is what actually bleeds a visible warm halo past the ink itself. */
 html[data-theme="paper"] .hx-eyefx {
   mix-blend-mode: multiply;
-  filter: drop-shadow(0 0 6px rgba(192, 0, 0, 0.55)) drop-shadow(0 0 18px rgba(192, 0, 0, 0.3));
+  filter: drop-shadow(0 0 3px rgba(225, 6, 0, 0.7)) drop-shadow(0 0 16px rgba(192, 0, 0, 0.5))
+    drop-shadow(0 0 38px rgba(192, 0, 0, 0.32));
 }
 html[data-theme="paper"] .hx-intro::before { background: radial-gradient(38% 52% at 50% 60%, rgba(225, 6, 0, 0.09), transparent 72%); }
 html[data-theme="paper"] .hx-figure .hx-icon { filter: drop-shadow(0 6px 12px rgba(10, 10, 10, 0.22)) drop-shadow(0 1px 2px rgba(10, 10, 10, 0.18)); }
