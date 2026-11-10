@@ -65,6 +65,14 @@ void main(){
        read as solid sumi-e brushstrokes instead of a half-mixed gray smear over the wash. */
     lit = mix(lit, inkCol, clamp(cloud * 1.1 + moon, 0.0, 1.0));
     col = mix(paper, lit, reach);
+    /* On black (dark mode) this same expanding "reach" boundary reads as a light burst by
+       contrast alone. On paper the soft smoothstep edge has nothing to read against - it just
+       looks like a stray pink stain growing behind his head. A thin, near-black ink ring traced
+       right on the boundary turns it into a deliberate brushed line (a ring expanding from his
+       eyes), matching the sumi-e ink language used everywhere else in this shader instead of
+       trying to fake a glow paper can't show. */
+    float ring = smoothstep(0.009, 0.0, abs(dist + edgeN - front)) * step(0.01, u_flip);
+    col = mix(col, vec3(0.02, 0.01, 0.01), ring);
     col = mix(col, vec3(0.72, 0.0, 0.0), glint * 0.85);
   }
   gl_FragColor = vec4(col, 1.0);

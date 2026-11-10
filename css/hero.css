@@ -155,14 +155,17 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
 
 /* Light mode (paper). Dark mode never matches these. */
 /* Added light vanishes on paper, so the eye flare is laid on as deep red ink (fx/eye-fire.js).
-   Multiply alone reads as a flat, dull mark with no glow (a glow needs to brighten, and anything
-   that brightens white paper just vanishes). A drop-shadow bleeds a soft red halo past the
-   streak/iris mask's own alpha before the blend mode runs, so the ink mark still reads with the
-   warmth of a glow instead of a dead flat line. Three layers (tight, mid, wide) instead of two: the
-   first pass only softened the mark's own hard edge, which still read as a scar at normal viewing
-   size; the wide outer layer is what actually bleeds a visible warm halo past the ink itself. */
+   `multiply` was the actual defect behind two earlier "still looks wrong" reports: it can only
+   darken, and how much it darkens depends on what sits under the canvas. Over light skin the
+   blade/iris strokes showed; over his dark hair they multiplied toward black and vanished, so only
+   one stroke of the three-blade shape ever survived - reading as a single stray diagonal scar
+   instead of the full triangular ignition mark. `normal` paints the same alpha every time
+   regardless of what's underneath (the same way the canvas already composites its own strokes with
+   `source-over`), so the whole mark shows over hair and skin alike. The layered drop-shadows still
+   do the glow: they bleed a soft red halo past the mark's own alpha before the blend runs, tight,
+   mid and wide so the halo reaches past the ink itself instead of only softening its hard edge. */
 html[data-theme="paper"] .hx-eyefx {
-  mix-blend-mode: multiply;
+  mix-blend-mode: normal;
   filter: drop-shadow(0 0 3px rgba(225, 6, 0, 0.7)) drop-shadow(0 0 16px rgba(192, 0, 0, 0.5))
     drop-shadow(0 0 38px rgba(192, 0, 0, 0.32));
 }
