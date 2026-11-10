@@ -1,5 +1,12 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 4rem; }
+/* GSAP ScrollTrigger's pin logic repositions the scroll on refresh (window resize, which a browser
+   zoom change fires) to keep the pinned hero's progress continuous. A native smooth-scroll animates
+   that correction instead of applying it in the same frame ScrollTrigger reads it back, so the pin's
+   start/end math runs against a scroll position still mid-glide: it finds itself out of range and
+   unpins, and nothing re-pins it until the next real scroll (docs/ZOOM-SHAKE.md). Scoped to the live,
+   GSAP-driven hero only - the reduced-motion/static fallback keeps the smooth anchor-link glide above. */
+html.hx-live { scroll-behavior: auto; }
 body {
   margin: 0;
   background: var(--paper);
