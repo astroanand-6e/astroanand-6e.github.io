@@ -164,8 +164,12 @@ export function createDJ(host, imageUrl) {
         const s = Math.max(sw / W, sh / H) * 1.04; /* landscape: cover, plus camera overscan */
         world.scale.set(s);
         /* The deck (JOG, HAND) sits in the bottom 30% of the plate and is the point of the shot, so
-           anchor low enough to keep it in frame; a wide screen still trims a little hair crown. */
-        world.position.set((sw - W * s) / 2, (sh - H * s) * 0.54);
+           anchor low enough to keep it in frame; a wide screen still trims a little hair crown.
+           0.63, not 0.54: handoff.js holds this stage at `scale: 1.05` (the push-in) once the beat
+           line is up, which zooms in around the plate's own centre and eats back into whatever
+           margin a scale-1 anchor bought. 0.63 is tuned so the deck's bottom trim and his hand
+           still clear the frame once that 1.05 zoom is the steady state, not just at scale 1. */
+        world.position.set((sw - W * s) / 2, (sh - H * s) * 0.63);
       } else {
         /* Portrait: a cover crop would be all coat. Frame head to decks in the top 3/4 and centre
            on his head; the black table carries on into the plate's black below. */

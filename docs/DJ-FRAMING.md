@@ -116,3 +116,113 @@ and 390×844 (portrait, to confirm no regression), plus a `reducedMotion:
 - `js/hero/fx/dj.js` — `fit()` landscape vertical anchor `0.12` → `0.54`.
 - `css/hero.css` — `.hx-dj img` object-position `50% 12%` → `50% 54%`;
   portrait override `48% 0` → `48% 70%`.
+
+## Second pass: "still a bit misplaced" at `0.54`
+
+Anand's report after the first fix landed: the deck frame reads as a bit
+misplaced. It isn't gone again (the first fix's anchor change is still in
+place and still correct for a static plate); the frame is tighter than the
+`0.54` anchor's own numbers say it should be, and it gets tighter the longer a
+visitor dwells on the beat. The anchor fix was computed against a plate at
+rest (`scale: 1`). It never was at rest.
+
+### The actual bug: the anchor was tuned for the wrong scale
+
+`js/hero/scenes/handoff.js` runs the DJ plate (`.hx-dj`, same element as
+`fit()` sizes) through its own GSAP scale tween, independent of and on top of
+`fit()`'s own cover-crop math:
+
+```js
+tl.fromTo(stage, { opacity: 0, filter: 'brightness(0.2) blur(10px)', scale: 1.12 },
+  { opacity: 1, filter: 'brightness(1) blur(0px)', scale: 1, duration: 1.6, ease: 'power2.out' }, BURN_DONE - 0.4);
+tl.to(stage, { scale: 1.05, duration: DURATION - BURN_DONE - 1.2, ease: 'none' }, BURN_DONE + 1.2);
+```
+
+The beat line ("It is music...") lands at `LINE_IN_AT = BURN_DONE + 0.75`,
+partway through the first tween (plate scale is already past 1.0, settling
+toward it). From there the second tween pushes the whole plate from `scale:
+1` up to a **held `scale: 1.05`** for the rest of the scene's dwell time —
+this is a deliberate slow push-in, not a bug, and not something to remove
+(no easing type changed, this is a `duration`/`scale` tween, not a bounce or
+elastic ease). But it's a transform on the *outer* `.hx-dj` box, applied
+*after* `fit()` has already decided which part of the 1184×896 source is
+visible. A CSS `transform: scale()` on a box zooms in on its own center,
+uniformly eating into whatever margin the crop math left on every edge —
+`fit()` never knew this was coming, so the `0.54` anchor was tuned as if the
+plate would stay at `scale: 1` forever.
+
+### What that costs, measured
+
+At 1440×900 (`W=1184, H=896`, landscape cover scale `s = max(1440/1184,
+900/896) * 1.04 ≈ 1.265`, so the plate before any push-in is already
+1123px wider and 134px taller than the viewport, i.e. object-fit:cover's own
+built-in overscan/crop):
+
+| State | Visible rows (% of source image height) |
+|---|---|
+| `0.54` anchor, plate at `scale: 1` (what the first fix measured) | 11.1%–90.5% |
+| `0.54` anchor, plate held at `scale: 1.05` (what a visitor who reads the line actually sees) | 13.0%–88.6% |
+| `0.63` anchor, plate held at `scale: 1.05` (this fix) | 14.9%–90.5% |
+
+The held `scale: 1.05` alone eats back ~1.9 percentage points of vertical
+coverage versus the `scale: 1` case the first fix verified, entirely from
+the bottom — exactly where the controller is. The bottom edge drifts from
+90.5% to 88.6%, trimming further into the deck's lower trim than documented,
+while the top edge barely moves (hair crown, already the tighter margin, is
+untouched either way at this anchor). Confirmed in the browser: with the
+plate progressed to the scene's end (`window.__hero.set(1)`, the steady
+state most of the scroll-locked dwell settles into), `getComputedStyle(.hx-dj)
+.transform` reads `matrix(1.05, 0, 0, 1.05, 0, 0)` — the push-in is live and
+held, not a transient.
+
+### Fix: re-tune the anchor for the plate's held scale, not its rest scale
+
+`0.54` → `0.63` in both places that set it (`js/hero/fx/dj.js`'s `fit()`
+landscape branch, and `css/hero.css`'s `.hx-dj img, .hx-dj canvas` rule, which
+the no-JS/reduced-motion static fallback and the brief pre-Pixi-load flash
+both use). `0.63` is picked so that once the plate is at its *held* `1.05`,
+the visible window's bottom edge lands back at ~90.5% — the same bottom-edge
+coverage the first fix's own numbers call correct — instead of drifting
+tighter as the scene dwells. The portrait branch (`fit()`'s `else`, and the
+`orientation: portrait` media query) is untouched: it doesn't use this
+constant and was already correct per the first pass.
+
+### Verified: measured, before/after, three widths, both themes
+
+Dev server for this worktree only, on `localhost:8097` (the shared `:8082`
+server serves the main checkout, not this branch — left running at time of
+writing, stop with the PID in `/private/tmp/claude-501/djframe/`). Measured
+with a Playwright probe (`/private/tmp/claude-501/djframe/probe.mjs`) that
+loads the real page, calls `window.__hero.set(1)` to settle the handoff scene
+at its end-of-dwell state (`scale: 1.05` held, the worst case), then reads
+`getBoundingClientRect()`/`getComputedStyle()` off the scene, `.hx-dj` plate,
+`<img>` and `<canvas>`, plus a full-page screenshot, at `1440×900`, `834×1194`
+and `390×844`, in both `data-theme="paper"` and `data-theme="ink"`.
+
+| Width | Theme | Before (`0.54`, held `1.05`) | After (`0.63`, held `1.05`) |
+|---|---|---|---|
+| 1440 | paper | rows 13.0%–88.6% visible; hand, jog wheel and knobs present but the bottom trim of the deck is tighter than the first fix's own target | rows 14.9%–90.5%; matches the first fix's documented bottom-edge coverage; headphone hand, face, both jog wheels, the knob row and the scratching hand all fully in frame |
+| 1440 | ink | same as paper (object-position isn't theme-dependent) | same as paper |
+| 834 | paper | unaffected — portrait branch (`fit()`'s `else`), rows 0%–100% of the source always shown, scaled to 74% of viewport height | unaffected, confirmed identical (the `0.63`/`0.54` constant isn't read on this path) |
+| 834 | ink | unaffected | unaffected |
+| 390 | paper | unaffected, same portrait branch | unaffected |
+| 390 | ink | unaffected | unaffected |
+
+Screenshots: `shot-1440-{paper,ink}.png` (before) and `after-{1440,834,390}-
+{paper,ink}.png` (after) in `/private/tmp/claude-501/djframe/`. The static/
+reduced-motion fallback was also checked directly:
+`getComputedStyle(img).objectPosition` on the plate's `<img>` reads
+`"50% 63%"` once the fix is applied, confirming that code path (which
+`fit()` never touches) picked up the same change.
+
+No dark-mode regression: `.hx-dj`'s object-position isn't theme-conditional,
+and the 1440 ink screenshot is pixel-equivalent in composition to the paper
+one (only the page chrome around the pinned hero differs by theme, as
+before).
+
+## Files changed (second pass)
+
+- `js/hero/fx/dj.js` — `fit()` landscape vertical anchor `0.54` → `0.63`,
+  with a comment explaining the held-scale compensation.
+- `css/hero.css` — `.hx-dj img, .hx-dj canvas` object-position `50% 54%` →
+  `50% 63%`.

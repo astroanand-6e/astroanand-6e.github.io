@@ -262,7 +262,7 @@ html[data-theme="paper"] .hx-desk .hx-beat-kicker { color: #ff3b30; }
 
 /* Music beat: the club plate (fx/dj.js draws the live version over the img). */
 .hx-dj { position: absolute; inset: 0; z-index: 1; overflow: hidden; background: #050505; will-change: transform, opacity, filter; }
-.hx-dj img, .hx-dj canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 54%; }
+.hx-dj img, .hx-dj canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 63%; }
 .hx-dj-alive img { opacity: 0; }
 @media (orientation: portrait) { .hx-dj img { object-fit: cover; height: 74%; object-position: 48% 70%; } }
 .hx-live .hx-dj { opacity: 0; }
