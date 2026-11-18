@@ -120,26 +120,44 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
 .hx-cue svg { width: 0.75rem; height: 0.75rem; animation: cue 2.2s var(--ease-out) infinite; }
 
 /* Palm */
-/* The palm holds a small red ember that swells as the push-in arrives, then opens into the rift (portal.js). */
+/* The palm (js/hero/scenes/palm.js): a vortex of red light forms in it (fx/palm-swirl.js) with an ember at
+   its core, and the four tool icons swirl round it. Everything sits inside .hx-cam so it rides the push-in
+   with the hand, and is sized off --fig-w so it keeps the hand's proportions on every screen. The vortex
+   centre is 3.4% of the figure's width above the palm point (LOOP.lift in palm.js). Stacking inside the
+   cam: back-half icons 3, vortex 4, ember 5, front-half icons 6, crown 7. */
+.hx-swirl {
+  position: absolute; z-index: 4; left: var(--palm-x); top: var(--palm-y); max-width: none;
+  width: calc(var(--fig-w) * 0.34); height: calc(var(--fig-w) * 0.34);
+  transform: translate(-50%, -60%); pointer-events: none; mix-blend-mode: screen;
+}
 .hx-ember {
-  position: absolute; z-index: 4; left: var(--palm-x); top: var(--palm-y); width: calc(var(--u) * 9); aspect-ratio: 1;
+  position: absolute; z-index: 5; left: var(--palm-x); top: var(--palm-y); width: calc(var(--fig-w) * 0.12); aspect-ratio: 1;
   border-radius: 50%; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) scale(0.2);
   background: radial-gradient(circle, rgba(255, 214, 196, 0.95) 0 6%, rgba(255, 90, 60, 0.85) 14%, rgba(255, 42, 31, 0.38) 34%, transparent 68%);
   mix-blend-mode: screen; will-change: transform, opacity;
 }
-/* The tool loop: four app icons rise out of the ember and orbit above the palm (js/hero/scenes/palm.js). */
-.hx-orbit { position: absolute; z-index: -1; left: var(--palm-x); top: var(--palm-y); width: 0; height: 0; }
+/* No z-index on the ring itself, so each icon's own z-index stacks against the vortex. */
+.hx-orbit { position: absolute; left: var(--palm-x); top: var(--palm-y); width: 0; height: 0; }
 .hx-figure .hx-icon {
   max-width: none; max-height: none;
-  position: absolute; left: 0; top: 0; width: max(calc(var(--u) * 8), 44px); height: max(calc(var(--u) * 8), 44px);
-  border-radius: 22%; opacity: 0; will-change: transform, opacity; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
+  position: absolute; left: 0; top: 0; width: max(calc(var(--fig-w) * 0.062), 26px); height: max(calc(var(--fig-w) * 0.062), 26px);
+  border-radius: 22%; opacity: 0; will-change: transform, opacity; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
 }
-.hx-halo {
-  position: absolute; z-index: 5; left: 0; top: 0; width: 0; height: 0; opacity: 0; border-radius: 50%;
-  border: 1px solid rgba(255, 42, 31, 0.85); box-shadow: 0 0 16px rgba(255, 42, 31, 0.5), inset 0 0 16px rgba(255, 42, 31, 0.3);
-  will-change: transform, opacity;
-}
-.hx-halo-2 { border-color: rgba(255, 42, 31, 0.45); box-shadow: none; }
+/* The comet and the crown (js/hero/fx/crown.js): SVG in palm.webp's pixel space, glow as layered strokes. */
+.hx-crown-fx { position: absolute; inset: 0; z-index: 7; width: 100%; height: 100%; overflow: visible; pointer-events: none; mix-blend-mode: screen; }
+.hx-comet, .hx-trail-ghost, .hx-crown-line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.hx-comet, .hx-trail-ghost { opacity: 0; }
+.hx-crown-line { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+.hx-l-glow { stroke: rgba(255, 42, 31, 0.32); stroke-width: 10; }
+.hx-l-mid { stroke: #ff2a1f; stroke-width: 4; }
+.hx-l-core { stroke: #ffd9cc; stroke-width: 1.6; }
+.hx-trail-ghost { stroke: rgba(255, 90, 60, 0.6); stroke-width: 1.4; }
+.hx-comet-head { fill: #fff1ea; }
+.hx-crown-body { fill: url(#hx-crown-fill); opacity: 0; }
+.hx-crown-gem { fill: #ffe3d8; stroke: #ff2a1f; stroke-width: 1.5; }
+.hx-crown-jewel { fill: #ff2a1f; stroke: #ffd9cc; stroke-width: 1; opacity: 0; }
+.hx-crown-flash { fill: none; stroke: #ff6a4a; stroke-width: 2; opacity: 0; }
+.hx-crown-aura { fill: url(#hx-crown-aura); opacity: 0; }
 .hx-pose-src { visibility: hidden; }
 .hx-pose-blend { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .hx-static .hx-pose-blend { display: none; }
@@ -190,11 +208,16 @@ html[data-theme="paper"] .hx-eyefx {
 html[data-theme="paper"] .hx-intro::before { background: radial-gradient(38% 52% at 50% 60%, rgba(225, 6, 0, 0.09), transparent 72%); }
 html[data-theme="paper"] .hx-ember { mix-blend-mode: normal; background: radial-gradient(circle, rgba(255, 120, 90, 0.95) 0 6%, rgba(225, 6, 0, 0.7) 16%, rgba(225, 6, 0, 0.22) 36%, transparent 68%); }
 html[data-theme="paper"] .hx-figure .hx-icon { filter: drop-shadow(0 6px 12px rgba(10, 10, 10, 0.22)) drop-shadow(0 1px 2px rgba(10, 10, 10, 0.18)); }
-html[data-theme="paper"] .hx-halo {
-  border-color: rgba(192, 0, 0, 0.9);
-  box-shadow: 0 0 14px rgba(225, 6, 0, 0.28), inset 0 0 12px rgba(225, 6, 0, 0.16);
-}
-html[data-theme="paper"] .hx-halo-2 { border-color: rgba(192, 0, 0, 0.42); box-shadow: none; }
+html[data-theme="paper"] .hx-swirl, html[data-theme="paper"] .hx-crown-fx { mix-blend-mode: normal; }
+html[data-theme="paper"] .hx-l-glow { stroke: rgba(225, 6, 0, 0.14); }
+html[data-theme="paper"] .hx-l-mid { stroke: #c00000; }
+html[data-theme="paper"] .hx-l-core { stroke: #ff5a3c; }
+html[data-theme="paper"] .hx-trail-ghost { stroke: rgba(192, 0, 0, 0.45); }
+html[data-theme="paper"] .hx-comet-head { fill: #e10600; }
+html[data-theme="paper"] .hx-crown-body { fill: rgba(225, 6, 0, 0.14); }
+html[data-theme="paper"] .hx-crown-gem { fill: #e10600; stroke: #8a0000; }
+html[data-theme="paper"] .hx-crown-jewel { fill: #c00000; stroke: #ff8a6a; }
+html[data-theme="paper"] .hx-crown-flash { stroke: #c00000; }
 html[data-theme="paper"] .hx-sky, html[data-theme="paper"] .hx-desk-plate { background: #f4f4f2; }
 html[data-theme="paper"] .hx-eyes .hx-figure { filter: drop-shadow(0 0 calc(var(--rim) * 30px) rgba(192, 0, 0, calc(var(--rim) * 0.5))); }
 
@@ -259,7 +282,7 @@ html[data-theme="paper"] .hx-beat-line {
 }
 
 /* Static layout: no scrubbed VFX. Same scenes, stacked, each fading in once. */
-.hx-static [data-fx], .hx-static .hx-ember, .hx-static .hx-orbit, .hx-static .hx-crow-src { display: none; }
+.hx-static [data-fx], .hx-static .hx-ember, .hx-static .hx-orbit, .hx-static .hx-crown-fx, .hx-static .hx-crow-src { display: none; }
 .hx-static .hx-pose-palm { opacity: 1; -webkit-mask: none; mask: none; }
 .hx-static .hx-scene:not(.hx-intro) { border-top: 1px solid var(--rule); }
 .hx-static .hx-fade { opacity: 0; transition: opacity 0.3s ease-out; }

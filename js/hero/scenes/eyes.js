@@ -48,8 +48,9 @@ export function buildScene(tl, el, opts = DEFAULT_OPTS) {
 
   tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 1, ease: 'none' }, 0);
   /* The face arrives out of the palm's rift (the scenes overlap, config.js), fully opaque before
-     the sky starts to flood: a half-faded face over the red sky read as a red smear on the mouth. */
-  tl.fromTo(el, { clipPath: 'circle(0% at 50% 55%)' }, { clipPath: 'circle(78% at 50% 55%)', duration: 1.6, ease: 'power2.in' }, 0);
+     the sky starts to flood: a half-faded face over the red sky read as a red smear on the mouth.
+     50% 45% is the rift's centre (palm.js PORTAL_CENTER, uv y-up 0.55), where his crown sits as it opens. */
+  tl.fromTo(el, { clipPath: 'circle(0% at 50% 45%)' }, { clipPath: 'circle(78% at 50% 45%)', duration: 1.6, ease: 'power2.in' }, 0);
   tl.set(el, { clipPath: 'none' }, 1.61);
   /* power2.out, not power1.out: every other arrival in the film (fire, plate, dj stage) settles on
      this curve, and the figure's own scale-in on the next line already uses it. */
