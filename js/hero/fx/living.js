@@ -13,13 +13,14 @@ const W = 768;
 const H = 1024;
 const GRID_X = 48;
 const GRID_Y = 64;
-const FACE = Object.freeze({ x: 370, y: 150, rx: 54, ry: 60 });
+/* Head of the ChatGPT stand plate: the eyes sit at about (375, 121); FACE is the skin ellipse around them. */
+const FACE = Object.freeze({ x: 376, y: 131, rx: 54, ry: 60 });
 const HEM = 716;
 const BREATH_S = 4.2;
 const BREATH_PX = 1.6;
 const BLINK_MS = 110;
 const BLINK_GAP_MS = [2600, 5800];
-const EYE_PATCH = Object.freeze({ x: 322, y: 114 });
+const EYE_PATCH = Object.freeze({ x: 325, y: 94 }); /* top-left of stand-blink-eyes.webp (100x54), from chatgpt-9-blink.png */
 const ALIVE_CLASS = 'hx-alive';
 /* 2.5D camera: every vertex shifts by its depth (Depth Anything V2 map, near = white) against the
    focal plane, so a sideways camera move turns the figure slightly instead of sliding a flat card.
@@ -63,10 +64,10 @@ const smooth = (e0, e1, v) => {
 /* Region weights from texture-space pixel coordinates. */
 function weights(x, y) {
   const fd = ((x - FACE.x) / FACE.rx) ** 2 + ((y - FACE.y) / FACE.ry) ** 2;
-  const inHairBox = x > 270 && x < 455 && y < 205;
-  const hairTop = smooth(118, 55, y);
-  const hairSide = smooth(0.85, 1.6, fd) * smooth(210, 150, y);
-  const insideFace = fd < 1 && y > 110;
+  const inHairBox = x > 275 && x < 460 && y < 186;
+  const hairTop = smooth(99, 36, y);
+  const hairSide = smooth(0.85, 1.6, fd) * smooth(191, 131, y);
+  const insideFace = fd < 1 && y > 91;
   const hair = inHairBox && !insideFace ? Math.max(hairTop, hairSide) : 0;
   const upper = smooth(620, 230, y);
   const coat = x > 240 && x < 530 ? smooth(430, HEM, y) ** 1.6 * smooth(HEM + 14, HEM, y) : 0;

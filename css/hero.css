@@ -96,6 +96,15 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
   color: var(--ink); will-change: transform;
 }
 .hx-name span { display: inline; }
+/* Desktop: the stand plate's head sits dead centre in front of the name, so the word gap is widened and
+   centred on him (Anand ends at the gap's left edge, Thakkar starts at its right) and his head fills the
+   gap instead of covering the T. Phones and portrait tablets stack the two words instead (below). */
+@media (min-width: 768px) and (orientation: landscape) {
+  .hx-name { display: grid; grid-template-columns: 1fr 0.85em 1fr; font-size: min(14vw, 33svh); }
+  .hx-name span:first-child { grid-column: 1; justify-self: end; }
+  .hx-name span:last-child { grid-column: 3; justify-self: start; }
+  .hx-intro .hx-figure { --fig-h: min(86svh, 150vw); } /* his crown clears the kicker line above the name */
+}
 .hx-intro-foot {
   position: absolute; z-index: 5; left: var(--gutter); right: var(--gutter); bottom: var(--space-5);
   display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-5);
@@ -111,7 +120,7 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
 .hx-cue svg { width: 0.75rem; height: 0.75rem; animation: cue 2.2s var(--ease-out) infinite; }
 
 /* Palm */
-.hx-orbit { position: absolute; z-index: 4; left: var(--palm-x); top: var(--palm-y); width: 0; height: 0; }
+.hx-orbit { position: absolute; z-index: -1; left: var(--palm-x); top: var(--palm-y); width: 0; height: 0; }
 .hx-figure .hx-icon {
   max-width: none; max-height: none;
   position: absolute; left: 0; top: 0; width: max(calc(var(--u) * 8), 44px); height: max(calc(var(--u) * 8), 44px);
@@ -146,8 +155,9 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
 }
 .hx-desk-plate img {
   display: block; width: min(150vw, 170svh); height: auto; aspect-ratio: 4 / 3;
-  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%);
-  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%);
+  /* wide ellipse: the monitor sits at the right edge of desk.webp and must not fade out under its editor overlay */
+  -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, #000 80%, transparent 100%);
+  mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, #000 80%, transparent 100%);
 }
 .hx-crow-src { visibility: hidden; z-index: -1; }
 .hx-crows { z-index: 3; }
@@ -214,12 +224,12 @@ html[data-theme="paper"] .hx-beat-line {
    close-up fades into the sky at its bottom edge and the desk fills the height, cropping the sides. */
 @media (orientation: portrait) {
   .hx-portrait img {
-    -webkit-mask-image: linear-gradient(#000 66%, transparent 97%);
-    mask-image: linear-gradient(#000 66%, transparent 97%);
+    -webkit-mask-image: linear-gradient(transparent 1%, #000 13%, #000 66%, transparent 97%); /* the top fade hides the flat cut across his hair */
+    mask-image: linear-gradient(transparent 1%, #000 13%, #000 66%, transparent 97%);
   }
   /* Fill the frame and crop toward the gear: he sits at ~40% of the shot, the monitor and
      monitor at 57-85%. object-position, because GSAP owns the img's transform. */
-  .hx-desk-plate img { max-width: none; width: 100vw; height: 100svh; aspect-ratio: auto; object-fit: cover; object-position: 62% 45%; }
+  .hx-desk-plate img { max-width: none; width: 100vw; height: 100svh; aspect-ratio: auto; object-fit: cover; object-position: 22% 45%; } /* tablets: his face first, the gear second */
 }
 /* Small phones: the top bar holds the seal, skip link, blog, help and theme, so the skip
    link shows only its arrow (its text stays as the accessible name). */
@@ -229,7 +239,7 @@ html[data-theme="paper"] .hx-beat-line {
 }
 /* Phones show about a third of the desk shot: keep him and the controller, let the monitor crop. */
 @media (orientation: portrait) and (max-width: 600px) {
-  .hx-desk-plate img { object-position: 70% 45%; } /* keep his hand, keyboard and the live monitor */
+  .hx-desk-plate img { object-position: 24% 45%; } /* keep his face, shoulder and the hand on the keyboard (the monitor crops away) */
 }
 
 /* Portrait tablets: stack the name like phones so his head sits below it, not across it. */
@@ -265,7 +275,7 @@ html[data-theme="paper"] .hx-desk .hx-beat-kicker { color: #ff3b30; }
 
 /* Music beat: the club plate (fx/dj.js draws the live version over the img). */
 .hx-dj { position: absolute; inset: 0; z-index: 1; overflow: hidden; background: #050505; will-change: transform, opacity, filter; }
-.hx-dj img, .hx-dj canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 63%; }
+.hx-dj img, .hx-dj canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 51%; } /* static fallback; the live canvas centres plate y 452 (fx/dj.js FOCUS_Y) */
 .hx-dj-alive img { opacity: 0; }
 @media (orientation: portrait) { .hx-dj img { object-fit: cover; height: 74%; object-position: 48% 70%; } }
 .hx-live .hx-dj { opacity: 0; }
@@ -273,6 +283,8 @@ html[data-theme="paper"] .hx-desk .hx-beat-kicker { color: #ff3b30; }
   background: linear-gradient(90deg, rgba(5, 5, 5, 0.78) 0%, rgba(5, 5, 5, 0.35) 38%, transparent 62%),
               linear-gradient(0deg, rgba(5, 5, 5, 0.6) 0%, transparent 35%); }
 .hx-handoff .hx-beat-line { color: #f4f4f2; }
+/* Landscape: the line sits in the teal haze top-left; at the bottom it would cover his hand on the left jog wheel. */
+@media (min-width: 768px) and (orientation: landscape) { .hx-handoff .hx-beat { bottom: auto; top: 17svh; } }
 html[data-theme="paper"] .hx-handoff .hx-beat-line { color: #f4f4f2; text-shadow: 0 2px 18px rgba(0, 0, 0, 0.65), 0 0 2px rgba(0, 0, 0, 0.5); }
 html[data-theme="paper"] .hx-handoff .hx-beat-kicker { color: #ff3b30; }
 html[data-theme="paper"] .hx-handoff .cue { color: #d8d6d0; }
@@ -282,7 +294,7 @@ html[data-theme="paper"] .hx-handoff .cue { color: #d8d6d0; }
 .hx-code {
   position: absolute; left: 0; top: 0; transform-origin: 0 0; z-index: 2; overflow: hidden; pointer-events: none;
   display: grid; grid-template-rows: auto 1fr auto; background: #0d1014; color: #c9d1d9;
-  font: 500 15px/1.5 "JetBrains Mono", ui-monospace, Menlo, monospace; border-radius: 2px;
+  font: 500 13px/1.5 "JetBrains Mono", ui-monospace, Menlo, monospace; border-radius: 2px;
   box-shadow: 0 0 40px rgba(25, 230, 210, 0.12), inset 0 0 60px rgba(0, 0, 0, 0.5);
   filter: brightness(0.92) saturate(0.9);
 }

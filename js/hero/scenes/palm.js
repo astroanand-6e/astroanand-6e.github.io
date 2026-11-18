@@ -11,12 +11,16 @@ import { DEFAULT_OPTS, beat, easeInOut, easeIn, easeOut, fade, holdUntil, qs, qs
 export const DURATION = 13;
 const ORBIT_TILT = 0.22;
 const ORBIT_ROLL = -0.2;
-const ORBIT_RADIUS = 32; /* in --u units (1u = about 1svh); scales with the camera push (see unit() below) */
-const ORBIT_LIFT = 30;
+const ORBIT_RADIUS = 20; /* in --u units (1u = about 1svh); scales with the camera push (see unit() below) */
+const ORBIT_LIFT = 20;
+/* The raised hand sits a hand-width off his body, so the ring (centred above the palm) reaches behind his
+   head and shoulder: it is drawn BEHIND the figure (css/hero.css .hx-orbit) like a ring around him, and
+   never covers his face or coat. */
+const ORBIT_SHIFT_X = 0;
 const ORBIT_TURNS = 2.5;
 /* The push frames face and palm together: it scales about the point halfway between his eyes and
    the palm and nudges the frame down, so his hair stays in shot at every aspect ratio. */
-const PALM_SHIFT_Y_PCT = 12;
+const PALM_SHIFT_Y_PCT = 21;
 const FRAME_Y_PCT = (EYE_Y_PCT + PALM_Y_PCT) / 2;
 const PORTAL_CENTER = Object.freeze({ x: 0.5, y: 0.55 });
 const TAU = Math.PI * 2;
@@ -48,12 +52,13 @@ function createOrbit(el) {
     const rise = easeOut(state.rise);
     const radius = ORBIT_RADIUS * rise;
     const cy = -ORBIT_LIFT * rise;
+    const cx = ORBIT_SHIFT_X * rise;
     icons.forEach((icon, i) => {
       const theta = (i * TAU) / icons.length + state.spin;
       const depth = (Math.sin(theta) + 1) / 2;
       const pos = rotate(radius * Math.cos(theta), radius * ORBIT_TILT * Math.sin(theta));
       const s = (0.7 + 0.3 * depth) * Math.min(1, rise * 1.6) / state.scale;
-      icon.style.transform = `translate(${unit(pos.x)}, ${unit(pos.y + cy)}) translate(-50%, -50%) scale(${s.toFixed(3)})`;
+      icon.style.transform = `translate(${unit(pos.x + cx)}, ${unit(pos.y + cy)}) translate(-50%, -50%) scale(${s.toFixed(3)})`;
       icon.style.opacity = Math.min(1, rise * 2.5 * (0.6 + 0.4 * depth)).toFixed(3);
       icon.style.zIndex = String(3 + Math.round(depth * 4));
     });
@@ -61,7 +66,7 @@ function createOrbit(el) {
       const grow = 1.18 + i * 0.24;
       halo.style.width = unit(2 * radius * grow);
       halo.style.height = unit(2 * radius * ORBIT_TILT * grow);
-      halo.style.transform = `translate(0, ${unit(cy)}) translate(-50%, -50%) rotate(${ORBIT_ROLL}rad)`;
+      halo.style.transform = `translate(${unit(cx)}, ${unit(cy)}) translate(-50%, -50%) rotate(${ORBIT_ROLL}rad)`;
       halo.style.opacity = (Math.min(1, rise * 2) * (i === 0 ? 0.95 : 0.4)).toFixed(3);
     });
   }

@@ -1,4 +1,4 @@
-/* The music beat: him on the decks (Qwen frame dj.webp, 1184x896), alive on a 124 BPM clock.
+/* The music beat: him on the decks (ChatGPT frame dj.webp, 1184x888), alive on a 124 BPM clock.
    One PixiJS MeshPlane carries the art; vertices move by painted weights:
    - head + headphone hand: a nod on every beat (quick drop, slow rise; the "pop" of a DJ nod),
      pivoting at the neck so the head rotates a little rather than sliding
@@ -12,19 +12,25 @@ import { clamp01 } from '../timeline-utils.js';
 
 const PIXI_URL = 'https://cdn.jsdelivr.net/npm/pixi.js@8.6.6/dist/pixi.min.mjs';
 const W = 1184;
-const H = 896;
+const H = 888;
 const BPM = 124;
-const HEAD = Object.freeze({ x: 570, y: 185, r: 150 });
-const NECK = Object.freeze({ x: 590, y: 305 });
-const EAR_HAND = Object.freeze({ x: 465, y: 285, r: 85 });
-const HAND = Object.freeze({ x: 845, y: 650, r: 95 });
+const HEAD = Object.freeze({ x: 600, y: 150, r: 150 });
+const NECK = Object.freeze({ x: 635, y: 300 });
+const EAR_HAND = Object.freeze({ x: 760, y: 215, r: 85 }); /* his right hand on the headphone cup */
+const HAND = Object.freeze({ x: 295, y: 705, r: 95 }); /* left hand on the left jog wheel */
+const HANDS_SPAN = Object.freeze([200, 820]); /* x of his left hand on the jog wheel .. his right hand at the ear */
+const HANDS_MARGIN = 30;
+const MIN_SLICE = 740; /* plate px of height a landscape frame shows at least */
+const FOCUS_Y = 452; /* plate y that stays at the middle of a landscape frame */
 const SHOULDERS = Object.freeze({ y0: 300, y1: 560 });
 const LIGHTS = Object.freeze([
-  { x: 120, y: 425, color: 0x19e6d2, size: 520, beat: 0 },
-  { x: 1085, y: 445, color: 0xff2a1f, size: 480, beat: 0.5 },
-  { x: 988, y: 470, color: 0x19e6d2, size: 260, beat: 0.25 },
+  { x: 205, y: 245, color: 0x19e6d2, size: 520, beat: 0 }, /* teal haze under the left spotlight */
+  { x: 965, y: 150, color: 0xff2a1f, size: 480, beat: 0.5 }, /* red haze under the right spotlight */
+  { x: 912, y: 846, color: 0x19e6d2, size: 260, beat: 0.25 }, /* the cyan pads on the right deck */
 ]);
-const JOG = Object.freeze({ x: 860, y: 708, rx: 112, ry: 26 });
+const JOG = Object.freeze({ x: 283, y: 782, rx: 139, ry: 22 }); /* lit rim of the left platter */
+/* The painted spotlights' sources, at the top corners of the plate: the sweeping beams start here. */
+const BEAM_SOURCES = Object.freeze([{ x: 123, y: 0 }, { x: 1120, y: 0 }]);
 const NOD_PX = 0; /* no bouncing (Anand) */
 const NOD_DEG = 0;
 const SCRATCH_PX = 5;
@@ -128,9 +134,9 @@ export function createDJ(host, imageUrl) {
     const beams = [0, 1].map((i) => {
       const b = new Sprite(beamTexture(Texture));
       b.anchor.set(0.5, 0);
-      b.position.set(i ? 1085 : 120, i ? 445 : 425);
+      b.position.set(BEAM_SOURCES[i].x, BEAM_SOURCES[i].y);
       b.width = 150;
-      b.height = 900;
+      b.height = 700;
       b.tint = i ? 0xff3b30 : 0x19e6d2;
       b.blendMode = 'add';
       lights.addChild(b);
@@ -150,10 +156,10 @@ export function createDJ(host, imageUrl) {
     for (let i = 0; i < n; i += 1) {
       const x = rest[i * 2];
       const y = rest[i * 2 + 1];
-      const deck = smooth(690, 670, y); /* the controller and table never move */
+      const deck = smooth(745, 725, y); /* the controller and table never move */
       wHead[i] = Math.max(gauss(x - HEAD.x, y - HEAD.y, HEAD.r * 0.62), gauss(x - EAR_HAND.x, y - EAR_HAND.y, EAR_HAND.r * 0.6)) * deck;
-      wHand[i] = gauss(x - HAND.x, y - HAND.y, HAND.r * 0.55) * smooth(720, 690, y);
-      wBody[i] = smooth(SHOULDERS.y1, SHOULDERS.y0, y) * smooth(150, 300, y) * (x > 300 && x < 920 ? 1 : 0) * deck;
+      wHand[i] = gauss(x - HAND.x, y - HAND.y, HAND.r * 0.55) * smooth(768, 738, y);
+      wBody[i] = smooth(SHOULDERS.y1, SHOULDERS.y0, y) * smooth(150, 300, y) * (x > 250 && x < 1000 ? 1 : 0) * deck;
       depth[i] = depthAt(x, y) - FOCUS;
     }
 
@@ -161,22 +167,32 @@ export function createDJ(host, imageUrl) {
       const sw = instance.screen.width;
       const sh = instance.screen.height;
       if (sw / sh >= 1) {
-        const s = Math.max(sw / W, sh / H) * 1.04; /* landscape: cover, plus camera overscan */
+        /* Cover, but never zoom past MIN_SLICE plate-px of height: on 16:9 that leaves a strip of black at
+           each side, which the plate's edges melt into (mask below) so the controller stays in frame. */
+        const s = Math.min(Math.max(sw / W, sh / H), sh / MIN_SLICE);
         world.scale.set(s);
-        /* The deck (JOG, HAND) sits in the bottom 30% of the plate and is the point of the shot, so
-           anchor low enough to keep it in frame; a wide screen still trims a little hair crown.
-           0.63, not 0.54: handoff.js holds this stage at `scale: 1.05` (the push-in) once the beat
-           line is up, which zooms in around the plate's own centre and eats back into whatever
-           margin a scale-1 anchor bought. 0.63 is tuned so the deck's bottom trim and his hand
-           still clear the frame once that 1.05 zoom is the steady state, not just at scale 1. */
-        world.position.set((sw - W * s) / 2, (sh - H * s) * 0.63);
+        /* A 16:10 or 16:9 screen shows only 75-85% of this 4:3 plate's height, so choose the slice: it is
+           centred on FOCUS_Y (his face through to his fingertips on the platter, y 100-780), so a wide
+           screen trims the hair crown and the controller's lower edge rather than his face or hands.
+           handoff.js then holds this stage at `scale: 1.05` about the frame centre, which only trims a
+           little more from each end of that slice. Clamped so the plate always covers the frame. */
+        const top = Math.min(Math.max(0, FOCUS_Y - sh / s / 2), Math.max(0, H - sh / s));
+        const left = (sw - W * s) / 2;
+        world.position.set(left, -top * s);
+        const edge = left > 1 ? `linear-gradient(to right, transparent ${left}px, #000 ${left + 90}px, #000 ${left + W * s - 90}px, transparent ${left + W * s}px)` : '';
+        canvas.style.maskImage = canvas.style.webkitMaskImage = edge;
       } else {
-        /* Portrait: a cover crop would be all coat. Frame head to decks in the top 3/4 and centre
-           on his head; the black table carries on into the plate's black below. */
-        const s = (sh * 0.74) / H;
+        /* Portrait: frame both hands, the left one on the jog wheel and the right one on the
+           headphones (HANDS_SPAN), with his head and the decks inside the top 3/4 of the frame. The
+           scale is the smaller of "decks fill 74% of the height" and "both hands fit the width". */
+        const s = Math.min((sh * 0.74) / H, sw / (HANDS_SPAN[1] - HANDS_SPAN[0] + 2 * HANDS_MARGIN));
         world.scale.set(s);
-        const x = Math.min(0, Math.max(sw - W * s, sw / 2 - HEAD.x * s));
+        const mid = (HANDS_SPAN[0] + HANDS_SPAN[1]) / 2;
+        const x = Math.min(0, Math.max(sw - W * s, sw / 2 - mid * s));
         world.position.set(x, 0);
+        /* The controller is cut off at the plate's bottom edge: melt it into the black below. */
+        const fade = `linear-gradient(#000 ${Math.max(0, H * s - 70)}px, transparent ${H * s}px)`;
+        canvas.style.maskImage = canvas.style.webkitMaskImage = fade;
       }
     };
     instance.renderer.on('resize', fit);
@@ -219,7 +235,7 @@ export function createDJ(host, imageUrl) {
         s.alpha = 0.18 + 0.42 * Math.exp(-p * 6);
       });
       beams.forEach((b, i) => {
-        b.rotation = (i ? -1 : 1) * (0.35 + Math.sin(t * 0.6 + i * 2) * 0.22);
+        b.rotation = (i ? 1 : -1) * (0.5 + Math.sin(t * 0.6 + i * 2) * 0.1); /* lies along the painted beams */
         b.alpha = 0.06 + 0.07 * Math.exp(-(((beats + i * 0.5) % 1) * 5));
       });
       rim.clear();

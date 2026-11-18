@@ -1,27 +1,33 @@
 /* Hero tuning. Everything a person may want to adjust after the real images land lives here. */
 
 /* Flip a key to true once its file exists in assets/hero/ (a 404 would log a console error). */
-export const REAL_IMAGES = Object.freeze({ stand: true, palm: true, eyes: true, desk: true, 'raise-1': true, 'raise-1b': true, 'raise-2': true, 'raise-3': true, dj: true });
+export const REAL_IMAGES = Object.freeze({ stand: true, palm: true, eyes: true, desk: true, 'raise-1': true, 'raise-2': true, 'raise-3': true, dj: true });
 
 export const IMAGE_PATH = 'assets/hero/';
 /* assets/ is served immutable (vercel.json): bump this whenever a hero image file changes. */
-export const IMAGE_VERSION = 3;
+export const IMAGE_VERSION = 4;
 export const heroImage = (name) => `${IMAGE_PATH}${name}.webp?v=${IMAGE_VERSION}`;
 
 /* EYE POSITION on stand.webp, as a percentage of the image box (0,0 = top left). Tune these two. */
-export const EYE_X_PCT = 48.2;
-export const EYE_Y_PCT = 13.7;
+export const EYE_X_PCT = 48.9;
+export const EYE_Y_PCT = 11.8;
 
 /* Other positions that need the real art: the raised palm on palm.webp, the two eyes on eyes.webp. */
-export const PALM_X_PCT = 46.5;
-export const PALM_Y_PCT = 32.7;
+export const PALM_X_PCT = 30.9;
+export const PALM_Y_PCT = 31.3;
 /* Measured directly off assets/hero/eyes.webp (1024x768): cropped and grid-overlaid at 3x, read
-   the iris centre to the nearest pixel for each eye. His-right eye (screen-left) pixel (451, 264);
-   his-left eye (screen-right) pixel (577, 253). docs/IRIS-ALIGNMENT.md has the full method. */
-export const CLOSEUP_EYES = Object.freeze([{ x: 44.0, y: 34.4 }, { x: 56.4, y: 32.9 }]);
+   the iris centre to the nearest pixel for each eye. His-right eye (screen-left) pixel (442, 325);
+   his-left eye (screen-right) pixel (672, 317). docs/IRIS-ALIGNMENT.md has the full method. */
+export const CLOSEUP_EYES = Object.freeze([{ x: 43.2, y: 42.3 }, { x: 65.6, y: 41.3 }]);
 
 /* Image aspect ratios (width / height). */
-export const ASPECT = Object.freeze({ stand: 3 / 4, palm: 3 / 4, eyes: 4 / 3, desk: 4 / 3, 'raise-1': 3 / 4, 'raise-1b': 3 / 4, 'raise-2': 3 / 4, 'raise-3': 3 / 4, dj: 1184 / 896 });
+export const ASPECT = Object.freeze({ stand: 3 / 4, palm: 3 / 4, eyes: 4 / 3, desk: 4 / 3, 'raise-1': 3 / 4, 'raise-2': 3 / 4, 'raise-3': 3 / 4, dj: 4 / 3 });
+
+/* Intrinsic pixel size of each real file in assets/hero/ (the <img width/height> attributes). */
+export const IMAGE_SIZE = Object.freeze({
+  stand: [768, 1024], palm: [768, 1024], 'raise-1': [768, 1024], 'raise-2': [768, 1024], 'raise-3': [768, 1024],
+  eyes: [1024, 768], desk: [1184, 888], dj: [1184, 888],
+});
 
 /* Scenes in order. `overlap` is how many seconds the scene starts before the previous one ends. */
 export const SCENES = Object.freeze([
@@ -58,7 +64,7 @@ export const SEED_CROWS = 0x1d3a;
 export const RAISE_FLOW = Object.freeze({
   width: 768,
   height: 1024,
-  pairs: [71, 84, 49, 52, 47].map((range, i) => ({
+  pairs: [110, 60, 63, 43].map((range, i) => ({
     f01: `${IMAGE_PATH}flow/flow-${i}-f.png?v=${IMAGE_VERSION}`,
     f10: `${IMAGE_PATH}flow/flow-${i}-b.png?v=${IMAGE_VERSION}`,
     range,

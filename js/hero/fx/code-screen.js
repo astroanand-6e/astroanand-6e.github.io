@@ -4,10 +4,12 @@
    test), see what holds (green). render(p) is a pure function of p (0..1), so scrubbing backwards
    un-types it. DOM text, not canvas, so it stays sharp at any zoom. */
 
-/* Screen corners in desk.webp pixels (1184x896): TL, TR, BR, BL, just inside the bezel. */
-export const IMG = Object.freeze({ w: 1184, h: 896 });
-export const QUAD = Object.freeze([[690, 233], [1000, 235], [998, 438], [680, 431]]);
-export const BOX = Object.freeze({ w: 620, h: 410 }); /* the editor's own layout size, in CSS px */
+/* Screen corners in desk.webp pixels (1184x888): TL, TR, BR, BL, just inside the bezel. The real
+   monitor runs off the right edge of the picture, so the right-hand corners sit on the image edge
+   (x = 1184) instead of past it: the editor ends exactly where the screen leaves the frame. */
+export const IMG = Object.freeze({ w: 1184, h: 888 });
+export const QUAD = Object.freeze([[889, 163], [1184, 76], [1184, 477], [866, 444]]);
+export const BOX = Object.freeze({ w: 460, h: 420 }); /* the editor's own layout size, in CSS px */
 
 export const CODE = [
   ['k', 'class'], [' '], ['t', 'Listener'], ['p', '(nn.Module):'], ['\n'],

@@ -1,6 +1,6 @@
 /* Stand-in artwork, same sizes and aspect ratios as the real cutouts, until the files land in
    assets/hero/. Silhouettes only: dark bodies with a red rim light. */
-import { ASPECT, REAL_IMAGES, heroImage } from './config.js';
+import { ASPECT, IMAGE_SIZE, REAL_IMAGES, heroImage } from './config.js';
 
 const RIM = '#ff2a1f';
 const BODY = 'url(#b)';
@@ -73,7 +73,8 @@ export function hydrateImages(root) {
     const name = img.dataset.hxImg;
     img.src = imageUrl(name);
     img.closest('.hx-figure')?.style.setProperty('--ar', String(ASPECT[name]));
-    img.width = Math.round(1200 * Math.min(1, ASPECT[name]));
-    img.height = Math.round(img.width / ASPECT[name]);
+    const real = REAL_IMAGES[name] && IMAGE_SIZE[name];
+    img.width = real ? real[0] : Math.round(1200 * Math.min(1, ASPECT[name]));
+    img.height = real ? real[1] : Math.round(img.width / ASPECT[name]);
   });
 }
