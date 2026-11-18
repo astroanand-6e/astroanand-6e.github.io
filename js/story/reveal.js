@@ -6,8 +6,10 @@ const DONE_CLASS = 'is-done';
 const STAGGER_MS = 40;
 const DURATION_MS = 600;
 const SETTLE_MS = 120;
-const THRESHOLD = 0.2;
-const ROOT_MARGIN = '0px 0px -8% 0px';
+/* Fire on the group's top edge, not on a share of its area: a tall group (the 8-card work grid on a phone
+   is ~5 viewports) can never be 20% visible, so an area threshold would leave it hidden for good. */
+const THRESHOLD = 0;
+const ROOT_MARGIN = '0px 0px -12% 0px';
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;

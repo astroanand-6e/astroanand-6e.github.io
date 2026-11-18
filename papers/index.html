@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paper implementations | Anand Thakkar</title>
+  <meta name="description" content="Papers Anand Thakkar has re-implemented from their equations, with a note on what the code keeps from the paper and what it changes. Starts with beta-VAE on MNIST.">
+  <meta name="author" content="Anand Thakkar">
+  <meta name="theme-color" content="#050505">
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+  <script>
+    (function () {
+      var root = document.documentElement, saved = null;
+      root.classList.add('js');
+      try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+      root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : 'ink';
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/papers.css">
+  <link rel="stylesheet" href="../css/palette.css">
+  <script type="module" src="../js/papers/main.js"></script>
+  <script type="module" src="../js/palette.js"></script>
+</head>
+<body class="papers-page">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="AT, Anand Thakkar home"><span class="hanko hanko-sm" aria-hidden="true">AT</span></a>
+    <nav aria-label="Page">
+      <a class="nav-link" href="../#index">Work</a>
+      <a class="nav-link" href="../blog/">Blog</a>
+      <a class="nav-link" href="./" aria-current="page">Papers</a>
+      <button type="button" class="icon-btn" data-palette-trigger aria-label="Search the site (Command K)"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="m13.5 13.5 3.5 3.5"/></svg></button>
+      <button type="button" id="theme-toggle" class="fader" role="switch" aria-checked="false" aria-label="Night mode">
+        <span class="fader-ticks" aria-hidden="true"></span>
+        <span class="fader-knob" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+    <header class="intro">
+      <p class="mono kicker"><span class="kicker-rule" aria-hidden="true"></span>Research notebook</p>
+      <h1>Paper implementations</h1>
+      <p class="lede">I re-implement papers from their equations, check the code against the paper, and write down what differs. This page lists each one with what I kept, what I changed, and what I have and have not measured.</p>
+      <nav class="toc mono" aria-label="On this page">
+        <a href="#beta-vae">01 beta-VAE</a>
+        <a href="#next-up">02 Next up</a>
+        <a href="#related">03 Related research</a>
+      </nav>
+    </header>
+
+    <article class="entry" id="beta-vae" aria-labelledby="beta-vae-title">
+      <header class="entry-head">
+        <p class="mono cite">Kingma &amp; Welling, "Auto-Encoding Variational Bayes" (2013) &middot; Higgins et al., "&beta;-VAE: Learning Basic Visual Concepts with a Constrained Variational Framework" (2017)</p>
+        <h2 id="beta-vae-title">&beta;-VAE on MNIST</h2>
+        <p class="mono status"><span class="dot" aria-hidden="true"></span>Re-implemented &middot; original code</p>
+      </header>
+
+      <section class="entry-body" aria-labelledby="built-h">
+        <h3 id="built-h" class="mono h-label">What I built</h3>
+        <p>A convolutional VAE on MNIST in PyTorch. The loss is a Bernoulli reconstruction term (binary cross entropy) plus &beta; times the KL divergence, and &beta; is a command-line flag. The pretrained checkpoint uses a 20-dimensional latent space; the training script defaults to 10.</p>
+        <p>Around the model I wrote tools for looking at the latent space: linear and spherical (SLERP) interpolation between two digits, a t-SNE map of the 10,000 test digits, and a Streamlit app that ties them together.</p>
+        <p class="results"><span class="tag">Results</span> Qualitative only so far. The one observation in the repo is that &beta; = 0.5 gives clear clusters. I have not run a quantitative evaluation, so there are no metrics here.</p>
+      </section>
+
+      <section class="entry-fig" aria-labelledby="fig1-h">
+        <h3 id="fig1-h" class="mono h-label">Fig. 1 &middot; The <span class="keep-case">&beta;</span> dial</h3>
+        <figure class="dial" id="beta-dial">
+          <div class="dial-eq" aria-label="Objective: L equals expected log likelihood minus beta times KL divergence">
+            <span class="eq-term eq-recon">E<sub>q(z|x)</sub>[log p(x|z)]</span>
+            <span class="eq-op" aria-hidden="true">&minus;</span>
+            <span class="eq-term eq-kl"><span class="eq-beta">&beta;</span> &middot; KL(q(z|x) &#8214; p(z))</span>
+          </div>
+          <div class="dial-grid">
+            <div class="dial-controls">
+              <label class="dial-label" for="beta-range">&beta; <output id="beta-out" for="beta-range" class="dial-value">1.0</output></label>
+              <input id="beta-range" type="range" min="0" max="4" step="0.1" value="1" aria-describedby="beta-read">
+              <div class="dial-scale mono" aria-hidden="true"><span>0 (autoencoder)</span><span>1 (VAE)</span><span>4</span></div>
+              <div class="weights" aria-hidden="true">
+                <div class="weight"><span class="mono">Reconstruction weight</span><span class="bar"><i id="w-recon"></i></span><span class="mono num" id="w-recon-n">1.0</span></div>
+                <div class="weight"><span class="mono">KL weight</span><span class="bar"><i id="w-kl" class="is-kl"></i></span><span class="mono num" id="w-kl-n">1.0</span></div>
+              </div>
+              <p class="dial-read" id="beta-read" aria-live="polite"></p>
+            </div>
+            <svg class="latent" id="latent" viewBox="-4 -4 8 8" role="img" aria-labelledby="latent-title latent-desc">
+              <title id="latent-title">Illustration of 2D latent posteriors and the prior</title>
+              <desc id="latent-desc">Eight Gaussian posteriors arranged around the origin. As beta grows they tighten toward the prior N(0, I) and overlap; as beta shrinks they spread apart.</desc>
+              <g class="grid"><line x1="-4" y1="0" x2="4" y2="0"/><line x1="0" y1="-4" x2="0" y2="4"/></g>
+              <circle class="prior" cx="0" cy="0" r="2"/>
+              <g id="posteriors"></g>
+            </svg>
+          </div>
+          <figcaption><strong>Illustration of the objective, not results from the trained model.</strong> The dashed ring is the prior N(0, I) at two standard deviations. Each filled circle is a made-up posterior at two standard deviations. The positions and widths follow a simple rule chosen to show the direction of the effect, not values measured from my checkpoint.</figcaption>
+        </figure>
+      </section>
+
+      <section class="entry-body" aria-labelledby="diff-h">
+        <h3 id="diff-h" class="mono h-label">Faithful vs changed</h3>
+        <div class="table-wrap" role="region" aria-labelledby="diff-h" tabindex="0">
+          <table>
+            <caption class="sr-only">Which parts of the papers the code keeps and which it changes</caption>
+            <thead><tr><th scope="col">Part</th><th scope="col">Status</th><th scope="col">In the code</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Encoder</th><td><span class="pill ok">Faithful</span></td><td>Gaussian posterior with the reparameterization trick.</td></tr>
+              <tr><th scope="row">Decoder likelihood</th><td><span class="pill ok">Faithful</span></td><td>Bernoulli, trained with binary cross entropy.</td></tr>
+              <tr><th scope="row">Objective</th><td><span class="pill ok">Faithful</span></td><td>&beta;-weighted KL term against the standard normal prior.</td></tr>
+              <tr><th scope="row">Dataset</th><td><span class="pill chg">Simplified</span></td><td>MNIST only.</td></tr>
+              <tr><th scope="row">&beta; schedule</th><td><span class="pill chg">Simplified</span></td><td>Fixed &beta; per run, no annealing schedule.</td></tr>
+              <tr><th scope="row">Architecture</th><td><span class="pill chg">Changed</span></td><td>Convolutional layers of my own choosing, not copied from a paper.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="entry-body" aria-labelledby="code-h">
+        <h3 id="code-h" class="mono h-label">Fig. 2 &middot; Code excerpts, as in the repo</h3>
+        <figure class="code">
+          <figcaption class="mono">src/vae/model.py, reparameterize</figcaption>
+          <pre tabindex="0"><code>std = torch.exp(0.5 * logvar)
+eps = torch.randn_like(std)
+z = mu + eps * std
+return z</code></pre>
+        </figure>
+        <figure class="code">
+          <figcaption class="mono">src/vae/losses.py, vae_loss (docstring and comments omitted)</figcaption>
+          <pre tabindex="0"><code>recon_loss = F.binary_cross_entropy_with_logits(
+    recon_logits, x, reduction='sum'
+) / batch_size
+kl_loss = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / batch_size
+loss = recon_loss + beta * kl_loss</code></pre>
+        </figure>
+      </section>
+
+      <footer class="entry-links">
+        <a class="btn btn-primary" href="https://betavaevizualisaton.streamlit.app/" rel="noopener">Open the live demo (may take a moment to wake)</a>
+        <a class="btn" href="https://github.com/astroanand-6e/Beta_VAE" rel="noopener">Read the code on GitHub</a>
+      </footer>
+    </article>
+
+    <!-- TODO(Anand): confirm this queue -->
+    <section class="next" id="next-up" aria-labelledby="next-h">
+      <p class="mono kicker"><span class="kicker-rule" aria-hidden="true"></span>Planned</p>
+      <h2 id="next-h">Next up</h2>
+      <p class="muted">Planned, not started. No results yet.</p>
+      <ul class="slots">
+        <li>
+          <span class="mono">Slot 01 &middot; planned</span>
+          <h3>Vision Transformer</h3>
+          <p class="mono cite">Dosovitskiy et al., 2020</p>
+          <p>Will test whether patch embedding plus a plain transformer encoder, written from the paper, trains on a small image set.</p>
+        </li>
+        <li>
+          <span class="mono">Slot 02 &middot; planned</span>
+          <h3>Masked Autoencoders</h3>
+          <p class="mono cite">He et al., 2021</p>
+          <p>Will test the masking-and-reconstruct objective, in particular how the mask ratio changes what the encoder has to learn.</p>
+        </li>
+        <li>
+          <span class="mono">Slot 03 &middot; planned</span>
+          <h3>LoRA</h3>
+          <p class="mono cite">Hu et al., 2021</p>
+          <p>Will test low-rank weight updates against full fine-tuning on a small model.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="related" id="related" aria-labelledby="related-h">
+      <p class="mono kicker"><span class="kicker-rule" aria-hidden="true"></span>Not a re-implementation</p>
+      <h2 id="related-h">Related research</h2>
+      <h3 class="related-title">CALM, music genre classification</h3>
+      <p>A benchmark of published audio encoders on one dataset, plus my own proposed fusion model, CALM. This is original research, not a reproduction of a single paper.</p>
+      <figure class="bars">
+        <figcaption class="mono">Fig. 3 &middot; Fine-tuned accuracy, FMA-Medium, 16 genres</figcaption>
+        <ol class="bar-list" aria-label="Fine-tuned accuracy by model, percent">
+          <li class="is-calm"><span class="bar-name">CALM (mine)</span><span class="bar-track"><i style="--v:83.90"></i></span><span class="bar-val mono">83.90%</span></li>
+          <li><span class="bar-name">CLAP (Microsoft)</span><span class="bar-track"><i style="--v:74.78"></i></span><span class="bar-val mono">74.78%</span></li>
+          <li><span class="bar-name">CLAP (LAION)</span><span class="bar-track"><i style="--v:73.32"></i></span><span class="bar-val mono">73.32%</span></li>
+          <li><span class="bar-name">MERT-330M</span><span class="bar-track"><i style="--v:73.26"></i></span><span class="bar-val mono">73.26%</span></li>
+          <li><span class="bar-name">AST</span><span class="bar-track"><i style="--v:71.72"></i></span><span class="bar-val mono">71.72%</span></li>
+          <li><span class="bar-name">MERT-95M</span><span class="bar-track"><i style="--v:70.92"></i></span><span class="bar-val mono">70.92%</span></li>
+          <li><span class="bar-name">MusicLDM-VAE</span><span class="bar-track"><i style="--v:70.30"></i></span><span class="bar-val mono">70.30%</span></li>
+          <li><span class="bar-name">Conformer</span><span class="bar-track"><i style="--v:65.63"></i></span><span class="bar-val mono">65.63%</span></li>
+        </ol>
+        <p class="note">Numbers are from the repository README. Bars start at zero.</p>
+      </figure>
+      <p><a class="btn" href="https://github.com/astroanand-6e/Music_genre_classification" rel="noopener">Read the CALM repo on GitHub</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="mono" href="../">Back to the portfolio</a>
+    <p class="mono">&copy; 2026 Anand Thakkar</p>
+  </footer>
+</body>
+</html>
