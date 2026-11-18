@@ -127,6 +127,19 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
   background: radial-gradient(circle, rgba(255, 214, 196, 0.95) 0 6%, rgba(255, 90, 60, 0.85) 14%, rgba(255, 42, 31, 0.38) 34%, transparent 68%);
   mix-blend-mode: screen; will-change: transform, opacity;
 }
+/* The tool loop: four app icons rise out of the ember and orbit above the palm (js/hero/scenes/palm.js). */
+.hx-orbit { position: absolute; z-index: -1; left: var(--palm-x); top: var(--palm-y); width: 0; height: 0; }
+.hx-figure .hx-icon {
+  max-width: none; max-height: none;
+  position: absolute; left: 0; top: 0; width: max(calc(var(--u) * 8), 44px); height: max(calc(var(--u) * 8), 44px);
+  border-radius: 22%; opacity: 0; will-change: transform, opacity; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
+}
+.hx-halo {
+  position: absolute; z-index: 5; left: 0; top: 0; width: 0; height: 0; opacity: 0; border-radius: 50%;
+  border: 1px solid rgba(255, 42, 31, 0.85); box-shadow: 0 0 16px rgba(255, 42, 31, 0.5), inset 0 0 16px rgba(255, 42, 31, 0.3);
+  will-change: transform, opacity;
+}
+.hx-halo-2 { border-color: rgba(255, 42, 31, 0.45); box-shadow: none; }
 .hx-pose-src { visibility: hidden; }
 .hx-pose-blend { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .hx-static .hx-pose-blend { display: none; }
@@ -176,6 +189,12 @@ html[data-theme="paper"] .hx-eyefx {
 }
 html[data-theme="paper"] .hx-intro::before { background: radial-gradient(38% 52% at 50% 60%, rgba(225, 6, 0, 0.09), transparent 72%); }
 html[data-theme="paper"] .hx-ember { mix-blend-mode: normal; background: radial-gradient(circle, rgba(255, 120, 90, 0.95) 0 6%, rgba(225, 6, 0, 0.7) 16%, rgba(225, 6, 0, 0.22) 36%, transparent 68%); }
+html[data-theme="paper"] .hx-figure .hx-icon { filter: drop-shadow(0 6px 12px rgba(10, 10, 10, 0.22)) drop-shadow(0 1px 2px rgba(10, 10, 10, 0.18)); }
+html[data-theme="paper"] .hx-halo {
+  border-color: rgba(192, 0, 0, 0.9);
+  box-shadow: 0 0 14px rgba(225, 6, 0, 0.28), inset 0 0 12px rgba(225, 6, 0, 0.16);
+}
+html[data-theme="paper"] .hx-halo-2 { border-color: rgba(192, 0, 0, 0.42); box-shadow: none; }
 html[data-theme="paper"] .hx-sky, html[data-theme="paper"] .hx-desk-plate { background: #f4f4f2; }
 html[data-theme="paper"] .hx-eyes .hx-figure { filter: drop-shadow(0 0 calc(var(--rim) * 30px) rgba(192, 0, 0, calc(var(--rim) * 0.5))); }
 
@@ -240,7 +259,7 @@ html[data-theme="paper"] .hx-beat-line {
 }
 
 /* Static layout: no scrubbed VFX. Same scenes, stacked, each fading in once. */
-.hx-static [data-fx], .hx-static .hx-ember, .hx-static .hx-crow-src { display: none; }
+.hx-static [data-fx], .hx-static .hx-ember, .hx-static .hx-orbit, .hx-static .hx-crow-src { display: none; }
 .hx-static .hx-pose-palm { opacity: 1; -webkit-mask: none; mask: none; }
 .hx-static .hx-scene:not(.hx-intro) { border-top: 1px solid var(--rule); }
 .hx-static .hx-fade { opacity: 0; transition: opacity 0.3s ease-out; }
