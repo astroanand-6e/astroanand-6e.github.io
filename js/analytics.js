@@ -1,6 +1,7 @@
-// Vercel Web Analytics: page views plus a few interaction events.
-// The script only exists on Vercel deployments, so it loads off localhost only.
-const SCRIPT_SRC = '/_vercel/insights/script.js';
+// Vercel Web Analytics (page views, referrers, countries, devices, plus a few interaction events) and
+// Speed Insights (real-visitor Core Web Vitals). Both scripts only exist on Vercel deployments once each is
+// enabled in the project dashboard, so they load off localhost only. Every page loads this module.
+const SCRIPTS = Object.freeze(['/_vercel/insights/script.js', '/_vercel/speed-insights/script.js']);
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]', '']);
 const CHAPTER_SELECTOR = '[data-chapter]';
 const CHAPTER_VISIBLE_RATIO = 0.5;
@@ -11,14 +12,19 @@ function installQueue() {
   window.va = window.va || function queue(...args) {
     (window.vaq = window.vaq || []).push(args);
   };
+  window.si = window.si || function queue(...args) {
+    (window.siq = window.siq || []).push(args);
+  };
 }
 
-function loadScript() {
-  const script = document.createElement('script');
-  script.defer = true;
-  script.src = SCRIPT_SRC;
-  script.onerror = () => console.warn('Analytics script failed to load');
-  document.head.append(script);
+function loadScripts() {
+  SCRIPTS.forEach((src) => {
+    const script = document.createElement('script');
+    script.defer = true;
+    script.src = src;
+    script.onerror = () => console.warn(`Analytics script failed to load: ${src}`);
+    document.head.append(script);
+  });
 }
 
 export function track(name, data) {
@@ -57,7 +63,7 @@ function watchChapters() {
 function init() {
   if (isLocal) return;
   installQueue();
-  loadScript();
+  loadScripts();
   document.addEventListener('click', onClick);
   window.addEventListener('break', () => track('Break it'));
   window.addEventListener('theme', (event) => track('Theme', { to: String(event.detail?.theme ?? event.detail ?? '') }));

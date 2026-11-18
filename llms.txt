@@ -1,0 +1,36 @@
+# Anand Thakkar
+
+> AI engineer in Boston, studying for an MS in Artificial Intelligence at Northeastern University (Khoury College, from January 2026). He builds interactive interfaces and multimodal models: audio-language models, medical image segmentation, ECG classification and on-device speech recognition. Open to AI engineering internships and co-ops.
+
+Every number below comes from the linked project page, which cites its source (the project's repository or paper).
+
+## Work
+
+- [CALM: Conformer Audio-Language Model](https://anandthakkar.vercel.app/projects/calm): fuses Gemma 4's frozen audio Conformer (305M parameters) with its frozen text encoder through cross-attention, training about 4M parameters. 83.9% test accuracy on 16-genre FMA-Medium, 9.1 points above the best baseline, CLAP (Microsoft). Graduate course project (CS 5100), trained on Northeastern's Explorer HPC cluster.
+- [Astro: local-first code-switch dictation](https://anandthakkar.vercel.app/projects/astro): Hinglish and Gujlish dictation for macOS that never leaves the machine, built on a fork of Handy. A 4-bit Gemma 4 E4B (4.8 GB) runs on device; 5 local ASR backends were compared on 76 of 631 recorded clips, where Gemma led on policy purity (0.974) at 333 ms median latency.
+- [CoronarySAM2: interactive coronary artery segmentation](https://anandthakkar.vercel.app/projects/coronarysam2): SAM2 fine-tuned with two parameter-efficient methods, 0.83 Dice in the repository's evaluation, with a live demo on Hugging Face Spaces.
+- [Failure-aware clinical decision support](https://anandthakkar.vercel.app/projects/cdss): team project (CS 5130). A mortality model on MIMIC-IV v3.1 wrapped in Proposer, Skeptic and Safety Harness agents: AUROC 0.871, Brier 0.019, 7.1% of cases handed to a clinician.
+- [ResFormer: atrial fibrillation detection from ECG](https://anandthakkar.vercel.app/projects/resformer): first-author paper presented at ICIOT'25 (April 2025). A ResNet plus Transformer encoder on PhysioNet 2017: 93.25% accuracy and 0.95 AUROC.
+- [VentureViz](https://anandthakkar.vercel.app/projects/ventureviz): a D3.js network of AI startups and their investors, animated month by month.
+- [This website](https://anandthakkar.vercel.app/projects/portfolio): a scroll film on one GSAP timeline with WebGL shaders, built with Claude Code and checked in a browser at every step.
+
+## Papers
+
+- [Paper implementations](https://anandthakkar.vercel.app/papers): papers rebuilt from their equations, starting with beta-VAE in PyTorch on MNIST.
+
+## Experience
+
+- SPAN Inspection Systems, R&D intern to Junior R&D Engineer, computer vision (December 2024 to October 2025): built ViT and MAE from scratch in PyTorch and moved trained models into the production inspection system with ONNX.
+
+## Education
+
+- MS in Artificial Intelligence, Northeastern University, Boston (January 2026 to present).
+- B.Tech in Computer Science and Engineering, SRM Institute of Science and Technology (2021 to 2025).
+
+## Contact
+
+- Email: anandthakkar041@gmail.com
+- [Résumé (PDF)](https://anandthakkar.vercel.app/Anand_Resume.pdf)
+- [GitHub](https://github.com/astroanand-6e)
+- [LinkedIn](https://www.linkedin.com/in/anand-thakkar)
+- [Hugging Face](https://huggingface.co/astroanand)

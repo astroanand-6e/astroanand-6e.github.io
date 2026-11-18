@@ -1,0 +1,12 @@
+[
+  { "slug": "home", "kicker": "AI engineer · Boston", "title": "Anand Thakkar", "line": "I build interactive interfaces, then break them to see how they work.", "path": "anandthakkar.vercel.app" },
+  { "slug": "papers", "kicker": "Paper implementations", "title": "From the equations to running code", "line": "Papers rebuilt from scratch, with what the code keeps and what it changes.", "path": "anandthakkar.vercel.app/papers" },
+  { "slug": "blog", "kicker": "Notes", "title": "Blog", "line": "Notes on local models, tools and what I am building.", "path": "anandthakkar.vercel.app/blog" },
+  { "slug": "calm", "kicker": "Research · audio-language model", "title": "CALM", "line": "83.9% on 16-genre FMA-Medium, training about 4M parameters.", "path": "anandthakkar.vercel.app/projects/calm" },
+  { "slug": "astro", "kicker": "App · on-device dictation", "title": "Astro", "line": "Hinglish and Gujlish dictation that never leaves the Mac.", "path": "anandthakkar.vercel.app/projects/astro" },
+  { "slug": "coronarysam2", "kicker": "Medical imaging · live demo", "title": "CoronarySAM2", "line": "Click an artery, get a mask. SAM2 fine-tuned to 0.83 Dice.", "path": "anandthakkar.vercel.app/projects/coronarysam2" },
+  { "slug": "cdss", "kicker": "Team project · clinical AI", "title": "Failure-aware decision support", "line": "Proposer, Skeptic and Safety Harness agents that know when to hand off.", "path": "anandthakkar.vercel.app/projects/cdss" },
+  { "slug": "resformer", "kicker": "Paper · ICIOT'25 · first author", "title": "ResFormer", "line": "Atrial fibrillation from ECG: 93.25% accuracy, 0.95 AUROC.", "path": "anandthakkar.vercel.app/projects/resformer" },
+  { "slug": "ventureviz", "kicker": "Interactive graph", "title": "VentureViz", "line": "Who funded whom in AI, month by month, in D3.", "path": "anandthakkar.vercel.app/projects/ventureviz" },
+  { "slug": "portfolio", "kicker": "This website", "title": "A scroll film, built with coding agents", "line": "GSAP, WebGL shaders and a lot of verified diffs.", "path": "anandthakkar.vercel.app/projects/portfolio" }
+]

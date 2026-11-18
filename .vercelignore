@@ -7,3 +7,10 @@ play/
 *.test.js
 # Old Zen theme, replaced by the redesign
 fonts/
+# Internal notes, QA screenshots and build tools (the site doesn't need them)
+docs/
+tools/
+blog/*.py
+blog/posts/*.py
+blog/posts/_starter.html
+blog/posts/template.html

@@ -115,3 +115,9 @@
 
 /* Keyboard shortcuts mean nothing on a touch screen; give the phone topbar its room back. */
 @media (hover: none) and (pointer: coarse) { #help-btn { display: none; } }
+
+/* Two links on a card: the first keeps the whole-card overlay, "How it works" sits above it. */
+.work-links { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-5); margin-top: auto; }
+.work-links .work-link { margin-top: 0; }
+.work-link-alt { position: relative; z-index: 1; color: var(--sakura-text); }
+.work-link-alt::after { content: none; }

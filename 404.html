@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found | Anand Thakkar</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#050505">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+  <script>
+    (function () {
+      var root = document.documentElement, saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+      root.dataset.theme = (saved === 'paper' || saved === 'ink') ? saved : 'ink';
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <style>
+    .lost { min-height: 100svh; display: grid; place-content: center; gap: var(--space-4); padding: var(--space-6) var(--gutter); }
+    .lost .kicker { color: var(--sakura-text); font: 500 var(--fs-12)/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; }
+    .lost h1 { font: italic 400 clamp(3rem, 9vw, 6.5rem)/0.95 var(--font-display); letter-spacing: -0.02em; max-width: 12ch; }
+    .lost p { color: var(--ink-2); max-width: 44ch; }
+    .lost nav { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); }
+  </style>
+  <script type="module" src="/js/analytics.js"></script>
+</head>
+<body>
+  <main class="lost">
+    <p class="kicker">404</p>
+    <h1>This page fell off the timeline.</h1>
+    <p>The link may be old, or I moved the page while rebuilding the site. Everything I've made is one click away.</p>
+    <nav aria-label="Where to go next">
+      <a class="btn" href="/">Back to the start</a>
+      <a class="btn" href="/#index">See the work</a>
+      <a class="btn" href="/Anand_Resume.pdf">Résumé</a>
+    </nav>
+  </main>
+</body>
+</html>
