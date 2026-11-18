@@ -96,7 +96,35 @@ function site() {
   return svg('0 0 400 160', body, 'Diagram: the five hero scenes on one scroll timeline, with a playhead moving across them.');
 }
 
-const FIGURES = Object.freeze({ calm, astro, coronary, cdss, resformer, 'beta-vae': betaVae, site });
+/* Redline: a miniature RSVP frame. Each word's fixation letter (same ORP table as the app) is centred
+   on the tick at 37.6%; CSS flashes the words in turn. Glyph half-widths are estimated per letter. */
+const RSVP_WORDS = Object.freeze(['Read', 'any', 'paper', 'faster', 'than', 'you', 'think.']);
+const RSVP_EM = Object.freeze({ i: 0.28, l: 0.28, j: 0.28, t: 0.3, f: 0.33, r: 0.36, s: 0.39, m: 0.75, w: 0.7 });
+
+function orpIndex(word) {
+  const letters = [...word].flatMap((ch, i) => (/[\p{L}\p{N}]/u.test(ch) ? [i] : []));
+  if (!letters.length) return Math.floor(word.length / 2);
+  const n = letters.length;
+  return letters[n <= 1 ? 0 : n <= 5 ? 1 : n <= 9 ? 2 : n <= 13 ? 3 : 4];
+}
+
+function redline() {
+  const fx = 210;
+  const size = 44;
+  const words = RSVP_WORDS.map((word, i) => {
+    const k = orpIndex(word);
+    const half = ((RSVP_EM[word[k].toLowerCase()] ?? 0.48) * size) / 2;
+    return `<g class="wm-rsvp-w" style="--i:${i}">`
+      + `<text class="wm-rsvp" x="${fx - half}" y="103" text-anchor="end">${word.slice(0, k)}</text>`
+      + `<text class="wm-rsvp wm-rsvp-pivot" x="${fx}" y="103" text-anchor="middle">${word[k]}</text>`
+      + `<text class="wm-rsvp" x="${fx + half}" y="103" text-anchor="start">${word.slice(k + 1)}</text></g>`;
+  }).join('');
+  const frame = '<path class="wm-rsvp-rule" d="M-1200 40 H1760 M-1200 140 H1760 M210 40 V58 M210 122 V140"/>'
+    + '<text class="wm-note" x="520" y="166" text-anchor="end">300 → 900 wpm</text>';
+  return svg('0 0 560 180', frame + words, 'Illustration: words flash one at a time with their red fixation letter fixed on a tick mark.');
+}
+
+const FIGURES = Object.freeze({ calm, astro, coronary, cdss, resformer, 'beta-vae': betaVae, site, redline });
 
 function drawFigures(root) {
   root.querySelectorAll('[data-media]').forEach((el) => {

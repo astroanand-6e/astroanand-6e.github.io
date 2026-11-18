@@ -53,6 +53,12 @@
 .wm-ecg { fill: none; stroke: var(--sakura-text); stroke-width: 1.8; stroke-linejoin: round; }
 .wm-blob { fill: color-mix(in srgb, var(--sakura) 22%, transparent); stroke: color-mix(in srgb, var(--sakura-text) 60%, transparent); stroke-width: 1; transform-box: fill-box; transform-origin: center; }
 .wm-head { fill: var(--sakura-text); }
+/* Redline RSVP figure: only the first word shows until motion starts (and under reduced motion). */
+.wm-rsvp-rule { fill: none; stroke: var(--rule-strong); stroke-width: 1.5; }
+.work-media .wm-rsvp { font-family: var(--font-display); font-style: normal; font-size: 44px; fill: var(--ink); }
+.work-media .wm-rsvp-pivot { fill: var(--sakura-text); }
+.wm-rsvp-w { opacity: 0; }
+.wm-rsvp-w:first-of-type { opacity: 1; }
 
 @media (prefers-reduced-motion: no-preference) {
   .in-view .wm-bar { animation: wm-grow 900ms var(--ease-out) both; animation-delay: calc(var(--i) * 90ms); }
@@ -65,6 +71,9 @@
   .in-view .wm-dot { animation: wm-travel 3.6s ease-in-out infinite; animation-delay: calc(var(--i) * 1.2s); }
   .in-view .wm-blob { animation: wm-breathe 4s ease-in-out infinite alternate; animation-delay: calc(var(--i) * -0.8s); }
   .in-view .wm-head { animation: wm-play 5s linear infinite; }
+  /* 7 words x 0.5 s; negative delays start every word mid-cycle so none flashes early. */
+  .in-view .wm-rsvp-w { animation: wm-rsvp 3.5s steps(1, end) infinite; animation-delay: calc(var(--i) * 0.5s - 3.5s); }
+  @keyframes wm-rsvp { 0% { opacity: 1; } 14.285% { opacity: 0; } 100% { opacity: 0; } }
 }
 @keyframes wm-grow { from { transform: scaleX(0); } }
 @keyframes wm-pulse { from { transform: scaleY(0.35); } to { transform: scaleY(1); } }

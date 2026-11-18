@@ -13,6 +13,7 @@ Every number below comes from the linked project page, which cites its source (t
 - [ResFormer: atrial fibrillation detection from ECG](https://anandthakkar.vercel.app/projects/resformer): first-author paper presented at ICIOT'25 (April 2025). A ResNet plus Transformer encoder on PhysioNet 2017: 93.25% accuracy and 0.95 AUROC.
 - [VentureViz](https://anandthakkar.vercel.app/projects/ventureviz): a D3.js network of AI startups and their investors, animated month by month.
 - [This website](https://anandthakkar.vercel.app/projects/portfolio): a scroll film on one GSAP timeline with WebGL shaders, built with Claude Code and checked in a browser at every step.
+- [Redline: any PDF as a speed-reading video](https://huggingface.co/spaces/astroanand/redline): RSVP reading, one word at a time with a red fixation letter pinned in place. Cleans papers (headers, citations, references), ramps from 300 to 900 wpm, and renders the 15-page Attention Is All You Need paper (4.7k words, 12.5 minutes of video) in about 20 seconds on a laptop. Python, Pillow, ffmpeg and Gradio; code at https://github.com/astroanand-6e/redline.
 
 ## Papers
 
