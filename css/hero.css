@@ -48,32 +48,16 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
   position: absolute; z-index: 3; left: var(--eye-x); top: var(--eye-y); pointer-events: none;
   width: calc(var(--fig-w) * 2); height: var(--fig-w); transform: translate(-50%, -50%); mix-blend-mode: screen;
 }
-.hx-portrait { --fig-h: min(106svh, 79.5vw); /* bleeds past the frame: no hard crop edges */ bottom: auto; top: calc(50svh - var(--fig-h) / 2); }
-.hx-portrait .hx-eyefx { width: calc(var(--fig-w) * 1.6); height: calc(var(--fig-w) * 0.8); }
-/* Depth: there is no separate lens layer in eyes.webp to composite under, and the lens sits at
-   almost the same camera depth as the eye behind it, so the depth maps can't tell glass from iris
-   either. Instead, mask the fx canvas down to the two eye openings it was measured against
-   (docs/IRIS-ALIGNMENT.md), so the glow can only ever paint inside the eye, never onto the lens,
-   frame, brow or cheek around it. Two radial-gradient layers (not a single clip-path shape, which
-   can only hold one region) with a soft 55-100% falloff so the edge reads as the eye's own glow
-   fading out, not a hard cut-out. */
-.hx-eyes .hx-eyefx {
-  /* The global `canvas { max-width: 100% }` reset (css/base.css) clamps this canvas's explicit
-     width back down to its positioned containing block (the figure) whenever that width is over
-     100% of the figure, which it always is by design here. That silently squashed this canvas to
-     roughly fig-w wide while its height stayed uncapped, stretching the circles the fx draws into
-     ovals and dragging each eye's drawn point inward toward the other. Scoped to the eyes scene
-     only: lifting the clamp on intro/palm's shared .hx-eyefx too reveals their anamorphic streak
-     at its full designed width, which reads as a wide bar across the name. Fixed separately for
-     palm (docs/PALM-EYES.md) and intro (docs/INTRO-STREAK.md), each with its own scene-scoped
-     max-width: none once its scene set streak: 0. */
-  max-width: none;
-  -webkit-mask-image: radial-gradient(ellipse 3.2% 2.8% at 46.1% 50.7%, #000 55%, transparent 100%),
-    radial-gradient(ellipse 3.2% 2.8% at 53.9% 49.3%, #000 55%, transparent 100%);
-  mask-image: radial-gradient(ellipse 3.2% 2.8% at 46.1% 50.7%, #000 55%, transparent 100%),
-    radial-gradient(ellipse 3.2% 2.8% at 53.9% 49.3%, #000 55%, transparent 100%);
-}
-/* The same clamp (see above) also squashes the palm scene's eye-fire canvas: its box is meant to be
+.hx-portrait { --fig-h: min(106svh, 79.5vw); /* bleeds past the frame: no hard crop edges */ bottom: auto; top: calc(50svh - var(--fig-h) / 2);
+  /* Centre it explicitly: on phones it is wider than the screen, and auto margins can't centre an
+     over-wide box (they collapse to 0, pinning it left and cutting off his right eye). */
+  left: calc(50% - var(--fig-w) / 2); right: auto; margin-inline: 0; }
+/* Close-up irises (js/hero/fx/eye-iris.js): one small canvas per eye, placed and sized by the script in
+   the plate's own coordinates. It draws opaque iris art clipped to the visible iris, so it composites
+   normally (no screen blend: added light can't draw the dark ring, pupil and blades). */
+.hx-iris { position: absolute; z-index: 3; max-width: none; transform: translate(-50%, -50%); pointer-events: none; }
+/* The global `canvas { max-width: 100% }` reset (css/base.css) clamps a canvas wider than its figure.
+   The palm scene's eye-fire canvas is meant to be
    2x fig-w wide and fig-w tall, but the clamp pins width back to 1x fig-w while height stays
    uncapped, so the box ends up SQUARE instead of 2:1 - stretching the drawn iris/blades into a tall
    vertical oval (docs/PALM-EYES.md). Lifting the clamp here (unlike the shared rule, which would
@@ -228,6 +212,12 @@ html[data-theme="paper"] .hx-eyes .hx-figure { filter: drop-shadow(0 0 calc(var(
 html[data-theme="paper"] .hx-beat-line {
   text-shadow: 0 0 1px rgba(244, 244, 242, 0.9), 0 0 10px rgba(244, 244, 242, 0.9), 0 0 28px rgba(244, 244, 242, 0.75);
 }
+/* Vision (eyes) frame: black type on the red sky in both themes (about 4:1 on the reddest part, large
+   text). The dark beat shadow and the paper halo both smudged it there; a soft red glow keeps the
+   letters off his dark sweater instead. Same specificity as the paper rule above, so it wins by order. */
+.hx-eyes .hx-beat { text-shadow: none; }
+html .hx-eyes .hx-beat-line { color: #0a0a0a; text-shadow: 0 0 1px rgba(255, 90, 70, 0.9), 0 0 12px rgba(255, 60, 40, 0.85), 0 0 32px rgba(255, 40, 20, 0.6); }
+html .hx-eyes .hx-beat-kicker { color: #0a0a0a; font-weight: 600; }
 .hx-live .hx-beat { opacity: 0; }
 .hx-beat-kicker { margin: 0; color: var(--sakura-text); font-size: var(--fs-12); letter-spacing: 0.2em; text-transform: uppercase; }
 .nw { white-space: nowrap; }
