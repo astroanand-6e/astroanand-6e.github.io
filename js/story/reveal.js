@@ -10,6 +10,7 @@ const SETTLE_MS = 120;
    is ~5 viewports) can never be 20% visible, so an area threshold would leave it hidden for good. */
 const THRESHOLD = 0;
 const ROOT_MARGIN = '0px 0px -12% 0px';
+const REVEAL_LINE = 0.88; /* the same line as ROOT_MARGIN, for the safety net below */
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -47,4 +48,37 @@ export function initReveal() {
   document.documentElement.classList.add(ROOT_CLASS);
   void document.documentElement.offsetWidth;
   groups.forEach((group) => observer.observe(group));
+  addSafetyNet(groups, observer);
+}
+
+/* Belt and braces: hidden content is the worst failure here, so if the observer ever misses a group (a
+   throttled background tab, a jump past it), a cheap check on scroll and on tab focus reveals any group
+   whose top is already on screen or above it. It removes itself once every group is in. */
+function addSafetyNet(groups, observer) {
+  const pending = new Set(groups);
+  let queued = false;
+  const check = () => {
+    queued = false;
+    pending.forEach((group) => {
+      if (group.getBoundingClientRect().top >= window.innerHeight * REVEAL_LINE) return;
+      pending.delete(group);
+      observer.unobserve(group);
+      if (!group.classList.contains(IN_CLASS)) reveal(group);
+    });
+    if (!pending.size) stop();
+  };
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    window.requestAnimationFrame(check);
+  };
+  const onVisible = () => { if (document.visibilityState === 'visible') check(); };
+  function stop() {
+    window.removeEventListener('scroll', onScroll);
+    document.removeEventListener('visibilitychange', onVisible);
+    window.removeEventListener('pageshow', check);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  document.addEventListener('visibilitychange', onVisible);
+  window.addEventListener('pageshow', check);
 }
