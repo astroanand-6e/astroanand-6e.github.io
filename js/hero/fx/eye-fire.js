@@ -20,14 +20,17 @@ const IRIS_TURNS = 0.75;
 const BLADE_REACH = 1.2;
 /* Dark: light added on black (canvas 'lighter', CSS screen). Paper: deep red ink laid over the
    art (source-over, CSS multiply in css/hero.css), since added light vanishes on a light page. */
-const NIGHT = Object.freeze({ red: '255,42,31', hot: '255,170,140', op: 'lighter', glow: 1 });
+const NIGHT = Object.freeze({ red: '255,42,31', hot: '255,170,140', op: 'lighter', glow: 1, marks: true });
 /* On paper the soft glow reads as a red stain on his face if pushed too far, so it stays modest here;
    most of the paper glow comes from the layered drop-shadow in css/hero.css, which can blur well past
    this canvas's own edges without muddying the skin under it. */
-const PAPER = Object.freeze({ red: '176,0,0', hot: '225,6,0', op: 'source-over', glow: 0.22 });
+/* marks: false - on paper the face-sized ring and blades are opaque red ink, not light, and read as
+   scratches across his face; the paper theme keeps only the soft glow. */
+const PAPER = Object.freeze({ red: '176,0,0', hot: '225,6,0', op: 'source-over', glow: 0.22, marks: false });
 let RED = NIGHT.red;
 let HOT = NIGHT.hot;
 let GLOW = NIGHT.glow;
+let MARKS = NIGHT.marks;
 
 function glow(ctx, x, y, radius, alpha) {
   const g = ctx.createRadialGradient(x, y, 0, x, y, radius);
@@ -80,7 +83,7 @@ function drawPoint(ctx, w, h, spec, p) {
   const len = w * STREAK_HALF_FRAC * point.streak * ignite;
   streak(ctx, x, y, len, STREAK_BAND_PX * point.scale * point.thin, 0.28 * ignite * point.streak);
   streak(ctx, x, y, len * 0.7, STREAK_CORE_PX * point.scale * point.thin, 0.95 * ignite * point.streak);
-  if (iris <= 0) return;
+  if (iris <= 0 || !MARKS) return;
   strokeBlades(ctx, x, y, open, iris * IRIS_TURNS * TAU, iris * point.iris);
   ctx.lineWidth = 1;
   ctx.strokeStyle = `rgba(${RED},${0.55 * iris * point.iris})`;
@@ -105,6 +108,7 @@ export function createEyeFire(canvas, points) {
     RED = look.red;
     HOT = look.hot;
     GLOW = look.glow;
+    MARKS = look.marks;
     ctx.globalCompositeOperation = look.op;
     points.forEach((point) => drawPoint(ctx, w, h, point, lastP));
   }

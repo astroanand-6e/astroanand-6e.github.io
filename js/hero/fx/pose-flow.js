@@ -7,7 +7,7 @@
    Timing follows the animation principles: a small anticipation dip, a fast middle, and an
    overshoot past the palm drawing that settles back. render(p) is a pure function of p (0..1).
    Without WebGL it falls back to the cross-dissolve on holds. */
-import { clamp01 } from '../timeline-utils.js';
+import { clamp01, isPaper } from '../timeline-utils.js';
 
 const VERT = 'attribute vec2 a_pos; varying vec2 v_uv; void main(){ v_uv = a_pos * 0.5 + 0.5; gl_Position = vec4(a_pos, 0.0, 1.0); }';
 const FRAG = `precision highp float;
@@ -37,6 +37,9 @@ const ANTICIPATE = 0; /* off: Anand doesn't want springy motion */ // /* how far
 const OVERSHOOT = 0; // /* how far past the palm drawing it swings before settling */
 const DISSOLVE = Object.freeze([0.3, 0.7]);
 const HANDOVER = Object.freeze([0.38, 0.62]);
+/* On paper a half-faded arm is a see-through grey ghost (on black it vanishes), so the hand-over between
+   drawings is nearly a cut there: each drawing stays crisp and the double arm lasts a sliver of the scroll. */
+const HANDOVER_PAPER = Object.freeze([0.46, 0.54]);
 
 /* Gesture curve in frame space: dip, fast rise, overshoot, settle (Disney: anticipation + follow-through). */
 function gesture(p) {
@@ -175,7 +178,8 @@ export function createPoseFlow(canvas, frames, flowSpec) {
     bind(2, flowTex[k * 2]);
     bind(3, flowTex[k * 2 + 1]);
     gl.uniform1f(loc.u_t, t);
-    const u = clamp01((t - HANDOVER[0]) / (HANDOVER[1] - HANDOVER[0]));
+    const [h0, h1] = isPaper() ? HANDOVER_PAPER : HANDOVER;
+    const u = clamp01((t - h0) / (h1 - h0));
     gl.uniform1f(loc.u_w, u * u * (3 - 2 * u));
     gl.uniform1f(loc.u_range, pair.range);
     gl.uniform2f(loc.u_size, flowSpec.width, flowSpec.height);

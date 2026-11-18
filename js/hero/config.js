@@ -5,7 +5,7 @@ export const REAL_IMAGES = Object.freeze({ stand: true, palm: true, eyes: true, 
 
 export const IMAGE_PATH = 'assets/hero/';
 /* assets/ is served immutable (vercel.json): bump this whenever a hero image file changes. */
-export const IMAGE_VERSION = 4;
+export const IMAGE_VERSION = 5; /* 5: plates re-cut for the light theme (avatar-studio/tools/rematte.py) */
 export const heroImage = (name) => `${IMAGE_PATH}${name}.webp?v=${IMAGE_VERSION}`;
 
 /* EYE POSITION on stand.webp, as a percentage of the image box (0,0 = top left). Tune these two. */
