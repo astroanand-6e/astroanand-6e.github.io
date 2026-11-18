@@ -6,7 +6,8 @@ const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]', '']);
 const CHAPTER_SELECTOR = '[data-chapter]';
 const CHAPTER_VISIBLE_RATIO = 0.5;
 
-const isLocal = LOCAL_HOSTS.has(location.hostname);
+/* Off on localhost and on the GitHub Pages mirror (astroanand-6e.github.io), where the Vercel scripts don't exist. */
+const isLocal = LOCAL_HOSTS.has(location.hostname) || location.hostname.endsWith('.github.io');
 
 function installQueue() {
   window.va = window.va || function queue(...args) {
