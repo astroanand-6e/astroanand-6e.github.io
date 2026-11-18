@@ -1,0 +1,51 @@
+/* Link rows: on hover or keyboard focus the link lights up (a brand-coloured glow swells from its centre)
+   and its app icon rises out of the middle of the label on a spring. Exit is quicker than entry.
+   Icons are injected by js/link-icons.js. */
+.app-link { position: relative; isolation: isolate; --glow: var(--sakura-text); --tile-bg: var(--sakura-text); --tile-fg: #fff; }
+.app-link:has([data-app="github"]) { --glow: #f2f0ec; --tile-bg: #f2f0ec; --tile-fg: #0d1117; }
+html[data-theme="paper"] .app-link:has([data-app="github"]) { --glow: #24292f; --tile-bg: #24292f; --tile-fg: #fff; }
+.app-link:has([data-app="hf"]) { --glow: #ffd21e; --tile-bg: #ffd21e; --tile-fg: #0a0a0a; }
+.app-link:has([data-app="linkedin"]) { --glow: #3d8bfd; --tile-bg: #0a66c2; --tile-fg: #fff; }
+.app-link:has([data-app="mail"]) { --glow: var(--ink); --tile-bg: var(--ink); --tile-fg: var(--paper); }
+
+/* The light: a soft pill of the brand colour behind the label */
+.app-link::before {
+  content: ""; position: absolute; left: 50%; top: 50%; z-index: -1; width: calc(100% + 2.5rem); height: 3.25rem;
+  border-radius: 999px; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--glow) 34%, transparent), transparent);
+  opacity: 0; transform: translate(-50%, -50%) scale(0.35);
+  transition: opacity 180ms ease-in, transform 200ms ease-in;
+}
+.app-label { position: relative; transition: text-shadow 200ms ease-out, color 200ms ease-out; }
+
+/* The app icon: starts as a blurred speck at the centre of the label, springs up above it */
+.app-icon {
+  position: absolute; left: 50%; bottom: calc(100% - 0.35rem); z-index: 2; display: grid; place-items: center;
+  width: 2.25rem; height: 2.25rem; border-radius: 0.62rem; pointer-events: none;
+  background: var(--tile-bg); color: var(--tile-fg);
+  box-shadow: 0 12px 26px -10px color-mix(in srgb, var(--glow) 75%, transparent), inset 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  opacity: 0; filter: blur(6px); transform: translate(-50%, 90%) scale(0.2);
+  transition: transform 220ms ease-in, opacity 160ms ease-in, filter 200ms ease-in;
+}
+.app-icon svg { width: 1.3rem; height: 1.3rem; }
+
+.app-link:hover::before, .app-link:focus-visible::before {
+  opacity: 1; transform: translate(-50%, -50%) scale(1);
+  transition: opacity 260ms ease-out, transform 460ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.app-link:hover .app-label, .app-link:focus-visible .app-label {
+  color: var(--ink); text-shadow: 0 0 14px color-mix(in srgb, var(--glow) 65%, transparent), 0 0 2px color-mix(in srgb, var(--glow) 40%, transparent);
+}
+.app-link:hover .app-icon, .app-link:focus-visible .app-icon {
+  opacity: 1; filter: none; transform: translate(-50%, 0) scale(1);
+  transition: transform 520ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms ease-out, filter 320ms ease-out;
+}
+/* The row's own red-underline hover stays; the label brightens instead of turning red. */
+.link-row a.app-link:hover { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .app-icon, .app-link:hover .app-icon, .app-link:focus-visible .app-icon { transform: translate(-50%, 0) scale(1); filter: none; transition: opacity 150ms linear; }
+  .app-link::before, .app-link:hover::before, .app-link:focus-visible::before { transform: translate(-50%, -50%); transition: opacity 150ms linear; }
+}
+/* The underline that draws in on hover takes the brand colour too. */
+.link-row a.app-link { background-image: linear-gradient(var(--glow), var(--glow)), linear-gradient(var(--rule-strong), var(--rule-strong)); }
