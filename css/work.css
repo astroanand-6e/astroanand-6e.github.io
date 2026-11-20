@@ -28,7 +28,11 @@
   filter: grayscale(1) contrast(1.1) brightness(0.5); transition: filter var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
 .work-media.is-shot::after { content: ""; position: absolute; inset: 0; background: var(--sakura); mix-blend-mode: multiply; opacity: 0;
   transition: opacity var(--dur-slow) var(--ease-out); pointer-events: none; }
+/* Paper theme: the screenshot (a light UI) prints as a light greyscale plate multiplied into the paper, like the
+   drawn figures beside it, instead of the half-brightness dark block the ink theme uses; hover shows the real thing. */
+html[data-theme="paper"] .work-media img { filter: grayscale(1) contrast(1.05); mix-blend-mode: multiply; }
 .work-card:hover .work-media img, .work-card:focus-within .work-media img { filter: none; transform: scale(1.02); }
+html[data-theme="paper"] .work-card:hover .work-media img, html[data-theme="paper"] .work-card:focus-within .work-media img { mix-blend-mode: normal; }
 .work-card:hover .work-media.is-shot::after, .work-card:focus-within .work-media.is-shot::after { opacity: 0; }
 
 /* Shared figure strokes and type */

@@ -19,6 +19,7 @@ body {
 }
 img, picture, canvas, svg { display: block; max-width: 100%; }
 h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
+h1, h2, h3, h4 { text-wrap: balance; }
 ul, ol { padding: 0; list-style: none; }
 a { color: var(--sakura-text); text-underline-offset: 0.2em; text-decoration-thickness: var(--hairline); }
 a:hover { text-decoration-thickness: 2px; }

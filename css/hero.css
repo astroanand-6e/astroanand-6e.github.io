@@ -96,10 +96,11 @@ html[data-theme="paper"] .hx-pin { --hx-ink: 0; }
 .hx-foot-copy { display: grid; gap: var(--space-3); max-width: 25rem; justify-items: start; }
 .hx-line { margin: 0; font: italic clamp(1.4rem, 2vw, var(--fs-32))/1.15 var(--font-display); }
 .hx-sub { margin: 0; color: var(--ink-2); font-size: var(--fs-14); }
-.hx-intro-foot .link-row { justify-content: flex-end; max-width: 22rem; row-gap: var(--space-2); }
+.hx-intro-foot .link-row { justify-content: flex-end; max-width: 30rem; row-gap: var(--space-2); }
+/* The cue leads the link column on the right: at bottom centre it sat on his shoes. */
 .hx-cue {
-  position: absolute; z-index: 5; left: 50%; bottom: var(--space-5); display: flex; align-items: center; gap: var(--space-2);
-  color: var(--ink-2); font-size: var(--fs-12); letter-spacing: 0.16em; text-transform: uppercase; translate: -50% 0;
+  position: absolute; z-index: 5; right: var(--gutter); bottom: calc(var(--space-5) + 2.75rem); display: flex; align-items: center; gap: var(--space-2);
+  color: var(--ink-2); font-size: var(--fs-12); letter-spacing: 0.16em; text-transform: uppercase;
 }
 .hx-cue svg { width: 0.75rem; height: 0.75rem; animation: cue 2.2s var(--ease-out) infinite; }
 
@@ -235,11 +236,26 @@ html .hx-eyes .hx-beat-kicker { color: #0a0a0a; font-weight: 600; }
   .hx-name span { display: block; }
   .hx-intro-foot { flex-direction: column; align-items: flex-start; gap: var(--space-3); bottom: var(--space-4); }
   .hx-line { font-size: 1.25rem; }
-  .hx-intro-foot .link-row { justify-content: flex-start; max-width: none; gap: var(--space-1) var(--space-4); font-size: var(--fs-14); }
+  .hx-intro-foot .link-row { display: grid; grid-template-columns: repeat(3, max-content); max-width: none; gap: var(--space-2) var(--space-5); font-size: var(--fs-14); }
+  /* Fit the intro figure into the band between the stacked name and the copy below it, so his hair starts
+     about 8px under "Thakkar" and his shoes stop about 8px above the tagline on every phone. The name ends at about
+     10.2svh + 15px + 1.72 x its font size (top padding, kicker, two lines at 0.86); the copy block is about
+     185px tall. Hair and shoes sit 3.4% and 96.5% down the stand plate, hence the 0.931 and 0.035. */
+  .hx-intro .hx-figure {
+    --fig-h: min(120vw, calc((89.8svh - 220px - 1.72 * min(27vw, 16svh)) / 0.931));
+    bottom: calc(193px - 0.035 * var(--fig-h));
+  }
   .hx-cue { display: none; }
   .hx-beat { right: var(--gutter); bottom: 7svh; }
   .nw { white-space: nowrap; }
 .hx-beat-line { font-size: clamp(1.9rem, 9vw, 2.8rem); }
+}
+/* Narrow phones: the tagline wraps to one more line, so the copy block is about 22px taller. */
+@media (max-width: 380px) {
+  .hx-intro .hx-figure {
+    --fig-h: min(120vw, calc((89.8svh - 242px - 1.72 * min(27vw, 16svh)) / 0.931));
+    bottom: calc(215px - 0.035 * var(--fig-h));
+  }
 }
 
 /* Portrait screens (phones, tablets): the 4:3 plates would sit small in a tall frame, so the
